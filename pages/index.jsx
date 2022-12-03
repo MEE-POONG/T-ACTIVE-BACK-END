@@ -8,7 +8,7 @@ export default function HomePage() {
   return (
     < >
       <Head>
-        <title>HOME | dxx=</title>
+        <title>T-ACTIVE</title>
         <meta
           name="description"
           content="I2AROBOT 2"

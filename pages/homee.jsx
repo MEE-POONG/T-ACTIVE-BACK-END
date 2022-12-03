@@ -7,51 +7,51 @@ import { Container, Image, Table, Button, Form, OverlayTrigger, Badge, Modal, Ro
 import useAxios from 'axios-hooks';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
-export default function AboutPage() {
-    const [{data: aboutData, loading, error}, getAbout] = useAxios({url: '/api/about'})
-    const [{ data: aboutById , loading: aboutByIdLoading , error: aboutByIdError}, getAboutById] = useAxios({},{ manual: true } )
-    const [{ loading: updateAboutLoading, error: updateAboutError }, executeAboutPut] = useAxios({},{manual: true})
+export default function HomeePage() {
 
+    const [{data: homeeData, loading, error}, getHomee] = useAxios({url: '/api/homee'})
+    const [{ data: homeeById , loading: homeeByIdLoading , error: homeeByIdError}, getHomeeById] = useAxios({},{ manual: true } )
+    const [{ loading: updateHomeeLoading, error: updateHomeeError }, executeHomeePut] = useAxios({},{manual: true})
 
 
     // ----ing-----
-    const [image, setImage] = useState([])
+    const [imge, setImge] = useState([])
     const [imageURL, setImageURL] = useState([])
 
     const [title, setTitle] = useState('');
     const [detail, setDetail] = useState('');
-    const [imagea, setImagea] = useState('');
+    const [imageh, setImageh] = useState('');
 
    useEffect(() =>{
-    setTitle(aboutById?.title)
-    setDetail(aboutById?.detail)
-    setImagea(aboutById?.imagea)
-   },[aboutById])
+    setTitle(homeeById?.title)
+    setDetail(homeeById?.detail)
+    setImageh(homeeById?.imageh)
+   },[homeeById])
 
     useEffect(() => {
 
-        if (image.length < 1) return
+        if (imge.length < 1) return
         const newImageUrl = []
-        image.forEach(image1 => newImageUrl.push(URL.createObjectURL(image1)))
+        imge.forEach(image1 => newImageUrl.push(URL.createObjectURL(image1)))
         setImageURL(newImageUrl)
-    }, [image])
+    }, [imge])
 
-    const onImageAboutChange = (e) => {
-        setImage([...e.target.files])
+    const onImageHomeeChange = (e) => {
+        setImageh([...e.target.files])
     }
 
    
     const [showModalEdit, setShowModalEdit] = useState(false);
 
     const ShowModalEdit = async (id) => { 
-     await getAboutById({url: '/api/about/'+id,method:'GET'});
+     await getHomeeById({url: '/api/homee/'+id,method:'GET'});
       setShowModalEdit(true);
      }
     const CloseModal = () => {setShowModalEdit(false) };
   
 
-    if (loading || aboutByIdLoading || updateAboutLoading) return <p>Loading...</p>
-    if (error || aboutByIdError || updateAboutError) return <p>Error!</p>
+    if (loading || homeeByIdLoading || updateHomeeLoading) return <p>Loading...</p>
+    if (error || homeeByIdError || updateHomeeError) return <p>Error!</p>
     return (
         < >
             <Head>
@@ -64,12 +64,11 @@ export default function AboutPage() {
             </Head>
             
             <Container fluid className=" pt-4 px-4">
-                    <div className="bg-secondary rounded p-4">
+                    <div className="bg-secondary rounded shadow p-4">
                 <div className="d-flex align-items-center justify-content-between mb-4">
-                    <h5 className="mb-0 w-m-max me-2">ข้อมูลเกี่ยวกับร้าน</h5>
+                    <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าหลัก</h5>
                 </div>
 
-               
                 <div className="d-flex align-items-center border-bottom py-2">
                     <div className="table-responsive w-100">
                     <table className="table text-start align-middle table-bordered table-hover mb-0">
@@ -78,18 +77,18 @@ export default function AboutPage() {
                         <tr className="text-center">
                             <th >รูปภาพของร้าน</th>
                             <th >หัวข้อ</th>
-                            <th >อธิบายเพิ่มเติม</th>
+                            <th >รายละเอียดภาพ</th>
                             <th >จัดการ</th>
-                            </tr>
+                        </tr>
                         </thead>
                         <tbody>
-                        {aboutData?.map((about,index) => (
+                        {homeeData?.map((homee,index) => (
                             <tr key={index}>
-                            <td className="text-center"> <Image className="logo" style={{ width: "150px" }} src={about.imagea} /></td>
-                            <td className="text-center">{about.title}</td>
-                            <td className="text-center">{about.detail}</td>
+                            <td className="text-center"> <Image className="logo" style={{ width: "150px" }}src={homee.imageh} /></td>
+                            <td className="text-center">{homee.title}</td>
+                            <td className="text-center">{homee.detail}</td>
                             <td>
-                            <a className="btn btn-outline-black sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a>
+                            <a className="btn btn-outline-dark sm-2" onClick={() =>ShowModalEdit(homee.id)}><FaEdit /></a>
                             </td>
                         </tr>
                         ))}
@@ -99,7 +98,7 @@ export default function AboutPage() {
                 </div>
                 </div>
             </Container>
-          
+      
 
           {/* Edit */}
             <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
@@ -107,20 +106,21 @@ export default function AboutPage() {
                     <Modal.Title>รายละเอียดสินค้า</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพของร้าน</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea} alt="about_img" fluid rounded />}
-                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
-                    </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>หัวข้อ</Form.Label>
+                        <Form.Label className='d-block'>รูปสินค้า</Form.Label>
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imageh} alt="homee_img" fluid rounded />}
+                        {imageURL?.map((imageSrcHomee, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="homee_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageHomeeChange} />
+                    </Form.Group>
+                    
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ</Form.Label>
                         <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
+                        <Form.Label>รายละเอียด</Form.Label>
                         <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
                     </Form.Group>
 
@@ -131,8 +131,8 @@ export default function AboutPage() {
                     </Button>
                     <Button variant="success" onClick={() => {
 
-                        executeAboutPut({
-                            url: '/api/about/' + aboutById?.id,
+                        executeHomeePut({
+                            url: '/api/homee/' + homeeById?.id,
                             method: 'PUT',
                             data: {
                                 title: title,
@@ -142,7 +142,7 @@ export default function AboutPage() {
                             Promise.all([
                                 setTitle(''),
                                 setDetail(''),
-                                getAbout()
+                                getHomee()
                               
                             ]).then(() => {
                                 CloseModal()
@@ -156,5 +156,6 @@ export default function AboutPage() {
             </Modal>
         </ >
     );
-}
-AboutPage.layout = IndexPage;
+
+}        
+HomeePage.layout = IndexPage;

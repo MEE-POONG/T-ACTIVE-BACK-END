@@ -1,29 +1,35 @@
+
 import { PrismaClient } from "@prisma/client"
-import { TRUE } from "sass"
 const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
-
     const { method } = req
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.banks.findMany({ include: { user: true } });
+                const data = await prisma.homee.findFirst({
+                    where: {
+                        id: req.query.id
+                    }
+                });
                 res.status(200).json(data)
             } catch (error) {
                 res.status(400).json({ success: false })
             }
             break
-            case 'POST':
+        case 'PUT':
             try {
-                await prisma.banks.create({
+                await prisma.homee.update({
+                    where: {
+                        id: req.query.id
+                    },
                     data: {
-                        accountname: parseInt(req.body.accountname),
-                        namebank: parseInt(req.body.namebank),
-                        numberbank: parseInt(req.body.numberbank),
-                        userId: req.body.userId,          
-                    }   
+                        title: req.body.title,
+                        detail: req.body.detail,
+                        imageh: req.body.imageh,
+                    }
                 })
+                // prisma.$disconnect();
                 res.status(201).json({ success: true })
             } catch (error) {
                 res.status(400).json({ success: false })

@@ -7,106 +7,45 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  username   String?
-  fname      String?
-  lname      String?
-  tel        String?
-  password   String?
-  createdAt  DateTime?    @default(now())
-  updatedAt  DateTime?    @updatedAt
-  deleted_at DateTime?    @map("deleted_at")
-  banks      Banks[]
-  credits    Credit[]
-  orderlotto Orderlotto[]
-}
-
-model Banks {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId      String?   @db.Uuid
-  accountname String?
-  namebank    String?
-  numberbank  String?
-  createdAt   DateTime? @default(now())
-  updatedAt   DateTime? @updatedAt
-  deleted_at  DateTime? @map("deleted_at")
-  user        User?     @relation(fields: [userId], references: [id])
-}
-
-model Credit {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId     String?   @db.Uuid
-  addcredit  Int?
-  amount     Int?
+model Homee {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title      String?
+  detail     String?
+  imageh     String?
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
   deleted_at DateTime? @map("deleted_at")
-  user       User?     @relation(fields: [userId], references: [id])
 }
 
 model About {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title      String
+  detail     String
+  imagea     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deleted_at DateTime @map("deleted_at")
+}
+
+model Products {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title      String
   subtitle   String
   detail     String
-  image      String
+  imagep      String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   deleted_at DateTime @map("deleted_at")
 }
 
 model Contact {
-  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  address       String
-  tel           String
-  openTime      String
-  line          String
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  deleted_at    DateTime? @map("deleted_at")
-  titleOpenDate String
-  title         String
-}
-
-model Lottotype {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name       String
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deleted_at DateTime? @map("deleted_at")
-  lotterys   Lottery[]
-}
-
-model Lottery {
-  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  numberlotto String?
-  price       Int?
-  lottotypeId String?      @db.Uuid
-  createdAt   DateTime?    @default(now())
-  updatedAt   DateTime?    @updatedAt
-  deleted_at  DateTime?    @map("deleted_at")
-  lottotype   Lottotype?   @relation(fields: [lottotypeId], references: [id])
-  orderlotto  Orderlotto[]
-}
-
-model Orderlotto {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  lotteryid  String?   @db.Uuid
-  userId     String?   @db.Uuid
-  amount     Int?
-  total      Int?
-  status     String?
-  createdAt  DateTime? @default(now())
-  deleted_at DateTime? @map("deleted_at")
-  updatedAt  DateTime? @updatedAt
-  lottery    Lottery?  @relation(fields: [lotteryid], references: [id])
-  user       User?     @relation(fields: [userId], references: [id])
-}
-
-model Locknumber {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name       String
+  title      String
+  address    String
+  tel        String
+  email      String
+  facebook   String
+  line       String
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
   deleted_at DateTime? @map("deleted_at")

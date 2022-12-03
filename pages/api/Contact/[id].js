@@ -26,9 +26,9 @@ export default async function handler(req, res) {
                         title: req.body.title,
                         address: req.body.address,
                         tel: req.body.tel,
-                        line: req.body.line,
-                        titleOpenDate: req.body.titleOpenDate,
-                        openTime: req.body.openTime,
+                        email: req.body.email,
+                        facebook: req.body.facebook,
+                        line: req.body.line,     
                        
                     }
                 })

@@ -25,9 +25,8 @@ export default async function handler(req, res) {
                     },
                     data: {
                         title: req.body.title,
-                        subtitle: req.body.subtitle,
                         detail: req.body.detail,
-                        image: req.body.image,
+                        imagea: req.body.imagea,
                     }
                 })
                 // prisma.$disconnect();

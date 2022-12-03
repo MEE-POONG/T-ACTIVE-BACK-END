@@ -10,7 +10,23 @@ export default async function handler(req, res) {
                 const data = await prisma.about.findMany();
                 res.status(200).json(data)
             } catch (error) {
-                res.status(400).json({ success: false })
+                console.log(error)
+                // res.status(400).json({ success: false })
+            }
+            break
+            case 'POST':
+            try {
+                await prisma.about.create({
+                    data: {
+                        title: req.body.title,
+                        detail: req.body.detail,
+                        imagea: req.body.imagea,
+                    }
+                })
+                res.status(201).json({ success: true })
+            } catch (error) {
+                console.log(error);
+                // res.status(400).json({ success: false })
             }
             break
         default:

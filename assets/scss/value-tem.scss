@@ -1,9 +1,9 @@
 /******* Customized Bootstrap ********/
 
-$primary: #349520;
-$secondary: #ffff;
+$primary: #d3b94e; /*  สีฟร้อนร้าน */
+$secondary:   #ffffff;    /*  สีพื้นหลังแถบใหญ่ */
 $light: #000000;
-$dark: #e8e8e8;
+$dark: #aca176; /* สีค้นหา/ปุ่ม*/
 
 $font-family-base: 'Open Sans', sans-serif;
 
@@ -38,6 +38,8 @@ $list-group-color: $body-color;
 $list-group-border-color: $border-color;
 
 $border-radius: 5px;
+
+$bordor: 50px;
 
 $link-decoration: none;
 

@@ -1,31 +1,32 @@
 import { PrismaClient } from "@prisma/client"
-import { TRUE } from "sass"
 const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
-
+    // console.log("",req.body);
     const { method } = req
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.credit.findMany({ include: { user: true } });
+                const data = await prisma.homee.findMany();
                 res.status(200).json(data)
             } catch (error) {
-                res.status(400).json({ success: false })
+                console.log(error)
+                // res.status(400).json({ success: false })
             }
             break
             case 'POST':
             try {
-                await prisma.credit.create({
+                await prisma.homee.create({
                     data: {
-                        addcredit: parseInt(req.body.addcredit),
-                        amount: parseInt(req.body.amount),
-                        userId: req.body.userId,        
-                    }   
+                        title: req.body.title,
+                        detail: req.body.detail,
+                        imageh: req.body.imageh,
+                    }
                 })
                 res.status(201).json({ success: true })
             } catch (error) {
-                res.status(400).json({ success: false })
+                console.log(error);
+                // res.status(400).json({ success: false })
             }
             break
         default:
