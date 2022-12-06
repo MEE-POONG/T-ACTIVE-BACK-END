@@ -89,7 +89,7 @@ export default function AboutPage() {
                             <td className="text-center">{about.title}</td>
                             <td className="text-center">{about.detail}</td>
                             <td>
-                            <a className="btn btn-outline-black sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a>
+                            <a className="btn btn-outline-dark sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a>
                             </td>
                         </tr>
                         ))}

@@ -1,8 +1,8 @@
 :root {
-    --primary: rgb(0, 0, 0);
-    --secondary: #ebe9e1;   /*สไล์บาร์ซ้ายมือแถบยาว */
+    --primary: rgb(0, 0, 0);   /*สีตัวหนังสือหัวข้อต่างๆ */
+    --secondary: #ffffff;   /*สไล์บาร์ซ้ายมือแถบยาว */
     --light: rgb(0, 0, 0);
-    --dark: #fbfbfb;    /*พื้นหลังใหญ่ */
+    --dark: #ebe9e1;    /*พื้นหลังใหญ่ */
 }
 
 .back-to-top {
@@ -96,7 +96,8 @@
 }
 
 .color-d3d3d3 {
-    color: #d3d3d3 !important
+    color: #564e2b !important;
+  
 }
 
 @media(min-width: 992px) {
@@ -217,6 +218,7 @@ button.bar-slide {
 
 button.bar-slide:hover {
     color: var(--bs-link-hover-color)
+   
 }
 
 .content .navbar .navbar-nav .nav-link {
