@@ -11,10 +11,13 @@ export default function HomeePage() {
 
     const [{data: homeeData, loading, error}, getHomee] = useAxios({url: '/api/homee'})
     const [{ data: homeeById , loading: homeeByIdLoading , error: homeeByIdError}, getHomeeById] = useAxios({},{ manual: true } )
+    
+    const [{ data: postData, error: errorMessage, loading: homeeLoading }, executeHomee] = useAxios({ url: '/api/homee', method: 'POST' }, { manual: true });
     const [{ loading: updateHomeeLoading, error: updateHomeeError }, executeHomeePut] = useAxios({},{manual: true})
+    const [{ loading: deleteHomeeLoading, error: deleteHomeeError }, executeHomeeDelete] = useAxios({}, { manual: true })
+    const [{loading: imgLoading, error: imgError},uploadImage] = useAxios({url: '/api/upload', method: 'POST'}, {manual: true})
 
-
-    // ----ing-----
+ 
     const [imge, setImge] = useState([])
     const [imageURL, setImageURL] = useState([])
 
@@ -22,11 +25,25 @@ export default function HomeePage() {
     const [detail, setDetail] = useState('');
     const [imageh, setImageh] = useState('');
 
+
+    const [showModalCreate, setShowModalCreate] = useState(false);
+    const [showModalEdit, setShowModalEdit] = useState(false);
+
    useEffect(() =>{
     setTitle(homeeById?.title)
     setDetail(homeeById?.detail)
     setImageh(homeeById?.imageh)
    },[homeeById])
+
+
+    const ShowModalCreate = () => setShowModalCreate(true);
+
+    const ShowModalEdit = async (id) => { 
+     await getHomeeById({url: '/api/homee/'+id,method:'GET'});
+      setShowModalEdit(true);
+     }
+
+     const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
 
     useEffect(() => {
 
@@ -40,18 +57,9 @@ export default function HomeePage() {
         setImageh([...e.target.files])
     }
 
-   
-    const [showModalEdit, setShowModalEdit] = useState(false);
 
-    const ShowModalEdit = async (id) => { 
-     await getHomeeById({url: '/api/homee/'+id,method:'GET'});
-      setShowModalEdit(true);
-     }
-    const CloseModal = () => {setShowModalEdit(false) };
-  
-
-    if (loading || homeeByIdLoading || updateHomeeLoading) return <p>Loading...</p>
-    if (error || homeeByIdError || updateHomeeError) return <p>Error!</p>
+    if (loading || homeeByIdLoading || updateHomeeLoading || deleteHomeeLoading || imgLoading) return <p>Loading...</p>
+    if (error || homeeByIdError || updateHomeeError || deleteHomeeError || imgError) return <p>Error!</p>
     return (
         < >
             <Head>
@@ -87,8 +95,9 @@ export default function HomeePage() {
                             <td className="text-center"> <Image className="logo" style={{ width: "150px" }}src={homee.imageh} /></td>
                             <td className="text-center">{homee.title}</td>
                             <td className="text-center">{homee.detail}</td>
-                            <td>
-                            <a className="btn btn-outline-dark sm-2" onClick={() =>ShowModalEdit(homee.id)}><FaEdit /></a>
+                            <td className="text-center">
+                            <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(homee.id)}><FaEdit /></a>
+                            {/* <a className="btn btn-outline-danger sm-2" onClick={() => executeAboutDelete({ url: '/api/about/' + about.id, method: 'DELETE'})} ><FaTrash /></a> */}
                             </td>
                         </tr>
                         ))}
@@ -99,6 +108,62 @@ export default function HomeePage() {
                 </div>
             </Container>
       
+
+  {/* Create */}
+  {/* <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
+                <Modal.Header closeButton >
+                    <Modal.Title>เพิ่มข้อมูลเกี่ยวกับ</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปสินค้า</Form.Label>
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imageh} alt="homee_img" fluid rounded />}
+                        {imageURL?.map((imageSrcHomee, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="homee_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageHomeeChange} />
+                    </Form.Group>
+                    
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>รายละเอียด</Form.Label>
+                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
+                    </Form.Group>
+
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={CloseModal}>
+                        ยกเลิก
+                    </Button>
+                    <Button variant="success" onClick={async event => {
+                       
+                       let data =new FormData()
+                       data.append('file', image[0])
+                       const imageData = await uploadImage({data: data})
+                       const id =imageData.data.result.id
+                       
+                       await executeHomee({
+                            data: {
+                                title: title,
+                                detail: detail,
+                                imagea:`https://imagedelivery.net/QZ6TuL-3r02W7wQjQrv5DA/${id}/public`,  
+                            } 
+                        }).then(() => {
+                            Promise.all([
+                                setTitle(''),
+                                setDetail(''),
+                                getHomee()
+                            ]).then(() => {
+                                CloseModal()
+                            })
+                        })
+                    }}>
+                        เพิ่ม
+                    </Button>
+                </Modal.Footer>
+            </Modal> */}
 
           {/* Edit */}
             <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
