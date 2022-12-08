@@ -9,13 +9,9 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
 export default function HomeePage() {
 
-    const [{data: homeeData, loading, error}, getHomee] = useAxios({url: '/api/homee'})
-    const [{ data: homeeById , loading: homeeByIdLoading , error: homeeByIdError}, getHomeeById] = useAxios({},{ manual: true } )
-    
-    const [{ data: postData, error: errorMessage, loading: homeeLoading }, executeHomee] = useAxios({ url: '/api/homee', method: 'POST' }, { manual: true });
+    const [{data: homeeData, loading, error}, getHomee] = useAxios({url: '/api/homee/41307f60-def5-46fb-842c-dd5a6b48a321',method: 'GET'})
     const [{ loading: updateHomeeLoading, error: updateHomeeError }, executeHomeePut] = useAxios({},{manual: true})
-    const [{ loading: deleteHomeeLoading, error: deleteHomeeError }, executeHomeeDelete] = useAxios({}, { manual: true })
-    const [{loading: imgLoading, error: imgError},uploadImage] = useAxios({url: '/api/upload', method: 'POST'}, {manual: true})
+
 
  
     const [imge, setImge] = useState([])
@@ -36,36 +32,23 @@ export default function HomeePage() {
     const [detail3, setDetail3] = useState('');
     const [imageh3, setImageh3] = useState('');
 
-    const [showModalCreate, setShowModalCreate] = useState(false);
-    const [showModalEdit, setShowModalEdit] = useState(false);
-
    useEffect(() =>{
-    setTitle1(homeeById?.title1)
-    setSubtitle1(homeeById?.subtitle1)
-    setDetail1(homeeById?.detail1)
-    setImageh1(homeeById?.imageh1)
+    setTitle1(homeeData?.title1)
+    setSubtitle1(homeeData?.subtitle1)
+    setDetail1(homeeData?.detail1)
+    setImageh1(homeeData?.imageh1)
 
-    setTitle2(homeeById?.title2)
-    setSubtitle2(homeeById?.subtitle2)
-    setDetail2(homeeById?.detail2)
-    setImageh2(homeeById?.imageh2)
+    setTitle2(homeeData?.title2)
+    setSubtitle2(homeeData?.subtitle2)
+    setDetail2(homeeData?.detail2)
+    setImageh2(homeeData?.imageh2)
 
-    setTitle3(homeeById?.title3)
-    setSubtitle3(homeeById?.subtitle3)
-    setDetail3(homeeById?.detail3)
-    setImageh3(homeeById?.imageh3)
+    setTitle3(homeeData?.title3)
+    setSubtitle3(homeeData?.subtitle3)
+    setDetail3(homeeData?.detail3)
+    setImageh3(homeeData?.imageh3)
 
-   },[homeeById])
-
-
-    const ShowModalCreate = () => setShowModalCreate(true);
-
-    const ShowModalEdit = async (id) => { 
-     await getHomeeById({url: '/api/homee/'+id,method:'GET'});
-      setShowModalEdit(true);
-     }
-
-     const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
+   },[homeeData])
 
     useEffect(() => {
 
@@ -82,8 +65,8 @@ export default function HomeePage() {
     }
 
 
-    if (loading || homeeByIdLoading || updateHomeeLoading || deleteHomeeLoading || imgLoading) return <p>Loading...</p>
-    if (error || homeeByIdError || updateHomeeError || deleteHomeeError || imgError) return <p>Error!</p>
+    if (loading ||  updateHomeeLoading ) return <p>Loading...</p>
+    if (error ||  updateHomeeError ) return <p>Error!</p>
     return (
         < >
             <Head>
@@ -100,56 +83,100 @@ export default function HomeePage() {
                     <div className="d-flex align-items-center justify-content-between mb-4">
                 </div>
 
-                {homeeData?.map((homee, index) => (
-                <div className="d-flex align-items-center border-bottom py-2"  key={index}>
+                
+                <div className="d-flex align-items-center border-bottom py-2" >
                     <div className="table-responsive w-100">
-
+                    
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                        <Form.Label>ชื่อหัวข้อ 1</Form.Label>
                         <Form.Control type="text"style={{ width: "500px" }} value={title1} onChange={event => setTitle1(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>หัวข้อย่อย</Form.Label>
+                        <Form.Label>หัวข้อย่อย 1</Form.Label>
                         <Form.Control type="text"style={{ width: "500px" }} value={subtitle1} onChange={event => setSubtitle1(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพของร้าน</Form.Label>
+                        <Form.Label className='d-block'>รูปภาพของร้าน 1</Form.Label>
                         {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imageh1} alt="homee_img" fluid rounded />}
                         {imageURL?.map((imageSrcHomee, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="homee_img" fluid rounded />)}
                         <Form.Control type="file" accept="image/*" onChange={onImageHomeeChange} />
                     </Form.Group>
                         
                     <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label>รายละเอียด</Form.Label>
+                    <Form.Label>รายละเอียด 1</Form.Label>
                         <Editor as="textarea" rows={3} value={detail1} onChange={event => setDetail1(event.target.value)} />
                     </Form.Group>
-                    
-                     <Modal.Footer>
-                    <Button variant="danger" onClick={CloseModal}>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ 2</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={title2} onChange={event => setTitle2(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>หัวข้อย่อย 2</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={subtitle2} onChange={event => setSubtitle2(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพของร้าน 2</Form.Label>
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imageh2} alt="homee_img" fluid rounded />}
+                        {imageURL?.map((imageSrcHomee, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="homee_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageHomeeChange} />
+                    </Form.Group>
+                        
+                    <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Label>รายละเอียด 2</Form.Label>
+                        <Editor as="textarea" rows={3} value={detail2} onChange={event => setDetail2(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ 3</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={title3} onChange={event => setTitle3(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>หัวข้อย่อย 3</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={subtitle3} onChange={event => setSubtitle3(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพของร้าน 3</Form.Label>
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imageh3} alt="homee_img" fluid rounded />}
+                        {imageURL?.map((imageSrcHomee, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="homee_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageHomeeChange} />
+                    </Form.Group>
+                        
+                    <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Label>รายละเอียด 3</Form.Label>
+                        <Editor as="textarea" rows={3} value={detail3} onChange={event => setDetail3(event.target.value)} />
+                    </Form.Group>
+
+                   
+                    <Button variant="danger">
                         ยกเลิก
                     </Button> 
                     <r/>   <Button variant="success" onClick={() => {
 
                         executeHomeePut({
-                            url: '/api/homee/' + homeeById?.id,
+                            url: '/api/homee/' + homeeData?.id,
                             method: 'PUT',
                             data: {
-                                title1 : req.body.title1,
-                                subtitle1 : req.body.subtitle1,
-                                detail1 : req.body.detail1,
-                                imageh1 : req.body.imageh1,
+                                title1 : title1,
+                                subtitle1 : subtitle1,
+                                detail1 : detail1,
+                                imageh1 : imageh1,
 
-                                title2 : req.body.title2,
-                                subtitle2 : req.body.subtitle2,
-                                detail2 : req.body.detail2,
-                                imageh2 : req.body.imageh2,
+                                title2 : title2,
+                                subtitle2 : subtitle2,
+                                detail2 : detail2,
+                                imageh2 : imageh2,
 
-                                title3 : req.body.title3,
-                                subtitle3 : req.body.subtitle3,
-                                detail3 : req.body.detail3,
-                                imageh3 : req.body.imageh3,
+                                title3 : title3,
+                                subtitle3 : subtitle3,
+                                detail3 : detail3,
+                                imageh3 : imageh3,
                             }
                         }).then(() => {
                             Promise.all([
@@ -170,150 +197,23 @@ export default function HomeePage() {
 
                                 getHomee()
                               
-                            ]).then(() => {
-                                CloseModal()
-                            })
+                            ])
                         })
 
                     }}>
                         บันทึก
                     </Button>
-                </Modal.Footer>
+
 
                     </div>
 
                 </div>
 
-                ))}
+          
 
             </div>
             </Container>
       
-
-  {/* Create */}
-  {/* <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
-                <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มข้อมูลเกี่ยวกับ</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปสินค้า</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imageh} alt="homee_img" fluid rounded />}
-                        {imageURL?.map((imageSrcHomee, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="homee_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageHomeeChange} />
-                    </Form.Group>
-                    
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อ</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียด</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
-                    </Form.Group>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
-                        ยกเลิก
-                    </Button>
-                    <Button variant="success" onClick={async event => {
-                       
-                       let data =new FormData()
-                       data.append('file', image[0])
-                       const imageData = await uploadImage({data: data})
-                       const id =imageData.data.result.id
-                       
-                       await executeHomee({
-                            data: {
-                                title: title,
-                                detail: detail,
-                                imagea:`https://imagedelivery.net/QZ6TuL-3r02W7wQjQrv5DA/${id}/public`,  
-                            } 
-                        }).then(() => {
-                            Promise.all([
-                                setTitle(''),
-                                setDetail(''),
-                                getHomee()
-                            ]).then(() => {
-                                CloseModal()
-                            })
-                        })
-                    }}>
-                        เพิ่ม
-                    </Button>
-                </Modal.Footer>
-            </Modal> */}
-
-          {/* Edit 1 */}
-            <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
-                <Modal.Header closeButton >
-                    <Modal.Title>รายละเอียดสินค้า</Modal.Title>
-                </Modal.Header>
-                {/* <Modal.Body> */}
-
-                    {/* <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปสินค้า</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imageh} alt="homee_img" fluid rounded />}
-                        {imageURL?.map((imageSrcHomee, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="homee_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageHomeeChange} />
-                    </Form.Group>
-                    
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อ</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียด</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
-                    </Form.Group>
-
-               <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อ</Form.Label>
-                                {imageURL.map(imageSrcHomee => <Image className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="product_img" fluid rounded />)}
-                                <input type="file" accept="image/*" onChange={onImageHomeeChange} className="form-control" id="#" placeholder='' />
-                                <div className="mb-3">
-                                    <label for="Inputphone" className="form-label">รายละเอียดร้าน</label>
-                                    <Editor/>
-                                </div>
-
-                                </Form.Group>
-
-                            <button type="submit" className="btn btn-success"  >ยืนยัน</button>
-                        
-
-                </Modal.Body> */}
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
-                        ยกเลิก
-                    </Button>
-                    <Button variant="success" onClick={() => {
-
-                        executeHomeePut({
-                            url: '/api/homee/' + homeeById?.id,
-                            method: 'PUT',
-                            data: {
-                                title: title,
-                                detail: detail,
-                            }
-                        }).then(() => {
-                            Promise.all([
-                                setTitle(''),
-                                setDetail(''),
-                                getHomee()
-                              
-                            ]).then(() => {
-                                CloseModal()
-                            })
-                        })
-
-                    }}>
-                        บันทึก
-                    </Button>
-                </Modal.Footer>
-            </Modal>
         </ >
     );
 

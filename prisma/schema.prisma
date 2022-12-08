@@ -8,22 +8,19 @@ datasource db {
 }
 
 model Homee {
-  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title1    String?
-  subtitle1 String?
-  detail1   String?
-  imageh1   String?
-
-  title2    String?
-  subtitle2 String?
-  detail2   String?
-  imageh2   String?
-
-  title3    String?
-  subtitle3 String?
-  detail3   String?
-  imageh3   String?
-
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title1     String?
+  subtitle1  String?
+  detail1    String?
+  imageh1    String?
+  title2     String?
+  subtitle2  String?
+  detail2    String?
+  imageh2    String?
+  title3     String?
+  subtitle3  String?
+  detail3    String?
+  imageh3    String?
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
   deleted_at DateTime? @map("deleted_at")
@@ -31,46 +28,32 @@ model Homee {
 
 model About {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title1    String?
-  subtitle1 String?
-  detail1   String?
-  imagea1   String?
-
-  title2    String?
-  subtitle2 String?
-  detail2   String?
-  imagea2   String?
-
-  title3    String?
-  subtitle3 String?
-  detail3   String?
-  imagea3   String?
-
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   deleted_at DateTime @map("deleted_at")
+  detail1    String?
+  detail2    String?
+  detail3    String?
+  imagea1    String?
+  imagea2    String?
+  imagea3    String?
+  subtitle1  String?
+  subtitle2  String?
+  subtitle3  String?
+  title1     String?
+  title2     String?
+  title3     String?
 }
 
 model Products {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   title1    String?
-  subtitle1 String?
-  detail1   String?
-  imagep1   String?
-
-  title2    String?
-  subtitle2 String?
-  detail2   String?
-  imagep2   String?
-
-  title3    String?
-  subtitle3 String?
-  detail3   String?
-  imagep3   String?
-
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   deleted_at DateTime @map("deleted_at")
+  detail     String?
+  imagep     String?
+  subtitle   String?
+  title      String?
 }
 
 model Contact {
