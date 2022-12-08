@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import IndexPage from "components/layouts/IndexPage";
 // import { useRouter } from 'next/router';
 import { Container, Image, Table, Button, Form, OverlayTrigger, Badge, Modal, Row } from 'react-bootstrap';
-// import Editor from '@/components/Ckeditor/Editor';
+import Editor from '@/components/Ckeditor/Editor';
 import useAxios from 'axios-hooks';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
@@ -21,18 +21,40 @@ export default function HomeePage() {
     const [imge, setImge] = useState([])
     const [imageURL, setImageURL] = useState([])
 
-    const [title, setTitle] = useState('');
-    const [detail, setDetail] = useState('');
-    const [imageh, setImageh] = useState('');
+    const [title1, setTitle1] = useState('');
+    const [subtitle1, setSubtitle1] = useState('');
+    const [detail1, setDetail1] = useState('');
+    const [imageh1, setImageh1] = useState('');
+    
+    const [title2, setTitle2 ] = useState('');
+    const [subtitle2, setSubtitle2] = useState('');
+    const [detail2, setDetail2] = useState('');
+    const [imageh2, setImageh2] = useState('');
 
+    const [title3, setTitle3] = useState('');
+    const [subtitle3, setSubtitle3] = useState('');
+    const [detail3, setDetail3] = useState('');
+    const [imageh3, setImageh3] = useState('');
 
     const [showModalCreate, setShowModalCreate] = useState(false);
     const [showModalEdit, setShowModalEdit] = useState(false);
 
    useEffect(() =>{
-    setTitle(homeeById?.title)
-    setDetail(homeeById?.detail)
-    setImageh(homeeById?.imageh)
+    setTitle1(homeeById?.title1)
+    setSubtitle1(homeeById?.subtitle1)
+    setDetail1(homeeById?.detail1)
+    setImageh1(homeeById?.imageh1)
+
+    setTitle2(homeeById?.title2)
+    setSubtitle2(homeeById?.subtitle2)
+    setDetail2(homeeById?.detail2)
+    setImageh2(homeeById?.imageh2)
+
+    setTitle3(homeeById?.title3)
+    setSubtitle3(homeeById?.subtitle3)
+    setDetail3(homeeById?.detail3)
+    setImageh3(homeeById?.imageh3)
+
    },[homeeById])
 
 
@@ -54,7 +76,9 @@ export default function HomeePage() {
     }, [imge])
 
     const onImageHomeeChange = (e) => {
-        setImageh([...e.target.files])
+        setImageh1([...e.target.files])
+        setImageh2([...e.target.files])
+        setImageh3([...e.target.files])
     }
 
 
@@ -69,43 +93,100 @@ export default function HomeePage() {
                     content="I2AROBOT 2"
                 />
                 <link rel="icon" href="/favicon.ico" />
-            </Head>
-            
+            </Head>    
             <Container fluid className=" pt-4 px-4">
                     <div className="bg-secondary rounded shadow p-4">
-                <div className="d-flex align-items-center justify-content-between mb-4">
                     <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าหลัก</h5>
+                    <div className="d-flex align-items-center justify-content-between mb-4">
                 </div>
 
-                <div className="d-flex align-items-center border-bottom py-2">
+                {homeeData?.map((homee, index) => (
+                <div className="d-flex align-items-center border-bottom py-2"  key={index}>
                     <div className="table-responsive w-100">
-                    <table className="table text-start align-middle table-bordered table-hover mb-0">
 
-                        <thead>
-                        <tr className="text-center">
-                            <th >รูปภาพของร้าน</th>
-                            <th >หัวข้อ</th>
-                            <th >รายละเอียดภาพ</th>
-                            <th >จัดการ</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {homeeData?.map((homee,index) => (
-                            <tr key={index}>
-                            <td className="text-center"> <Image className="logo" style={{ width: "150px" }}src={homee.imageh} /></td>
-                            <td className="text-center">{homee.title}</td>
-                            <td className="text-center">{homee.detail}</td>
-                            <td className="text-center">
-                            <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(homee.id)}><FaEdit /></a>
-                            {/* <a className="btn btn-outline-danger sm-2" onClick={() => executeAboutDelete({ url: '/api/about/' + about.id, method: 'DELETE'})} ><FaTrash /></a> */}
-                            </td>
-                        </tr>
-                        ))}
-                        </tbody>
-                    </table>
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={title1} onChange={event => setTitle1(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>หัวข้อย่อย</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={subtitle1} onChange={event => setSubtitle1(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพของร้าน</Form.Label>
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imageh1} alt="homee_img" fluid rounded />}
+                        {imageURL?.map((imageSrcHomee, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="homee_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageHomeeChange} />
+                    </Form.Group>
+                        
+                    <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Label>รายละเอียด</Form.Label>
+                        <Editor as="textarea" rows={3} value={detail1} onChange={event => setDetail1(event.target.value)} />
+                    </Form.Group>
+                    
+                     <Modal.Footer>
+                    <Button variant="danger" onClick={CloseModal}>
+                        ยกเลิก
+                    </Button> 
+                    <r/>   <Button variant="success" onClick={() => {
+
+                        executeHomeePut({
+                            url: '/api/homee/' + homeeById?.id,
+                            method: 'PUT',
+                            data: {
+                                title1 : req.body.title1,
+                                subtitle1 : req.body.subtitle1,
+                                detail1 : req.body.detail1,
+                                imageh1 : req.body.imageh1,
+
+                                title2 : req.body.title2,
+                                subtitle2 : req.body.subtitle2,
+                                detail2 : req.body.detail2,
+                                imageh2 : req.body.imageh2,
+
+                                title3 : req.body.title3,
+                                subtitle3 : req.body.subtitle3,
+                                detail3 : req.body.detail3,
+                                imageh3 : req.body.imageh3,
+                            }
+                        }).then(() => {
+                            Promise.all([
+                               setTitle1(''),
+                               setSubtitle1(''),
+                               setDetail1(''),
+                               setImageh1(''),
+
+                               setTitle2(''),
+                               setDetail2(''),
+                               setDetail2(''),
+                               setImageh2(''),
+
+                               setTitle3(''),
+                               setDetail3(''),
+                               setDetail3(''),
+                               setImageh3(''),
+
+                                getHomee()
+                              
+                            ]).then(() => {
+                                CloseModal()
+                            })
+                        })
+
+                    }}>
+                        บันทึก
+                    </Button>
+                </Modal.Footer>
+
                     </div>
+
                 </div>
-                </div>
+
+                ))}
+
+            </div>
             </Container>
       
 
@@ -165,14 +246,14 @@ export default function HomeePage() {
                 </Modal.Footer>
             </Modal> */}
 
-          {/* Edit */}
+          {/* Edit 1 */}
             <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
                     <Modal.Title>รายละเอียดสินค้า</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                {/* <Modal.Body> */}
 
-                    <Form.Group controlId="formFile" className="mb-3">
+                    {/* <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label className='d-block'>รูปสินค้า</Form.Label>
                         {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imageh} alt="homee_img" fluid rounded />}
                         {imageURL?.map((imageSrcHomee, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="homee_img" fluid rounded />)}
@@ -189,7 +270,21 @@ export default function HomeePage() {
                         <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
                     </Form.Group>
 
-                </Modal.Body>
+               <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                                {imageURL.map(imageSrcHomee => <Image className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="product_img" fluid rounded />)}
+                                <input type="file" accept="image/*" onChange={onImageHomeeChange} className="form-control" id="#" placeholder='' />
+                                <div className="mb-3">
+                                    <label for="Inputphone" className="form-label">รายละเอียดร้าน</label>
+                                    <Editor/>
+                                </div>
+
+                                </Form.Group>
+
+                            <button type="submit" className="btn btn-success"  >ยืนยัน</button>
+                        
+
+                </Modal.Body> */}
                 <Modal.Footer>
                     <Button variant="secondary" onClick={CloseModal}>
                         ยกเลิก

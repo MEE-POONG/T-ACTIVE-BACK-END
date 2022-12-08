@@ -8,10 +8,22 @@ datasource db {
 }
 
 model Homee {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title      String?
-  detail     String?
-  imageh     String?
+  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title1    String?
+  subtitle1 String?
+  detail1   String?
+  imageh1   String?
+
+  title2    String?
+  subtitle2 String?
+  detail2   String?
+  imageh2   String?
+
+  title3    String?
+  subtitle3 String?
+  detail3   String?
+  imageh3   String?
+
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
   deleted_at DateTime? @map("deleted_at")
@@ -32,7 +44,7 @@ model Products {
   title      String
   subtitle   String
   detail     String
-  imagep      String
+  imagep     String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   deleted_at DateTime @map("deleted_at")
