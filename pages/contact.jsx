@@ -9,13 +9,9 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
 export default function ContactPage() {
 
-    const [{data: contactData, loading, error}, getContact] = useAxios({url: '/api/contact'})
-    const [{ data: contactById , loading: contactByIdLoading , error: contactByIdError}, getContactById] = useAxios({},{ manual: true } )
-
-    const [{ data: postData, error: errorMessage, loading: contactLoading }, executeContact] = useAxios({ url: '/api/contact', method: 'POST' }, { manual: true });
+    const [{data: contactData, loading, error}, getContact] = useAxios({url: '/api/contact/69d9db9d-6776-4f9d-a5d1-2118f85a8172' , method: 'GET'})
     const [{ loading: updateContactLoading, error: updateContactError }, executeContactPut] = useAxios({},{manual: true})
-    const [{ loading: deleteContactLoading, error: deleteContactError }, executeContactDelete] = useAxios({}, { manual: true })
-    // const [{loading: imgLoading, error: imgError},uploadImage] = useAxios({url: '/api/upload', method: 'POST'}, {manual: true})
+   
 
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('');
@@ -24,30 +20,19 @@ export default function ContactPage() {
     const [facebook, setFacebook] = useState('');
     const [line, setLine] = useState('');
     
-    const [showModalCreate, setShowModalCreate] = useState(false);
-    const [showModalEdit, setShowModalEdit] = useState(false);
-
    useEffect(() =>{
-    setTitle(contactById?.title)
-    setAddress(contactById?.address)
-    setTel(contactById?.tel)
-    setEmail(contactById?.email)
-    setFacebook(contactById?.facebook)
-    setLine(contactById?.line)
+    setTitle(contactData?.title)
+    setAddress(contactData?.address)
+    setTel(contactData?.tel)
+    setEmail(contactData?.email)
+    setFacebook(contactData?.facebook)
+    setLine(contactData?.line)
 
-   },[contactById])
+   },[contactData])
 
-   const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
 
-    const ShowModalEdit = async (id) => { 
-     await getContactById({url: '/api/contact/'+id,method:'GET'});
-      setShowModalEdit(true);
-     }
-
-  
-
-    if (loading  || contactLoading  || contactByIdLoading || updateContactLoading || deleteContactLoading) return <p>Loading...</p>
-    if (error || errorMessage || contactByIdError || updateContactError || deleteContactError) return <p>Error!</p>
+    if (loading  ||  updateContactLoading ) return <p>Loading...</p>
+    if (error || updateContactError ) return <p>Error!</p>
     return (
         < >
             <Head>
@@ -65,8 +50,7 @@ export default function ContactPage() {
                     <div className="d-flex align-items-center justify-content-between mb-4">
                 </div>
 
-                {contactData?.map((contact, index) => (
-                <div className="d-flex align-items-center border-bottom py-2"  key={index}>
+                <div className="d-flex align-items-center border-bottom py-2" >
                     <div className="table-responsive w-100">
 
                     <Form.Group controlId="formFile" className="mb-3">
@@ -99,14 +83,14 @@ export default function ContactPage() {
                         <Form.Control type="text"style={{ width: "500px" }} value={line} onChange={event => setLine(event.target.value)} />
                     </Form.Group>
                     
-                     <Modal.Footer>
-                    <Button variant="danger" onClick={CloseModal}>
+          
+                    <Button variant="danger">
                         ยกเลิก
                     </Button> 
                     <r/>   <Button variant="success" onClick={() => {
 
                         executeContactPut({
-                            url: '/api/contact/' + contactById?.id,
+                            url: '/api/contact/' + contactData?.id,
                             method: 'PUT',
                             data: {
                                 title: title,
@@ -126,21 +110,17 @@ export default function ContactPage() {
                                 setLine(''),
                                 getContact()
                               
-                            ]).then(() => {
-                                CloseModal()
-                            })
+                            ])
+
                         })
 
                     }}>
                     บันทึก
                 </Button>
-            </Modal.Footer>
 
             </div>
 
             </div>
-
-            ))}
         </div>
         </Container>
  

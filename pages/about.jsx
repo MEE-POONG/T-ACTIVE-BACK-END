@@ -9,14 +9,10 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import axios from 'axios'
 
 export default function AboutPage() {
-    const [{data: aboutData, loading, error}, getAbout] = useAxios({url: '/api/about'})
-    const [{ data: aboutById , loading: aboutByIdLoading , error: aboutByIdError}, getAboutById] = useAxios({},{ manual: true } )
-   
-
-    const [{ data: postData, error: errorMessage, loading: aboutLoading }, executeAbout] = useAxios({ url: '/api/about', method: 'POST' }, { manual: true });
+    const [{data: aboutData, loading, error}, getAbout] = useAxios({url: '/api/about/28085e1f-3c40-4d69-b2c9-28e1924cf219' ,method: 'GET'})
     const [{ loading: updateAboutLoading, error: updateAboutError }, executeAboutPut] = useAxios({},{manual: true})
-    const [{ loading: deleteAboutLoading, error: deleteAboutError }, executeAboutDelete] = useAxios({}, { manual: true })
-    const [{loading: imgLoading, error: imgError},uploadImage] = useAxios({url: '/api/upload', method: 'POST'}, {manual: true})
+
+
 
     const [image, setImage] = useState([])
     const [imageURL, setImageURL] = useState([])
@@ -36,34 +32,25 @@ export default function AboutPage() {
     const [detail3, setDetail3] = useState('');
     const [imagea3, setImagea3] = useState('');
 
-    const [showModalCreate, setShowModalCreate] = useState(false);
-    const [showModalEdit, setShowModalEdit] = useState(false);
+   
 
    useEffect(() =>{
-    setTitle1(aboutById?.title1)
-    setSubtitle1(aboutById?.subtitle1)
-    setDetail1(aboutById?.detail1)
-    setImagea1(aboutById?.imagea1)
+    setTitle1(aboutData?.title1)
+    setSubtitle1(aboutData?.subtitle1)
+    setDetail1(aboutData?.detail1)
+    setImagea1(aboutData?.imagea1)
 
-    setTitle2(aboutById?.title2)
-    setSubtitle2(aboutById?.subtitle2)
-    setDetail2(aboutById?.detail2)
-    setImagea2(aboutById?.imagea2)
+    setTitle2(aboutData?.title2)
+    setSubtitle2(aboutData?.subtitle2)
+    setDetail2(aboutData?.detail2)
+    setImagea2(aboutData?.imagea2)
 
-    setTitle3(aboutById?.title3)
-    setSubtitle3(aboutById?.subtitle3)
-    setDetail3(aboutById?.detail3)
-    setImagea3(aboutById?.imagea3)
-   },[aboutById])
+    setTitle3(aboutData?.title3)
+    setSubtitle3(aboutData?.subtitle3)
+    setDetail3(aboutData?.detail3)
+    setImagea3(aboutData?.imagea3)
 
-   const ShowModalCreate = () => setShowModalCreate(true);
-
-   const ShowModalEdit = async (id) => { 
-    await getAboutById({url: '/api/about/'+id,method:'GET'});
-     setShowModalEdit(true);
-    }
-   
-    const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false) };
+   },[aboutData])
 
     useEffect(() => {
 
@@ -74,12 +61,14 @@ export default function AboutPage() {
     }, [image])
 
     const onImageAboutChange = (e) => {
-        setImage([...e.target.files])
+        setImagea1([...e.target.files])
+        setImagea2([...e.target.files])
+        setImagea3([...e.target.files])
     }
 
 
-    if (loading  || aboutLoading || aboutByIdLoading || updateAboutLoading  ||  deleteAboutLoading || imgLoading) return <p>Loading...</p>
-    if (error || errorMessage || aboutByIdError || updateAboutError || deleteAboutError || imgError ) return <p>Error!</p>
+    if (loading || updateAboutLoading ) return <p>Loading...</p>
+    if (error || updateAboutError ) return <p>Error!</p>
     return (
         < >
             <Head>
@@ -91,62 +80,106 @@ export default function AboutPage() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
                
-                <Container fluid className=" pt-4 px-4">
+            <Container fluid className=" pt-4 px-4">
                     <div className="bg-secondary rounded shadow p-4">
                     <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าเกี่ยวกับ</h5>
                     <div className="d-flex align-items-center justify-content-between mb-4">
                 </div>
 
-                {aboutData?.map((about, index) => (
-                <div className="d-flex align-items-center border-bottom py-2"  key={index}>
+                
+                <div className="d-flex align-items-center border-bottom py-2" >
                     <div className="table-responsive w-100">
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                    
+                    <Form.Group controlId="formFile" className="mb-3">   { /* 1 */}
+                        <Form.Label>ชื่อหัวข้อ 1</Form.Label>
                         <Form.Control type="text"style={{ width: "500px" }} value={title1} onChange={event => setTitle1(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>หัวข้อย่อย</Form.Label>
+                        <Form.Label>หัวข้อย่อย 1</Form.Label>
                         <Form.Control type="text"style={{ width: "500px" }} value={subtitle1} onChange={event => setSubtitle1(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพของร้าน</Form.Label>
+                        <Form.Label className='d-block'>รูปภาพของร้าน 1</Form.Label>
                         {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea1} alt="about_img" fluid rounded />}
                         {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
                         <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
                     </Form.Group>
                         
                     <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label>รายละเอียด</Form.Label>
+                    <Form.Label>รายละเอียด 1</Form.Label>
                         <Editor as="textarea" rows={3} value={detail1} onChange={event => setDetail1(event.target.value)} />
                     </Form.Group>
-                    
-                     <Modal.Footer>
-                    <Button variant="danger" onClick={CloseModal}>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ 2</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={title2} onChange={event => setTitle2(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">  { /* 2 */}
+                        <Form.Label>หัวข้อย่อย 2</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={subtitle2} onChange={event => setSubtitle2(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพของร้าน 2</Form.Label>
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea2} alt="about_img" fluid rounded />}
+                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
+                    </Form.Group>
+              
+                    <Form.Group controlId="formFile" className="mb-3">    
+                    <Form.Label>รายละเอียด 2</Form.Label>
+                        <Editor as="textarea" rows={3} value={detail2} onChange={event => setDetail2(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ 3</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={title3} onChange={event => setTitle3(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">   { /* 3 */}
+                        <Form.Label>หัวข้อย่อย 3</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={subtitle3} onChange={event => setSubtitle3(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพของร้าน 3</Form.Label>
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea3} alt="about_img" fluid rounded />}
+                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
+                    </Form.Group>
+                        
+                    <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Label>รายละเอียด 3</Form.Label>
+                        <Editor as="textarea" rows={3} value={detail3} onChange={event => setDetail3(event.target.value)} />
+                    </Form.Group>
+
+                   
+                    <Button variant="danger">
                         ยกเลิก
                     </Button> 
                     <r/>   <Button variant="success" onClick={() => {
 
                         executeAboutPut({
-                            url: '/api/about/' + aboutById?.id,
+                            url: '/api/about/' + aboutData?.id,
                             method: 'PUT',
                             data: {
-                                title1 : req.body.title1,
-                                subtitle1 : req.body.subtitle1,
-                                detail1 : req.body.detail1,
-                                imagea1 : req.body.imagea1,
+                                title1 : title1,
+                                subtitle1 : subtitle1,
+                                detail1 : detail1,
+                                imagea1 : imagea1,
 
-                                title2 : req.body.title2,
-                                subtitle2 : req.body.subtitle2,
-                                detail2 : req.body.detail2,
-                                imagea2 : req.body.imagea2,
+                                title2 : title2,
+                                subtitle2 : subtitle2,
+                                detail2 : detail2,
+                                imagea2 : imagea2,
 
-                                title3 : req.body.title3,
-                                subtitle3 : req.body.subtitle3,
-                                detail3 : req.body.detail3,
-                                imagea3 : req.body.imagea3,
+                                title3 : title3,
+                                subtitle3 : subtitle3,
+                                detail3 : detail3,
+                                imagea3 : imagea3,
                             }
                         }).then(() => {
                             Promise.all([
@@ -167,22 +200,15 @@ export default function AboutPage() {
 
                                 getAbout()
                               
-                            ]).then(() => {
-                                CloseModal()
-                            })
+                            ])
                         })
 
                     }}>
                         บันทึก
                     </Button>
-                </Modal.Footer>
 
                     </div>
-
                 </div>
-
-                ))}
-
             </div>
             </Container>
 
