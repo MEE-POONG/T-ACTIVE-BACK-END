@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import IndexPage from "components/layouts/IndexPage";
 // import { useRouter } from 'next/router';
 import { Container, Image, Table, Button, Form, OverlayTrigger, Badge, Modal, Row } from 'react-bootstrap';
-// import Editor from '@/components/Ckeditor/Editor';
+import Editor from '@/components/Ckeditor/Editor';
 import useAxios from 'axios-hooks';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import axios from 'axios'
@@ -21,17 +21,39 @@ export default function AboutPage() {
     const [image, setImage] = useState([])
     const [imageURL, setImageURL] = useState([])
 
-    const [title, setTitle] = useState('');
-    const [detail, setDetail] = useState('');
-    const [imagea, setImagea] = useState('');
+    const [title1, setTitle1] = useState('');
+    const [subtitle1, setSubtitle1] = useState('');
+    const [detail1, setDetail1] = useState('');
+    const [imagea1, setImagea1] = useState('');
+    
+    const [title2, setTitle2 ] = useState('');
+    const [subtitle2, setSubtitle2] = useState('');
+    const [detail2, setDetail2] = useState('');
+    const [imagea2, setImagea2] = useState('');
+
+    const [title3, setTitle3] = useState('');
+    const [subtitle3, setSubtitle3] = useState('');
+    const [detail3, setDetail3] = useState('');
+    const [imagea3, setImagea3] = useState('');
 
     const [showModalCreate, setShowModalCreate] = useState(false);
     const [showModalEdit, setShowModalEdit] = useState(false);
 
    useEffect(() =>{
-    setTitle(aboutById?.title)
-    setDetail(aboutById?.detail)
-    setImagea(aboutById?.imagea)
+    setTitle1(aboutById?.title1)
+    setSubtitle1(aboutById?.subtitle1)
+    setDetail1(aboutById?.detail1)
+    setImagea1(aboutById?.imagea1)
+
+    setTitle2(aboutById?.title2)
+    setSubtitle2(aboutById?.subtitle2)
+    setDetail2(aboutById?.detail2)
+    setImagea2(aboutById?.imagea2)
+
+    setTitle3(aboutById?.title3)
+    setSubtitle3(aboutById?.subtitle3)
+    setDetail3(aboutById?.detail3)
+    setImagea3(aboutById?.imagea3)
    },[aboutById])
 
    const ShowModalCreate = () => setShowModalCreate(true);
@@ -68,145 +90,81 @@ export default function AboutPage() {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            
-            <Container fluid className=" pt-4 px-4">
-                    <div className="bg-secondary rounded p-4">
-                <div className="d-flex align-items-center justify-content-between mb-4">
-                    <h5 className="mb-0 w-m-max me-2">ข้อมูลเกี่ยวกับร้าน</h5>
-                    {/* <Button variant="dark" onClick={ShowModalCreate}>
-                            <FaPlus />
-                        </Button> */}
-                </div>
-
                
-                <div className="d-flex align-items-center border-bottom py-2">
+                <Container fluid className=" pt-4 px-4">
+                    <div className="bg-secondary rounded shadow p-4">
+                    <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าเกี่ยวกับ</h5>
+                    <div className="d-flex align-items-center justify-content-between mb-4">
+                </div>
+
+                {aboutData?.map((about, index) => (
+                <div className="d-flex align-items-center border-bottom py-2"  key={index}>
                     <div className="table-responsive w-100">
-                    <table className="table text-start align-middle table-bordered table-hover mb-0">
 
-                        <thead>
-                        <tr className="text-center">
-                            <th >รูปภาพของร้าน</th>
-                            <th >หัวข้อ</th>
-                            <th >อธิบายเพิ่มเติม</th>
-                            <th >จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        {aboutData?.map((about,index) => (
-                            <tr key={index}>
-                            <td className="text-center"> <Image className="logo" style={{ width: "150px" }} src={about.imagea} /></td>
-                            <td className="text-center">{about.title}</td>
-                            <td className="text-center">{about.detail}</td>
-                            <td className="text-center">
-                            <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a> <t/>     
-                                  {/* <a className="btn btn-outline-danger sm-2" onClick={() => executeAboutDelete({ url: '/api/about/' + about.id, method: 'DELETE'})} ><FaTrash /></a> */}
-                            </td>
-                        </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                    </div>
-                </div>
-                </div>
-            </Container>
-          
-          {/* Create */}
-          <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
-                <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มข้อมูลเกี่ยวกับ</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={title1} onChange={event => setTitle1(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>หัวข้อย่อย</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={subtitle1} onChange={event => setSubtitle1(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label className='d-block'>รูปภาพของร้าน</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea} alt="about_img" fluid rounded />}
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea1} alt="about_img" fluid rounded />}
                         {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
                         <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
                     </Form.Group>
-
+                        
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>หัวข้อ</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
+                    <Form.Label>รายละเอียด</Form.Label>
+                        <Editor as="textarea" rows={3} value={detail1} onChange={event => setDetail1(event.target.value)} />
                     </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
-                    </Form.Group>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
+                    
+                     <Modal.Footer>
+                    <Button variant="danger" onClick={CloseModal}>
                         ยกเลิก
-                    </Button>
-                    <Button variant="success" onClick={async event => {
-                       
-                       let data =new FormData()
-                       data.append('file', image[0])
-                       const imageData = await uploadImage({data: data})
-                       const id =imageData.data.result.id
-                       
-                       await executeAbout({
-                            data: {
-                                title: title,
-                                detail: detail,
-                                imagea:`https://imagedelivery.net/QZ6TuL-3r02W7wQjQrv5DA/${id}/public`,  
-                            } 
-                        }).then(() => {
-                            Promise.all([
-                                setTitle(''),
-                                setDetail(''),
-                                getAbout()
-                            ]).then(() => {
-                                CloseModal()
-                            })
-                        })
-                    }}>
-                        เพิ่ม
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-          {/* Edit */}
-            <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
-                <Modal.Header closeButton >
-                    <Modal.Title>รายละเอียดสินค้า</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพของร้าน</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea} alt="about_img" fluid rounded />}
-                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>หัวข้อ</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
-                    </Form.Group>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
-                        ยกเลิก
-                    </Button>
-                    <Button variant="success" onClick={() => {
+                    </Button> 
+                    <r/>   <Button variant="success" onClick={() => {
 
                         executeAboutPut({
                             url: '/api/about/' + aboutById?.id,
                             method: 'PUT',
                             data: {
-                                title: title,
-                                detail: detail,
-                               
+                                title1 : req.body.title1,
+                                subtitle1 : req.body.subtitle1,
+                                detail1 : req.body.detail1,
+                                imagea1 : req.body.imagea1,
+
+                                title2 : req.body.title2,
+                                subtitle2 : req.body.subtitle2,
+                                detail2 : req.body.detail2,
+                                imagea2 : req.body.imagea2,
+
+                                title3 : req.body.title3,
+                                subtitle3 : req.body.subtitle3,
+                                detail3 : req.body.detail3,
+                                imagea3 : req.body.imagea3,
                             }
                         }).then(() => {
                             Promise.all([
-                                setTitle(''),
-                                setDetail(''),
+                               setTitle1(''),
+                               setSubtitle1(''),
+                               setDetail1(''),
+                               setImagea1(''),
+
+                               setTitle2(''),
+                               setDetail2(''),
+                               setDetail2(''),
+                               setImagea2(''),
+
+                               setTitle3(''),
+                               setDetail3(''),
+                               setDetail3(''),
+                               setImagea3(''),
+
                                 getAbout()
                               
                             ]).then(() => {
@@ -218,7 +176,16 @@ export default function AboutPage() {
                         บันทึก
                     </Button>
                 </Modal.Footer>
-            </Modal>
+
+                    </div>
+
+                </div>
+
+                ))}
+
+            </div>
+            </Container>
+
         </ >
     );
 }

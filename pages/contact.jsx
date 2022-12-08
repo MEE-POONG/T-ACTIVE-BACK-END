@@ -59,180 +59,51 @@ export default function ContactPage() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            
             <Container fluid className=" pt-4 px-4">
                     <div className="bg-secondary rounded shadow p-4">
-                <div className="d-flex align-items-center justify-content-between mb-4">
-                    <h5 className="mb-0 w-m-max me-2">ข้อมูลช่องทางติดต่อ</h5>
+                    <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าติดต่อ</h5>
+                    <div className="d-flex align-items-center justify-content-between mb-4">
                 </div>
 
-                <div className="d-flex align-items-center border-bottom py-2">
+                {contactData?.map((contact, index) => (
+                <div className="d-flex align-items-center border-bottom py-2"  key={index}>
                     <div className="table-responsive w-100">
-                    <table className="table text-start align-middle table-bordered table-hover mb-0">
 
-                        <thead>
-                        <tr className="text-center">
-                            <th >ชื่อของร้าน</th>
-                            <th >ที่ตั้งร้าน</th>
-                            <th >เบอร์โทรศัพท์</th>
-                            <th >อีเมล์</th>
-                            <th >เฟสบุค</th>
-                            <th >ไลน์</th>
-                            <th >จัดการ</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {contactData?.map((contact,index) => (
-                            <tr key={index}>
-                            <td className="text-center">{contact.title}</td>
-                            <td className="text-center">{contact.address}</td>
-                            <td className="text-center">{contact.tel}</td>
-                            <td className="text-center">{contact.email}</td>
-                            <td className="text-center">{contact.facebook}</td>
-                            <td className="text-center">{contact.line}</td>
-                            <td className="text-center">
-                            <a className="btn btn-outline-primary sm-1" onClick={() =>ShowModalEdit(contact.id)}><FaEdit /></a>
-                            {/* <a className="btn btn-outline-danger sm-1" onClick={() => executeContactDelete({ url: '/api/contact/' + contact.id, method: 'DELETE'})} ><FaTrash /></a> */}
-                            </td>
-                        </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                    </div>
-                </div>
-                </div>
-            </Container>
-      
- 
-          {/* Create */}
-          {/* <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
-                <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มข้อมูลเกี่ยวกับ</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพของร้าน</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea} alt="about_img" fluid rounded />}
-                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
-                    </Form.Group>
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อของร้าน</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
+                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={title} onChange={event => setTitle(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ที่ตั้งร้าน</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={address} onChange={event => setAddress(event.target.value)} />
+                        <Form.Label>ที่อยู่</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={address} onChange={event => setAddress(event.target.value)} />
                     </Form.Group>
 
-                    
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>เบอร์โทรศัพท์</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={tel} onChange={event => setTel(event.target.value)} />
+                        <Form.Control type="text"style={{ width: "500px" }} value={tel} onChange={event => setTel(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>อีเมล์</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={email} onChange={event => setEmail(event.target.value)} />
+                        <Form.Control type="text"style={{ width: "500px" }} value={email} onChange={event => setEmail(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เฟสบุค</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={facebook} onChange={event => setFacebook(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ไลน์</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={line} onChange={event => setLine(event.target.value)} />
-                    </Form.Group>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
-                        ยกเลิก
-                    </Button>
-                    <Button variant="success" onClick={async event => {
-                       
-                       let data =new FormData()
-                       data.append('file', image[0])
-                       const imageData = await uploadImage({data: data})
-                       const id =imageData.data.result.id
-                       
-                       await executeContact({
-                        data: {
-                            title: title,
-                            address: address,
-                            tel: tel,
-                            email: email,
-                            facebook: facebook,
-                            line: line,
-                        }
-                    }).then(() => {
-                        Promise.all([
-                            setTitle(''),
-                            setAddress(''),
-                            setTel(''),
-                            setEmail(''),
-                            setFacebook(''),
-                            setLine(''),
-                            getContact()
-                          
-                        ]).then(() => {
-                            CloseModal()
-                            })
-                        })
-                    }}>
-                        เพิ่ม
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-
-
-          {/* Edit */}
-            <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
-                <Modal.Header closeButton >
-                    <Modal.Title>รายละเอียดของร้าน</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อของร้าน</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ที่ตั้งร้าน</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={address} onChange={event => setAddress(event.target.value)} />
-                    </Form.Group>
-
-                    
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เบอร์โทรศัพท์</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={tel} onChange={event => setTel(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อีเมล์</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={email} onChange={event => setEmail(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เฟสบุค</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={facebook} onChange={event => setFacebook(event.target.value)} />
+                        <Form.Label>เฟสบุต</Form.Label>
+                        <Form.Control type="text"style={{ width: "500px" }} value={facebook} onChange={event => setFacebook(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ไลน์</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={line} onChange={event => setLine(event.target.value)} />
+                        <Form.Control type="text"style={{ width: "500px" }} value={line} onChange={event => setLine(event.target.value)} />
                     </Form.Group>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
+                    
+                     <Modal.Footer>
+                    <Button variant="danger" onClick={CloseModal}>
                         ยกเลิก
-                    </Button>
-                    <Button variant="success" onClick={() => {
+                    </Button> 
+                    <r/>   <Button variant="success" onClick={() => {
 
                         executeContactPut({
                             url: '/api/contact/' + contactById?.id,
@@ -247,7 +118,7 @@ export default function ContactPage() {
                             }
                         }).then(() => {
                             Promise.all([
-                                setTitle(''),
+                             setTitle(''),
                                 setAddress(''),
                                 setTel(''),
                                 setEmail(''),
@@ -261,12 +132,19 @@ export default function ContactPage() {
                         })
 
                     }}>
-                        บันทึก
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-        </ >
-    ); 
+                    บันทึก
+                </Button>
+            </Modal.Footer>
 
+            </div>
+
+            </div>
+
+            ))}
+        </div>
+        </Container>
+ 
+            </ >
+  );
 }        
 ContactPage.layout = IndexPage;
