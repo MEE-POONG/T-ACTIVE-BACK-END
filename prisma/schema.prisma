@@ -53,20 +53,10 @@ model About {
 
 model Products {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-   title1    String?
-  subtitle1 String?
-  detail1   String?
-  imagep1   String?
-
-  title2    String?
-  subtitle2 String?
-  detail2   String?
-  imagep2   String?
-
-  title3    String?
-  subtitle3 String?
-  detail3   String?
-  imagep3   String?
+  title      String?
+  subtitle   String?
+  detail     String?
+  imagep     String?
 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
