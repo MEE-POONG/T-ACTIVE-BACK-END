@@ -89,7 +89,7 @@ export default function ProdutsPage() {
                             <th >รูปภาพสินค้า</th>
                             <th >ชื่อสินค้า</th>
                             <th >รายละเอียดสินค้า</th>
-                            <th >อธิบายเพิ่มเติม</th>
+                            <th >ประเภทสินค้า</th>
                             <th >จัดการ</th>
                         </tr>
                         </thead>

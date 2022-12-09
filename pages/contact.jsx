@@ -60,7 +60,7 @@ export default function ContactPage() {
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ที่อยู่</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={address} onChange={event => setAddress(event.target.value)} />
+                        <Form.Control type="text"style={{ width: "800px" }} value={address} onChange={event => setAddress(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
@@ -74,7 +74,7 @@ export default function ContactPage() {
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เฟสบุต</Form.Label>
+                        <Form.Label>เฟสบุค</Form.Label>
                         <Form.Control type="text"style={{ width: "500px" }} value={facebook} onChange={event => setFacebook(event.target.value)} />
                     </Form.Group>
 
