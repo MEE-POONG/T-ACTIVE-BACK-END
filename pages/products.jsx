@@ -96,7 +96,7 @@ export default function ProdutsPage() {
                         <tbody>
                         {productsData?.map((products,index) => (
                             <tr key={index}>
-                            <td className="text-center"> <Image className="logo" style={{ width: "150px" }}src={products.image} /></td>
+                            <td className="text-center"> <Image className="logo" style={{ width: "150px" }}src={products.imagep} /></td>
                             <td className="text-center">{products.title}</td>
                             <td className="text-center">{products.subtitle}</td>
                             <td className="text-center">{products.detail}</td>
