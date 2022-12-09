@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import IndexPage from "components/layouts/IndexPage";
 // import { useRouter } from 'next/router';
 import { Container, Image, Table, Button, Form, OverlayTrigger, Badge, Modal, Row } from 'react-bootstrap';
-import Editor from '@/components/Ckeditor/Editor';
 import useAxios from 'axios-hooks';
+import { CKEditor } from "ckeditor4-react";
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 
 export default function HomeePage() {
@@ -63,7 +63,7 @@ export default function HomeePage() {
         setImageh2([...e.target.files])
         setImageh3([...e.target.files])
     }
-
+console.log(detail1);
 
     if (loading ||  updateHomeeLoading ) return <p>Loading...</p>
     if (error ||  updateHomeeError ) return <p>Error!</p>
@@ -106,7 +106,28 @@ export default function HomeePage() {
                         
                     <Form.Group controlId="formFile" className="mb-3">
                     <Form.Label>รายละเอียด 1</Form.Label>
-                        <Editor as="textarea" rows={3} value={detail1} onChange={event => setDetail1(event.target.value)} />
+                
+                        {detail1? 
+                        <CKEditor
+                        initData={detail1}
+                        onChange={event=> setDetail1( event.editor.getData())}
+                        config={{
+                          uiColor: "#349520",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />
+                        :null}
+                 
+                         
+                        
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
@@ -128,7 +149,26 @@ export default function HomeePage() {
                         
                     <Form.Group controlId="formFile" className="mb-3">
                     <Form.Label>รายละเอียด 2</Form.Label>
-                        <Editor as="textarea" rows={3} value={detail2} onChange={event => setDetail2(event.target.value)} />
+
+                        {detail2? 
+                        <CKEditor
+                        initData={detail2}
+                        onChange={event=> setDetail2( event.editor.getData())}
+                        config={{
+                          uiColor: "#349520",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />
+                        :null}
+
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
@@ -150,7 +190,25 @@ export default function HomeePage() {
                         
                     <Form.Group controlId="formFile" className="mb-3">
                     <Form.Label>รายละเอียด 3</Form.Label>
-                        <Editor as="textarea" rows={3} value={detail3} onChange={event => setDetail3(event.target.value)} />
+
+                        {detail3? 
+                        <CKEditor
+                        initData={detail3}
+                        onChange={event=> setDetail3( event.editor.getData())}
+                        config={{
+                          uiColor: "#349520",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />
+                        :null}
                     </Form.Group>
 
                    
@@ -195,7 +253,8 @@ export default function HomeePage() {
                                setDetail3(''),
                                setImageh3(''),
 
-                                getHomee()
+                                getHomee(),
+                              
                               
                             ])
                         })
