@@ -6,6 +6,7 @@ import { Container, Image, Table, Button, Form, OverlayTrigger, Badge, Modal, Ro
 import Editor from '@/components/Ckeditor/Editor';
 import useAxios from 'axios-hooks';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { CKEditor } from "ckeditor4-react";
 import axios from 'axios'
 
 export default function AboutPage() {
@@ -101,7 +102,7 @@ export default function AboutPage() {
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพของร้าน 1</Form.Label>
+                    <Form.Label className='d-block'>รูปภาพของร้าน 1</Form.Label>
                         {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea1} alt="about_img" fluid rounded />}
                         {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
                         <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
@@ -109,7 +110,32 @@ export default function AboutPage() {
                         
                     <Form.Group controlId="formFile" className="mb-3">
                     <Form.Label>รายละเอียด 1</Form.Label>
-                        <Editor as="textarea" rows={3} value={detail1} onChange={event => setDetail1(event.target.value)} />
+                    {detail1? 
+                        <CKEditor
+                        initData={detail1}
+                        onChange={event=> setDetail1( event.editor.getData())}
+                        config={{
+                          uiColor: "#e3c51c",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />
+                        :null}
+                 
+                    
+                    </Form.Group>                  
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพของร้าน 2</Form.Label>
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea2} alt="about_img" fluid rounded />}
+                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
@@ -122,18 +148,29 @@ export default function AboutPage() {
                         <Form.Control type="text"style={{ width: "500px" }} value={subtitle2} onChange={event => setSubtitle2(event.target.value)} />
                     </Form.Group>
 
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพของร้าน 2</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea2} alt="about_img" fluid rounded />}
-                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
-                    </Form.Group>
-              
                     <Form.Group controlId="formFile" className="mb-3">    
                     <Form.Label>รายละเอียด 2</Form.Label>
-                        <Editor as="textarea" rows={3} value={detail2} onChange={event => setDetail2(event.target.value)} />
+                    {detail2? 
+                        <CKEditor
+                        initData={detail2}
+                        onChange={event=> setDetail2( event.editor.getData())}
+                        config={{
+                          uiColor: "#e3c51c",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />
+                        :null}
                     </Form.Group>
-
+                  
+               
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ชื่อหัวข้อ 3</Form.Label>
                         <Form.Control type="text"style={{ width: "500px" }} value={title3} onChange={event => setTitle3(event.target.value)} />
@@ -153,10 +190,26 @@ export default function AboutPage() {
                         
                     <Form.Group controlId="formFile" className="mb-3">
                     <Form.Label>รายละเอียด 3</Form.Label>
-                        <Editor as="textarea" rows={3} value={detail3} onChange={event => setDetail3(event.target.value)} />
+                    {detail3? 
+                        <CKEditor
+                        initData={detail3}
+                        onChange={event=> setDetail3( event.editor.getData())}
+                        config={{
+                          uiColor: "#e3c51c",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />
+                        :null}
                     </Form.Group>
 
-                   
                     <Button variant="danger">
                         ยกเลิก
                     </Button> 

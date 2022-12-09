@@ -3,8 +3,9 @@ import ReactDOM from "react-dom";
 import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
-import 'assets/scss/value-tem.scss';
-import 'assets/css/style.css';
+import 'assets/scss/index.scss';
+// import 'assets/scss/value-tem.scss';
+
 
 import PageChange from "../components/PageChange/PageChange.js";
 import SSRProvider from 'react-bootstrap/SSRProvider';

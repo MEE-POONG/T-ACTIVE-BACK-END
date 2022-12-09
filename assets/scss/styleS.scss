@@ -2,7 +2,7 @@
 :root {
     --primary: #070707;
     --secondary: #4a452f; /* สีเส้นขอบ */
-    --light: #0f0f10;
+    --light: #dad300;
     --dark: #000000;
 }
 
@@ -32,7 +32,7 @@
 
 /*** Button ***/
 .btn {
-    transition: .5s;
+    transition: 0.5s;
 }
 
 .btn-square {
@@ -59,7 +59,6 @@
     justify-content: center;
     font-weight: normal;
     border-radius: 50px;
-    cursor: pointer;
 
 }
 
@@ -100,7 +99,7 @@
 }
 
 .color-d3d3d3 {
-    color: #dacb6f !important;
+    color: #d3d3d3 !important;
 }
 
 @media (min-width: 992px) {
@@ -164,7 +163,7 @@
             .nav-link:hover,
             .nav-link.active {
                 color: var(--primary);
-                background: var(--dark);
+                background: var(--primary);
                 border-color: var(--primary);
 
                 i {

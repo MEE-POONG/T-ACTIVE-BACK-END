@@ -1,7 +1,7 @@
 :root {
-    --primary: rgb(0, 0, 0);   /*สีตัวหนังสือหัวข้อต่างๆ */
+    --primary: #27230a;   /* สีตัวหนังสือ slidebar hover */
     --secondary: #ffffff;   /*สไล์บาร์ซ้ายมือแถบยาว */
-    --light: rgb(0, 0, 0);
+    --light: rgb(0, 0, 0);  /* สีตัวหนังสือ dashbord/navbar*/
     --dark: #ebe9e1;    /*พื้นหลังใหญ่ */
 }
 
@@ -92,7 +92,7 @@
 }
 
 .bg-templant .modal-content {
-    background-color: rgba(var(--bs-secondary-rgb), var(--bs-bg-opacity)) !important
+    /* background-color: rgba(var(--bs-secondary-rgb), var(--bs-bg-opacity)) !important  */
 }
 
 .color-d3d3d3 {
@@ -138,7 +138,7 @@
     padding: 7px 20px;
     color: var(--light);
     font-weight: 500;
-    border-left: 3px solid var(--secondary);
+    /* border-left: 3px solid var(--secondary); */
     border-radius: 0 30px 30px 0;
     outline: none
 }
@@ -149,14 +149,14 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: var(--dark);
+    background: var(--secondary);
     border-radius: 40px
 }
 
 .sidebar .navbar .navbar-nav .nav-link:hover,
 .sidebar .navbar .navbar-nav .nav-link.active {
     color: var(--primary);
-    background: var(--dark);
+    background: #efdf80; /* color hover sliebar*/
     border-color: var(--primary)
 }
 

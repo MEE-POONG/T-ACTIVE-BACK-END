@@ -1,9 +1,9 @@
 /******* Customized Bootstrap ********/
 
-$primary: #000000; /*  สีฟร้อนร้าน */
-$secondary:   #ffffff;    /*  สีพื้นหลังแถบใหญ่ */
+$primary: #f7d044;
+$secondary: #ffff;
 $light: #000000;
-$dark: #b5b09b;  /* สีค้นหา/ปุ่ม*/
+$dark: #e8e8e8;
 
 $font-family-base: 'Open Sans', sans-serif;
 
@@ -39,11 +39,8 @@ $list-group-border-color: $border-color;
 
 $border-radius: 5px;
 
-$bordor: 50px;
-
 $link-decoration: none;
 
 $enable-negative-margins: true;
 
-@import "~bootstrap/scss/bootstrap";
-@import 'bootstrap/dist/css/bootstrap.min.css';
+

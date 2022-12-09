@@ -51,42 +51,55 @@ export default function TheSlideNav() {
             </div>
           </div>
           <div className="navbar-nav w-100">
-            <Link href="/">
-              <a className={
-                    asPath === "/"
-                      ? "nav-item nav-link active"
-                      : "nav-link"
-                  }>
-                <i className="me-2 ">
+          <Link href="/">
+              <a className={asPath === "/" ?"nav-item nav-link active": "nav-link"}>
+                <i className="me-2">
                   <FaTachometerAlt />
                 </i>
-                Dashboard
+                Home
               </a>
             </Link>
 
             <Dropdown bsPrefix="nav-item">
-              <Dropdown.Toggle className={asPath === "/homee" || asPath === "/about"  || asPath === "/products" || asPath === "/contact"
-                      ? "nav-link active"
-                      : "nav-link"} variant="">
+            <Dropdown.Toggle className={asPath === "/" ? "nav-item nav-link active" : "nav-item nav-link"} id="dropdown-custom-components" >
+
+              {/* <Dropdown.Toggle className={asPath === "/homee" || asPath === "/about"  || asPath === "/products" || asPath === "/contact" ? "nav-link active" : "nav-link"} variant=""> */}
                 <i className="me-2">
                   <FaLaptop />
                 </i>
                 จัดการเว็บไซต์
               </Dropdown.Toggle>
-              <Dropdown.Menu className="bg-transparent border-0">
-              <Link id="contact" href="/homee">
-                  <a className="dropdown-item">หน้าหลัก</a>
-                </Link>
-                <Link id="contact" href="/about">
-                  <a className="dropdown-item">เกี่ยวกับเรา</a>
-                </Link>
-                <Link id="contact" href="/products">
-                  <a className="dropdown-item">สินค้า</a>
-                </Link>
-                <Link id="contact" href="/contact">
-                  <a className="dropdown-item">ข้อมูลติดต่อ</a>
-                </Link>
-              </Dropdown.Menu>
+              <Dropdown.Menu className="bg-transparent border-0" show>
+              <Link id="buttons" href="/homee">
+              <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
+                  หน้าหลัก
+                </a>
+              </Link>
+              <Link id="buttons" href="/about">
+              <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
+                  เกี่ยวกับเรา
+                </a>
+              </Link>
+              <Link id="buttons" href="/contact">
+              <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
+                  ช่องทางติดต่อ
+                </a>
+              </Link>
+            </Dropdown.Menu>
+            <Dropdown.Toggle className={asPath === "/" ? "nav-item nav-link active" : "nav-item nav-link"} id="dropdown-custom-components" >
+            {/* <Dropdown.Toggle className={ asPath === "/products"  ? "nav-link active" : "nav-link"} variant=""> */}
+              <i className="me-2">
+                <BsFillBagFill />
+              </i>
+              จัดการสินค้า
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="bg-transparent border-0" show>
+              <Link id="buttons" href="/products">
+              <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
+                  สินค้า
+                </a>
+              </Link>
+            </Dropdown.Menu>
             </Dropdown>
           </div>
         </nav>
