@@ -17,19 +17,16 @@ export default function ProdutsPage() {
     const [{ data: postData, error: errorMessage, loading: productsLoading }, executeProducts] = useAxios({ url: '/api/products', method: 'POST' }, { manual: true });
     const [{ loading: updateProductsLoading, error: updateProductsError }, executeProductsPut] = useAxios({},{manual: true})
     const [{ loading: deleteProductsLoading, error: deleteProductsError }, executeProductsDelete] = useAxios({}, { manual: true })
-    const [{loading: imgLoading, error: imgError},uploadImage] = useAxios({url: '/api/upload', method: 'POST'}, {manual: true})
 
 
-    const [imge, setImge] = useState([])
+    const [imagep, setImagep] = useState([])
     const [imageURL, setImageURL] = useState([])
 
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [detail, setDetail] = useState('');
-    const [imagep, setImagep] = useState('');
 
-    const [showModalCreate, setShowModalCreate] = useState(false);
-    const [showModalEdit, setShowModalEdit] = useState(false);
+   
 
    useEffect(() =>{
     setTitle(productsById?.title)
@@ -38,26 +35,19 @@ export default function ProdutsPage() {
     setImagep(productsById?.imagep)
    },[productsById])
 
+    const [showModalCreate, setShowModalCreate] = useState(false);
+    const [showModalEdit, setShowModalEdit] = useState(false);
+
+   const ShowModalCreate = () => setShowModalCreate(true);
    const ShowModalEdit = async (id) => { 
     await getProductsById({url: '/api/products/'+id,method:'GET'});
      setShowModalEdit(true);
     }
-   const CloseModal = () => {setShowModalEdit(false) };
-    useEffect(() => {
-
-        if (imge.length < 1) return
-        const newImageUrl = []
-        imge.forEach(image1 => newImageUrl.push(URL.createObjectURL(image1)))
-        setImageURL(newImageUrl)
-    }, [imge])
-
-    const onImageProductsChange = (e) => {
-        setImagep([...e.target.files])
-    }
+   const CloseModal = () => {setShowModalCreate(false) ,setShowModalEdit(false)};
 
 
-    if (loading || productsByIdLoading || updateProductsLoading || deleteProductsLoading || imgLoading) return <p>Loading...</p>
-    if (error || productsByIdError || updateProductsError || deleteProductsError || imgError) return <p>Error!</p>
+    if (loading || productsByIdLoading || updateProductsLoading || deleteProductsLoading) return <p>Loading...</p>
+    if (error || productsByIdError || updateProductsError || deleteProductsError) return <p>Error!</p>
     return (
         < >
         <Head>
@@ -71,13 +61,13 @@ export default function ProdutsPage() {
                     <div className="bg-secondary rounded shadow p-4">
                 <div className="d-flex align-items-center justify-content-between mb-4">
                     <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าสินค้า</h5>
-                    <Button variant="dark" onClick={showModalCreate}>
+                    <Button variant="dark" onClick={ShowModalCreate}>
                             <FaPlus />
                         </Button>
                 </div>
 
     
-                <div className="d-flex align-items-center border-bottom py-2">
+                <div className=" w- d-flex align-items-center border-bottom py-2">
                     <div className="table-responsive w-100">
                     <table className="table text-start align-middle table-bordered table-hover mb-0">
 
@@ -112,16 +102,15 @@ export default function ProdutsPage() {
       
   
           {/* Create */}
-          <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
+          <Modal show={showModalCreate} onHide={CloseModal}  centered className="bg-templant">
                 <Modal.Header closeButton >
                     <Modal.Title>เพิ่มข้อมูลสินค้า</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label className='d-block'>รูปภาพสินค้า</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagep} alt="products_img" fluid rounded />}
-                        {imageURL?.map((imageSrcProducts, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcProducts} alt="products_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageProductsChange} />
+                       
+                        <Form.Control type="file" />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
@@ -147,23 +136,19 @@ export default function ProdutsPage() {
                     </Button>
                     <Button variant="success" onClick={async event => {
                        
-                       let data =new FormData()
-                       data.append('file', imagep[0])
-                       const imageData = await uploadImage({data: data})
-                       const id =imageData.data.result.id
-                       
                        await executeProducts({
                             data: {
                                 title: title,
                                 subtitle: subtitle,
                                 detail: detail,
-                                imagep:`https://imagedelivery.net/QZ6TuL-3r02W7wQjQrv5DA/${id}/public`,  
+                                imagep:``,  
                             } 
                         }).then(() => {
                             Promise.all([
                                 setTitle(''),
                                 setSubtitle(''),          
                                 setDetail(''),
+                                setImagep(''),
                                 getProducts()
                             ]).then(() => {
                                 CloseModal()
@@ -184,9 +169,8 @@ export default function ProdutsPage() {
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label className='d-block'>รูปภาพสินค้า</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagep} alt="products_img" fluid rounded />}
-                        {imageURL?.map((imageSrcProducts, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcProducts} alt="products_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageProductsChange} />
+                       
+                        <Form.Control type="file" />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
