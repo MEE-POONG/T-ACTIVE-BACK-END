@@ -38,8 +38,6 @@ export default function ProdutsPage() {
     setImagep(productsById?.imagep)
    },[productsById])
 
-   const ShowModalCreate = () => setShowModalCreate(true);
-
    const ShowModalEdit = async (id) => { 
     await getProductsById({url: '/api/products/'+id,method:'GET'});
      setShowModalEdit(true);
@@ -62,24 +60,23 @@ export default function ProdutsPage() {
     if (error || productsByIdError || updateProductsError || deleteProductsError || imgError) return <p>Error!</p>
     return (
         < >
-            <Head>
-                <title> T-Active Stevia Syrup </title>
-                <meta
-                    name="description"
-                    content="I2AROBOT 2"
-                />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+        <Head>
+            <title>T-ACTIVE BACKEND</title>
+            <meta name="description" content="I2AROBOT 2" />
+            <link rel="icon" href="/images/logo.png" />
+       </Head>
+               
             
             <Container fluid className=" pt-4 px-4">
                     <div className="bg-secondary rounded shadow p-4">
                 <div className="d-flex align-items-center justify-content-between mb-4">
                     <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าสินค้า</h5>
-                    {/* <Button variant="dark" onClick={ShowModalCreate}>
+                    <Button variant="dark" onClick={showModalCreate}>
                             <FaPlus />
-                        </Button> */}
+                        </Button>
                 </div>
 
+    
                 <div className="d-flex align-items-center border-bottom py-2">
                     <div className="table-responsive w-100">
                     <table className="table text-start align-middle table-bordered table-hover mb-0">
@@ -102,7 +99,7 @@ export default function ProdutsPage() {
                             <td className="text-center">{products.detail}</td>
                             <td className="text-center">
                             <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(products.id)}><FaEdit /></a> <t/>     
-                                  {/* <a className="btn btn-outline-danger sm-2" onClick={() => executeProductsDelete({ url: '/api/products/' + products.id, method: 'DELETE'})} ><FaTrash /></a> */}
+                                  <a className="btn btn-outline-danger sm-2" onClick={() => executeProductsDelete({ url: '/api/products/' + products.id, method: 'DELETE'})} ><FaTrash /></a>
                        </td>
                         </tr>
                         ))}
@@ -117,7 +114,7 @@ export default function ProdutsPage() {
           {/* Create */}
           <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มข้อมูลเกี่ยวกับ</Modal.Title>
+                    <Modal.Title>เพิ่มข้อมูลสินค้า</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <Form.Group controlId="formFile" className="mb-3">

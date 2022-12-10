@@ -1,6 +1,6 @@
 :root {
     --primary: #27230a;   /* สีตัวหนังสือ slidebar hover */
-    --secondary: #ffffff;   /*สไล์บาร์ซ้ายมือแถบยาว */
+    --secondary: #ffe8a3;  
     --light: rgb(0, 0, 0);  /* สีตัวหนังสือ dashbord/navbar*/
     --dark: #ebe9e1;    /*พื้นหลังใหญ่ */
 }
@@ -75,7 +75,7 @@
     width: 250px;
     height: 100vh;
     overflow-y: auto;
-    background: var(--secondary);
+    background: #080807;
     transition: .5s;
     z-index: 999
 }
@@ -92,7 +92,7 @@
 }
 
 .bg-templant .modal-content {
-    /* background-color: rgba(var(--bs-secondary-rgb), var(--bs-bg-opacity)) !important  */
+    background-color: rgba(var(--bs-secondary-rgb), var(--bs-bg-opacity)) !important 
 }
 
 .color-d3d3d3 {
@@ -156,7 +156,7 @@
 .sidebar .navbar .navbar-nav .nav-link:hover,
 .sidebar .navbar .navbar-nav .nav-link.active {
     color: var(--primary);
-    background: #efdf80; /* color hover sliebar*/
+    background: #080807; /* color hover sliebar*/
     border-color: var(--primary)
 }
 

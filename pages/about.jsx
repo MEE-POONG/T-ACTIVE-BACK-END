@@ -72,14 +72,11 @@ export default function AboutPage() {
     if (error || updateAboutError ) return <p>Error!</p>
     return (
         < >
-            <Head>
-                <title> T-Active Stevia Syrup </title>
-                <meta
-                    name="description"
-                    content="I2AROBOT 2"
-                />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+        <Head>
+            <title>T-ACTIVE BACKEND</title>
+            <meta name="description" content="I2AROBOT 2" />
+            <link rel="icon" href="/images/logo.png" />
+       </Head>
                
             <Container fluid className=" pt-4 px-4">
                     <div className="bg-secondary rounded shadow p-4">
@@ -115,7 +112,7 @@ export default function AboutPage() {
                         initData={detail1}
                         onChange={event=> setDetail1( event.editor.getData())}
                         config={{
-                          uiColor: "#e3c51c",
+                          uiColor: "#ddc173 ",
                           language: "th",
                           // extraPlugins: "uploadimage",
                           // filebrowserUploadMethod: "form",
@@ -155,7 +152,7 @@ export default function AboutPage() {
                         initData={detail2}
                         onChange={event=> setDetail2( event.editor.getData())}
                         config={{
-                          uiColor: "#e3c51c",
+                          uiColor: "#ddc173 ",
                           language: "th",
                           // extraPlugins: "uploadimage",
                           // filebrowserUploadMethod: "form",
@@ -195,7 +192,7 @@ export default function AboutPage() {
                         initData={detail3}
                         onChange={event=> setDetail3( event.editor.getData())}
                         config={{
-                          uiColor: "#e3c51c",
+                          uiColor: "#ddc173 ",
                           language: "th",
                           // extraPlugins: "uploadimage",
                           // filebrowserUploadMethod: "form",

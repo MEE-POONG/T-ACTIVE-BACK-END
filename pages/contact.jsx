@@ -35,14 +35,12 @@ export default function ContactPage() {
     if (error || updateContactError ) return <p>Error!</p>
     return (
         < >
-            <Head>
-                <title> T-Active Stevia Syrup </title>
-                <meta
-                    name="description"
-                    content="I2AROBOT 2"
-                />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
+        <Head>
+            <title>T-ACTIVE BACKEND</title>
+            <meta name="description" content="I2AROBOT 2" />
+            <link rel="icon" href="/images/logo.png" />
+       </Head>
+               
 
             <Container fluid className=" pt-4 px-4">
                     <div className="bg-secondary rounded shadow p-4">
