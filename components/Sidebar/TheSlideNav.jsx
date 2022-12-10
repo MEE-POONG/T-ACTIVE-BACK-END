@@ -70,17 +70,17 @@ export default function TheSlideNav() {
                 จัดการเว็บไซต์
               </Dropdown.Toggle>
               <Dropdown.Menu className="bg-transparent border-0" show>
-              <Link id="buttons" href="/homee">
+              <Link href="/homee">
               <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
                   หน้าหลัก
                 </a>
               </Link>
-              <Link id="buttons" href="/about">
+              <Link href="/about">
               <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
                   เกี่ยวกับเรา
                 </a>
               </Link>
-              <Link id="buttons" href="/contact">
+              <Link href="/contact">
               <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
                   ช่องทางติดต่อ
                 </a>
@@ -94,7 +94,7 @@ export default function TheSlideNav() {
               จัดการสินค้า
             </Dropdown.Toggle>
             <Dropdown.Menu className="bg-transparent border-0" show>
-              <Link id="buttons" href="/products">
+              <Link  href="/products">
               <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
                   สินค้า
                 </a>
