@@ -27,7 +27,7 @@ model Homee {
 }
 
 model About {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
   deleted_at DateTime? @map("deleted_at")
@@ -46,14 +46,22 @@ model About {
 }
 
 model Products {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
   deleted_at DateTime? @map("deleted_at")
-  detail     String?
-  imagep     String?
-  subtitle   String?
-  title      String?
+  detail1    String?
+  detail2    String?
+  detail3    String?
+  imagep1    String?
+  imagep2    String?
+  imagep3    String?
+  subtitle1  String?
+  subtitle2  String?
+  subtitle3  String?
+  title1     String?
+  title2     String?
+  title3     String?
 }
 
 model Contact {
