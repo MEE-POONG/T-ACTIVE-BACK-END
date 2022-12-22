@@ -23,6 +23,10 @@ export default function ProdutsPage() {
     const [imagep2, setImagep2] = useState([])
     const [imagep3, setImagep3] = useState([])
     const [imageURL, setImageURL] = useState([])
+  
+    const [header, setHeader] = useState('');
+    const [subheader, setSubheader] = useState('');
+    
 
     const [title1, setTitle1] = useState('');
     const [subtitle1, setSubtitle1] = useState('');
@@ -39,6 +43,10 @@ export default function ProdutsPage() {
    
 
    useEffect(() =>{
+
+    setHeader(productsById?.header)
+    setSubheader(productsById?.subheader)
+
     setTitle1(productsById?.title1)
     setSubtitle1(productsById?.subtitle1)
     setDetail1(productsById?.detail1)
@@ -76,7 +84,7 @@ export default function ProdutsPage() {
             <link rel="icon" href="/images/logo.png" />
        </Head>
                
-            
+                 
             <Container fluid className=" pt-4 px-4">
                     <div className="bg-secondary rounded shadow p-4">
                 <div className="d-flex align-items-center justify-content-between mb-4">
@@ -86,7 +94,31 @@ export default function ProdutsPage() {
                         </Button>
                 </div>
 
-    
+                <div className=" w- d-flex align-items-center border-bottom py-2">
+                    <div className="table-responsive w-100">
+                    <table className="table text-start align-middle table-bordered table-hover mb-0">              
+                    <thead>
+                        <tr className="text-center">
+                            <th >ชื่อหัวข้อ</th>
+                            <th >ชื่อหัวข้อย่อย</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {productsData?.map((products,index) => (
+                            <tr key={index}>
+                            <td className="text-center">{products.header}</td>
+                            <td className="text-center">{products.subheader}</td>
+                            <td className="text-center">
+                            <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(products.id)}><FaEdit /></a> <t/>     
+                       </td>
+                        </tr>
+                        ))}
+                          </tbody>
+                         </table>
+                        </div>
+                    </div>
+ 
                 <div className=" w- d-flex align-items-center border-bottom py-2">
                     <div className="table-responsive w-100">
                     <table className="table text-start align-middle table-bordered table-hover mb-0">
@@ -100,6 +132,7 @@ export default function ProdutsPage() {
                             <th >จัดการ</th>
                         </tr>
                         </thead>
+
                         <tbody>
                         {productsData?.map((products,index) => (
                             <tr key={index}>
@@ -113,25 +146,7 @@ export default function ProdutsPage() {
                        </td>
                         </tr>
                         ))}
-                        </tbody>
-                    </table>
-                    </div>
-                </div>
-                </div>
-            </Container>
-
-            <Container fluid className=" pt-4 px-4">
-                    <div className="bg-secondary rounded shadow p-4">
-                <div className="d-flex align-items-center justify-content-between mb-4">
-                    <h5 className="mb-0 w-m-max me-2">ข้อมูลสินค้า2</h5>
-                </div>
-
-    
-                <div className=" w- d-flex align-items-center border-bottom py-2">
-                    <div className="table-responsive w-100">
-                    <table className="table text-start align-middle table-bordered table-hover mb-0">
-
-                        <tbody>
+                    
                         {productsData?.map((products,index) => (
                             <tr key={index}>
                             <td className="text-center"> <Image className="logo" style={{ width: "50px" }}src={products.imagep2} /></td>
@@ -144,34 +159,7 @@ export default function ProdutsPage() {
                        </td>
                         </tr>
                         ))}
-                        </tbody>
-                    </table>
-                    </div>
-                </div>
-                </div>
-            </Container>
 
-            <Container fluid className=" pt-4 px-4">
-                    <div className="bg-secondary rounded shadow p-4">
-                <div className="d-flex align-items-center justify-content-between mb-4">
-                    <h5 className="mb-0 w-m-max me-2">ข้อมูลสินค้า3</h5>
-                </div>
-
-    
-                <div className=" w- d-flex align-items-center border-bottom py-2">
-                    <div className="table-responsive w-100">
-                    <table className="table text-start align-middle table-bordered table-hover mb-0">
-
-                        <thead>
-                        <tr className="text-center">
-                            <th >รูปภาพสินค้า</th>
-                            <th >ชื่อสินค้า</th>
-                            <th >รายละเอียดสินค้า</th>
-                            <th >ประเภทสินค้า</th>
-                            <th >จัดการ</th>
-                        </tr>
-                        </thead>
-                        <tbody>
                         {productsData?.map((products,index) => (
                             <tr key={index}>
                             <td className="text-center"> <Image className="logo" style={{ width: "50px" }}src={products.imagep3} /></td>
@@ -185,10 +173,11 @@ export default function ProdutsPage() {
                         </tr>
                         ))}
                         </tbody>
-                    </table>
+                        </table>
+                        </div>
                     </div>
                 </div>
-                </div>
+
             </Container>
       
   
@@ -198,9 +187,19 @@ export default function ProdutsPage() {
                     <Modal.Title>เพิ่มข้อมูลสินค้า</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                         
                 <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพสินค้า</Form.Label>
-                       
+                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                        <Form.Control type="text" value={header} onChange={event => setHeader(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อย่อย</Form.Label>
+                        <Form.Control as="textarea" rows={3} value={subheader} onChange={event => setSubheader(event.target.value)} />
+                    </Form.Group>
+                    
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพสินค้า1</Form.Label>
                         <Form.Control type="file" />
                     </Form.Group>
                     
@@ -210,13 +209,18 @@ export default function ProdutsPage() {
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า</Form.Label>
+                        <Form.Label>รายละเอียดสินค้า1</Form.Label>
                         <Form.Control as="textarea" rows={3} value={subtitle1} onChange={event => setSubtitle1(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
+                        <Form.Label>อธิบายเพิ่มเติม1</Form.Label>
                         <Form.Control as="textarea" rows={3} value={detail1} onChange={event => setDetail1(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพสินค้า2</Form.Label>
+                        <Form.Control type="file" />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
@@ -225,27 +229,32 @@ export default function ProdutsPage() {
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า</Form.Label>
+                        <Form.Label>รายละเอียดสินค้า2</Form.Label>
                         <Form.Control as="textarea" rows={3} value={subtitle2} onChange={event => setSubtitl2(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
+                        <Form.Label>อธิบายเพิ่มเติม2</Form.Label>
                         <Form.Control as="textarea" rows={3} value={detail2} onChange={event => setDetail2(event.target.value)} />
                     </Form.Group>
 
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพสินค้า3</Form.Label>
+                        <Form.Control type="file" />
+                    </Form.Group>
+                    
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ชื่อสินค้า3</Form.Label>
                         <Form.Control type="text" value={title3} onChange={event => setTitle3(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า</Form.Label>
+                        <Form.Label>รายละเอียดสินค้า3</Form.Label>
                         <Form.Control as="textarea" rows={3} value={subtitle3} onChange={event => setSubtitle3(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
+                        <Form.Label>อธิบายเพิ่มเติม3</Form.Label>
                         <Form.Control as="textarea" rows={3} value={detail3} onChange={event => setDetail3(event.target.value)} />
                     </Form.Group>
 
@@ -258,6 +267,9 @@ export default function ProdutsPage() {
                        
                        await executeProducts({
                             data: {
+                                header: header,
+                                subheader: subheader,
+
                                 title1: title1,
                                 subtitle1: subtitle1,
                                 detail1: detail1,
@@ -276,6 +288,9 @@ export default function ProdutsPage() {
                             } 
                         }).then(() => {
                             Promise.all([
+                                setHeader(''),
+                                setSubheader(''),
+
                                 setTitle1(''),
                                 setSubtitle1(''),          
                                 setDetail1(''),
@@ -307,10 +322,18 @@ export default function ProdutsPage() {
                     <Modal.Title>รายละเอียดสินค้า</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                        <Form.Control type="text" value={header} onChange={event => setHeader(event.target.value)} />
+                    </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพสินค้า</Form.Label>
-                       
+                        <Form.Label>ชื่อหัวข้อย่อย</Form.Label>
+                        <Form.Control as="textarea" rows={3} value={subheader} onChange={event => setSubheader(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพสินค้า1</Form.Label>
                         <Form.Control type="file" />
                     </Form.Group>
                     
@@ -320,13 +343,18 @@ export default function ProdutsPage() {
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า</Form.Label>
+                        <Form.Label>รายละเอียดสินค้า1</Form.Label>
                         <Form.Control as="textarea" rows={3} value={subtitle1} onChange={event => setSubtitle1(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
+                        <Form.Label>อธิบายเพิ่มเติม1</Form.Label>
                         <Form.Control as="textarea" rows={3} value={detail1} onChange={event => setDetail1(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพสินค้า2</Form.Label>
+                        <Form.Control type="file" />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
@@ -335,27 +363,32 @@ export default function ProdutsPage() {
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า</Form.Label>
+                        <Form.Label>รายละเอียดสินค้า2</Form.Label>
                         <Form.Control as="textarea" rows={3} value={subtitle2} onChange={event => setSubtitl2(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
+                        <Form.Label>อธิบายเพิ่มเติม2</Form.Label>
                         <Form.Control as="textarea" rows={3} value={detail2} onChange={event => setDetail2(event.target.value)} />
                     </Form.Group>
 
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพสินค้า3</Form.Label>
+                        <Form.Control type="file" />
+                    </Form.Group>
+                    
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ชื่อสินค้า3</Form.Label>
                         <Form.Control type="text" value={title3} onChange={event => setTitle3(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า</Form.Label>
+                        <Form.Label>รายละเอียดสินค้า3</Form.Label>
                         <Form.Control as="textarea" rows={3} value={subtitle3} onChange={event => setSubtitle3(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
+                        <Form.Label>อธิบายเพิ่มเติม3</Form.Label>
                         <Form.Control as="textarea" rows={3} value={detail3} onChange={event => setDetail3(event.target.value)} />
                     </Form.Group>
 
@@ -370,6 +403,9 @@ export default function ProdutsPage() {
                             url: '/api/products/' + productsById?.id,
                             method: 'PUT',
                             data: {
+                                header: header,
+                                subheader: subheader,
+
                                 title1: title1,
                                 subtitle1: subtitle1,
                                 detail1: detail1,
@@ -387,6 +423,9 @@ export default function ProdutsPage() {
                             }
                         }).then(() => {
                             Promise.all([
+                                setHeader(''),
+                                setSubheader(''),
+
                                 setTitle1(''),
                                 setSubtitle1(''),          
                                 setDetail1(''),

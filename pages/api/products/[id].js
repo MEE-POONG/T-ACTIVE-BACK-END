@@ -24,6 +24,9 @@ export default async function handler(req, res) {
                         id: req.query.id
                     },
                     data: {
+                        header: header,
+                        subheader: subheader,
+
                         title1: req.body.title1,
                         subtitle1: req.body.subtitle1,
                         detail1: req.body.detail1,
