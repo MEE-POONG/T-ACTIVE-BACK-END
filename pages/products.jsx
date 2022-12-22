@@ -230,7 +230,7 @@ export default function ProdutsPage() {
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>รายละเอียดสินค้า2</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle2} onChange={event => setSubtitl2(event.target.value)} />
+                        <Form.Control as="textarea" rows={3} value={subtitle2} onChange={event => setSubtitle2(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
