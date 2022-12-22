@@ -19,26 +19,16 @@ export default function ProdutsPage() {
     const [{ loading: deleteProductsLoading, error: deleteProductsError }, executeProductsDelete] = useAxios({}, { manual: true })
 
 
-    const [imagep1, setImagep1] = useState([])
-    const [imagep2, setImagep2] = useState([])
-    const [imagep3, setImagep3] = useState([])
+    const [image, setImage] = useState([])
     const [imageURL, setImageURL] = useState([])
   
     const [header, setHeader] = useState('');
     const [subheader, setSubheader] = useState('');
     
 
-    const [title1, setTitle1] = useState('');
-    const [subtitle1, setSubtitle1] = useState('');
-    const [detail1, setDetail1] = useState('');
-    
-    const [title2, setTitle2] = useState('');
-    const [subtitle2, setSubtitle2] = useState('');
-    const [detail2, setDetail2] = useState('');
-    
-    const [title3, setTitle3] = useState('');
-    const [subtitle3, setSubtitle3] = useState('');
-    const [detail3, setDetail3] = useState('');
+    const [title, setTitle] = useState('');
+    const [subtitle1, setSubtitle] = useState('');
+    const [detail, setDetail] = useState('');
 
    
 
@@ -47,20 +37,11 @@ export default function ProdutsPage() {
     setHeader(productsById?.header)
     setSubheader(productsById?.subheader)
 
-    setTitle1(productsById?.title1)
-    setSubtitle1(productsById?.subtitle1)
-    setDetail1(productsById?.detail1)
-    setImagep1(productsById?.imagep1)
+    setTitle(productsById?.title)
+    setSubtitle(productsById?.subtitle)
+    setDetail(productsById?.detail)
+    setImage(productsById?.image)
     
-    setTitle2(productsById?.title2)
-    setSubtitle2(productsById?.subtitle2)
-    setDetail2(productsById?.detail2)
-    setImagep2(productsById?.imagep2)
-
-    setTitle3(productsById?.title3)
-    setSubtitle3(productsById?.subtitle3)
-    setDetail3(productsById?.detail3)
-    setImagep3(productsById?.imagep3)
    },[productsById])
 
     const [showModalCreate, setShowModalCreate] = useState(false);
