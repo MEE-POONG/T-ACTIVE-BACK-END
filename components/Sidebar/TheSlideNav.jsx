@@ -52,7 +52,10 @@ export default function TheSlideNav() {
           </div>
           <div className="navbar-nav w-100">
           <Link href="/">
-              <a className={asPath === "/" ?"nav-item nav-link active": "nav-link"}>
+              <a className={asPath === "/" 
+                  ?"nav-item nav-link active"
+                  : "nav-link"
+                }>
                 <i className="me-2">
                   <FaTachometerAlt />
                 </i>
@@ -61,45 +64,49 @@ export default function TheSlideNav() {
             </Link>
 
             <Dropdown bsPrefix="nav-item">
-            <Dropdown.Toggle className={asPath === "/" ? "nav-item nav-link active" : "nav-item nav-link"} id="dropdown-custom-components" >
-
-              {/* <Dropdown.Toggle className={asPath === "/homee" || asPath === "/about"  || asPath === "/products" || asPath === "/contact" ? "nav-link active" : "nav-link"} variant=""> */}
-                <i className="me-2">
-                  <FaLaptop />
-                </i>
-                จัดการเว็บไซต์
+              <Dropdown.Toggle className={
+                  asPath === "/homee" || asPath === "/about" || asPath === "/contact"
+                  ? "nav-item nav-link active" 
+                  : "nav-item nav-link"} id="dropdown-custom-components" >
+                  <i className="me-2">
+                    <FaLaptop />
+                  </i>
+                  จัดการเว็บไซต์
               </Dropdown.Toggle>
               <Dropdown.Menu className="bg-transparent border-0" show>
-              <Link href="/homee">
-              <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
-                  หน้าหลัก
-                </a>
-              </Link>
+                <Link href="/homee">
+                <a className="dropdown-item">
+                    หน้าหลัก
+                  </a>
+                </Link>
               <Link href="/about">
-              <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
+              <a className="dropdown-item">
                   เกี่ยวกับเรา
                 </a>
               </Link>
               <Link href="/contact">
-              <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
+              <a className="dropdown-item">
                   ช่องทางติดต่อ
                 </a>
               </Link>
-            </Dropdown.Menu>
-            <Dropdown.Toggle className={asPath === "/" ? "nav-item nav-link active" : "nav-item nav-link"} id="dropdown-custom-components" >
-            {/* <Dropdown.Toggle className={ asPath === "/products"  ? "nav-link active" : "nav-link"} variant=""> */}
-              <i className="me-2">
-                <BsFillBagFill />
-              </i>
-              จัดการสินค้า
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="bg-transparent border-0" show>
-              <Link  href="/products">
-              <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
-                  สินค้า
-                </a>
-              </Link>
-            </Dropdown.Menu>
+              </Dropdown.Menu>
+            </Dropdown>
+
+            <Dropdown bsPrefix="nav-item">
+              <Dropdown.Toggle className={asPath === "/" ? "nav-item nav-link active" : "nav-item nav-link"} id="dropdown-custom-components" >
+              {/* <Dropdown.Toggle className={ asPath === "/products"  ? "nav-link active" : "nav-link"} variant=""> */}
+                <i className="me-2">
+                  <BsFillBagFill />
+                </i>
+                จัดการสินค้า
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="bg-transparent border-0" show>
+                <Link  href="/products">
+                <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
+                    สินค้า
+                  </a>
+                </Link>
+              </Dropdown.Menu>
             </Dropdown>
           </div>
         </nav>
