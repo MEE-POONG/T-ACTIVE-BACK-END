@@ -10,8 +10,8 @@ export default async function handler(req, res) {
                 const data = await prisma.about.findMany();
                 res.status(200).json(data)
             } catch (error) {
-                console.log(error)
-                // res.status(400).json({ success: false })
+                // console.log(error)
+                res.status(400).json({ success: false })
             }
             break
             case 'POST':

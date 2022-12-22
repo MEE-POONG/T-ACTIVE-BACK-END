@@ -100,7 +100,7 @@ export default function ContactPage() {
                             }
                         }).then(() => {
                             Promise.all([
-                             setTitle(''),
+                                setTitle(''),
                                 setAddress(''),
                                 setTel(''),
                                 setEmail(''),
