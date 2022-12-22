@@ -62,8 +62,8 @@ model Products {
   title1     String?
   title2     String?
   title3     String?
-  subheader  String?
   header     String?
+  subheader  String?
 }
 
 model Contact {
