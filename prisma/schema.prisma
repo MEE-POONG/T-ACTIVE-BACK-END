@@ -50,20 +50,10 @@ model Products {
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
   deleted_at DateTime? @map("deleted_at")
-  detail1    String?
-  detail2    String?
-  detail3    String?
-  imagep1    String?
-  imagep2    String?
-  imagep3    String?
-  subtitle1  String?
-  subtitle2  String?
-  subtitle3  String?
-  title1     String?
-  title2     String?
-  title3     String?
-  header     String?
-  subheader  String?
+  detail     String?
+  image      String?
+  subtitle   String?
+  title      String?
 }
 
 model Contact {
@@ -77,4 +67,13 @@ model Contact {
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
   deleted_at DateTime? @map("deleted_at")
+}
+
+model Headproduct {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  header     String?
+  subheader  String?
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime?
+  deleted_at DateTime?
 }
