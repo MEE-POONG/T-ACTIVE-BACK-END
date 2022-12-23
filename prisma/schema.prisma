@@ -45,15 +45,24 @@ model About {
   title3     String?
 }
 
-model Products {
+model HeadProduct {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  header     String?
+  subheader  String?
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
   deleted_at DateTime? @map("deleted_at")
-  detail     String?
-  image      String?
-  subtitle   String?
+}
+
+model Products {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  image     String?
   title      String?
+  subtitle   String?
+  detail     String?
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+  deleted_at DateTime? @map("deleted_at")
 }
 
 model Contact {
