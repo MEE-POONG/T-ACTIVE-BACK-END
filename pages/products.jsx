@@ -11,6 +11,9 @@ import axios from 'axios'
 export default function ProdutsPage() {
 
     const [{data: productsData, loading, error}, getProducts] = useAxios({url: '/api/products'})
+
+    const [{data: headProductsData, headLoading, headError}, getHeadProducts] = useAxios({url: '/api/headproduct'})
+
     const [{ data: productsById , loading: productsByIdLoading , error: productsByIdError}, getProductsById] = useAxios({},{ manual: true } )
     
     
@@ -27,7 +30,7 @@ export default function ProdutsPage() {
     
 
     const [title, setTitle] = useState('');
-    const [subtitle1, setSubtitle] = useState('');
+    const [subtitle, setSubtitle] = useState('');
     const [detail, setDetail] = useState('');
 
    
@@ -86,12 +89,12 @@ export default function ProdutsPage() {
                         </thead>
 
                         <tbody>
-                        {productsData?.map((products,index) => (
+                        {headProductsData?.map((headproducts,index) => (
                             <tr key={index}>
-                            <td className="text-center">{products.header}</td>
-                            <td className="text-center">{products.subheader}</td>
+                            <td className="text-center">{headproducts.header}</td>
+                            <td className="text-center">{headproducts.subheader}</td>
                             <td className="text-center">
-                            <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(products.id)}><FaEdit /></a> <t/>     
+                            <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(headProducts.id)}><FaEdit /></a> <t/>     
                        </td>
                         </tr>
                         ))}
@@ -117,36 +120,10 @@ export default function ProdutsPage() {
                         <tbody>
                         {productsData?.map((products,index) => (
                             <tr key={index}>
-                            <td className="text-center"> <Image className="logo" style={{ width: "50px" }}src={products.imagep1} /></td>
-                            <td className="text-center">{products.title1}</td>
-                            <td className="text-center">{products.subtitle1}</td>
-                            <td className="text-center">{products.detail1}</td>
-                            <td className="text-center">
-                            <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(products.id)}><FaEdit /></a> <t/>     
-                                  <a className="btn btn-outline-danger sm-2" onClick={() => executeProductsDelete({ url: '/api/products/' + products.id, method: 'DELETE'})} ><FaTrash /></a>
-                       </td>
-                        </tr>
-                        ))}
-                    
-                        {productsData?.map((products,index) => (
-                            <tr key={index}>
-                            <td className="text-center"> <Image className="logo" style={{ width: "50px" }}src={products.imagep2} /></td>
-                            <td className="text-center">{products.title2}</td>
-                            <td className="text-center">{products.subtitle2}</td>
-                            <td className="text-center">{products.detail2}</td>
-                            <td className="text-center">
-                            <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(products.id)}><FaEdit /></a> <t/>     
-                                  <a className="btn btn-outline-danger sm-2" onClick={() => executeProductsDelete({ url: '/api/products/' + products.id, method: 'DELETE'})} ><FaTrash /></a>
-                       </td>
-                        </tr>
-                        ))}
-
-                        {productsData?.map((products,index) => (
-                            <tr key={index}>
-                            <td className="text-center"> <Image className="logo" style={{ width: "50px" }}src={products.imagep3} /></td>
-                            <td className="text-center">{products.title3}</td>
-                            <td className="text-center">{products.subtitle3}</td>
-                            <td className="text-center">{products.detail3}</td>
+                            <td className="text-center"> <Image className="logo" style={{ width: "50px" }}src={products.image} /></td>
+                            <td className="text-center">{products.title}</td>
+                            <td className="text-center">{products.subtitle}</td>
+                            <td className="text-center">{products.detail}</td>
                             <td className="text-center">
                             <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(products.id)}><FaEdit /></a> <t/>     
                                   <a className="btn btn-outline-danger sm-2" onClick={() => executeProductsDelete({ url: '/api/products/' + products.id, method: 'DELETE'})} ><FaTrash /></a>
@@ -168,75 +145,24 @@ export default function ProdutsPage() {
                     <Modal.Title>เพิ่มข้อมูลสินค้า</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                         
-                <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อ</Form.Label>
-                        <Form.Control type="text" value={header} onChange={event => setHeader(event.target.value)} />
-                    </Form.Group>
-
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อย่อย</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subheader} onChange={event => setSubheader(event.target.value)} />
-                    </Form.Group>
-                    
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพสินค้า1</Form.Label>
+                        <Form.Label className='d-block'>รูปภาพสินค้า</Form.Label>
                         <Form.Control type="file" />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อสินค้า1</Form.Label>
-                        <Form.Control type="text" value={title1} onChange={event => setTitle1(event.target.value)} />
+                        <Form.Label>ชื่อสินค้า</Form.Label>
+                        <Form.Control type="text" value={title} onChange={event => setTitle1(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า1</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle1} onChange={event => setSubtitle1(event.target.value)} />
+                        <Form.Label>รายละเอียดสินค้า</Form.Label>
+                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle1(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม1</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail1} onChange={event => setDetail1(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพสินค้า2</Form.Label>
-                        <Form.Control type="file" />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อสินค้า2</Form.Label>
-                        <Form.Control type="text" value={title2} onChange={event => setTitle2(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า2</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle2} onChange={event => setSubtitle2(event.target.value)} />
-                    </Form.Group>
-              
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม2</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail2} onChange={event => setDetail2(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพสินค้า3</Form.Label>
-                        <Form.Control type="file" />
-                    </Form.Group>
-                    
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อสินค้า3</Form.Label>
-                        <Form.Control type="text" value={title3} onChange={event => setTitle3(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า3</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle3} onChange={event => setSubtitle3(event.target.value)} />
-                    </Form.Group>
-              
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม3</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail3} onChange={event => setDetail3(event.target.value)} />
+                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
+                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail1(event.target.value)} />
                     </Form.Group>
 
                 </Modal.Body>
@@ -248,44 +174,18 @@ export default function ProdutsPage() {
                        
                        await executeProducts({
                             data: {
-                                header: header,
-                                subheader: subheader,
 
-                                title1: title1,
-                                subtitle1: subtitle1,
-                                detail1: detail1,
-                                imagep1:``,  
-
-                                title2: title2,
-                                subtitle2: subtitle2,
-                                detail2: detail2,
-                                imagep2:``,
-
-                                title3: title3,
-                                subtitle3: subtitle3,
-                                detail3: detail3,
-                                imagep3:``
-
+                                title: title,
+                                subtitle: subtitle,
+                                detail: detail,
+                                image:``,  
                             } 
                         }).then(() => {
                             Promise.all([
-                                setHeader(''),
-                                setSubheader(''),
-
-                                setTitle1(''),
-                                setSubtitle1(''),          
-                                setDetail1(''),
-                                setImagep1(''),
-
-                                setTitle2(''),
-                                setSubtitle2(''),          
-                                setDetail2(''),
-                                setImagep2(''),
-
-                                setTitle3(''),
-                                setSubtitle3(''),          
-                                setDetail3(''),
-                                setImagep3(''),
+                                setTitle(''),
+                                setSubtitle(''),          
+                                setDetail(''),
+                                setImage(''),
                                 getProducts()
                             ]).then(() => {
                                 CloseModal()
@@ -320,57 +220,17 @@ export default function ProdutsPage() {
                     
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ชื่อสินค้า1</Form.Label>
-                        <Form.Control type="text" value={title1} onChange={event => setTitle1(event.target.value)} />
+                        <Form.Control type="text" value={title} onChange={event => setTitle1(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>รายละเอียดสินค้า1</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle1} onChange={event => setSubtitle1(event.target.value)} />
+                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle1(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>อธิบายเพิ่มเติม1</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail1} onChange={event => setDetail1(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพสินค้า2</Form.Label>
-                        <Form.Control type="file" />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อสินค้า2</Form.Label>
-                        <Form.Control type="text" value={title2} onChange={event => setTitle2(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า2</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle2} onChange={event => setSubtitl2(event.target.value)} />
-                    </Form.Group>
-              
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม2</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail2} onChange={event => setDetail2(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพสินค้า3</Form.Label>
-                        <Form.Control type="file" />
-                    </Form.Group>
-                    
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อสินค้า3</Form.Label>
-                        <Form.Control type="text" value={title3} onChange={event => setTitle3(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า3</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle3} onChange={event => setSubtitle3(event.target.value)} />
-                    </Form.Group>
-              
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม3</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail3} onChange={event => setDetail3(event.target.value)} />
+                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail1(event.target.value)} />
                     </Form.Group>
 
                 </Modal.Body>
@@ -384,43 +244,17 @@ export default function ProdutsPage() {
                             url: '/api/products/' + productsById?.id,
                             method: 'PUT',
                             data: {
-                                header: header,
-                                subheader: subheader,
-
-                                title1: title1,
-                                subtitle1: subtitle1,
-                                detail1: detail1,
-                                imagep1:``,  
-
-                                title2: title2,
-                                subtitle2: subtitle2,
-                                detail2: detail2,
-                                imagep2:``,
-                                 
-                                title3: title3,
-                                subtitle3: subtitle3,
-                                detail3: detail3,
-                                imagep3:``
+                                title: title,
+                                subtitle: subtitle,
+                                detail: detail,
+                                image:``,  
                             }
                         }).then(() => {
                             Promise.all([
-                                setHeader(''),
-                                setSubheader(''),
-
-                                setTitle1(''),
-                                setSubtitle1(''),          
-                                setDetail1(''),
-                                setImagep1(''),
-
-                                setTitle2(''),
-                                setSubtitle2(''),          
-                                setDetail2(''),
-                                setImagep2(''),
-
-                                setTitle3(''),
-                                setSubtitle3(''),          
-                                setDetail3(''),
-                                setImagep3(''),
+                                setTitle(''),
+                                setSubtitle(''),          
+                                setDetail(''),
+                                setImage(''),
                                 getProducts()
                               
                             ]).then(() => {
