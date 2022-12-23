@@ -10,10 +10,10 @@ import axios from 'axios'
 
 export default function ProdutsPage() {
 
-    const [{data: productsData, loading, error}, getProducts] = useAxios({url: '/api/products'})
-
     const [{data: headProductsData, headLoading, headError}, getHeadProducts] = useAxios({url: '/api/headproduct'})
+    const [{data: headById,headByIdLoading, headByIdError}, getHeadById] = useAxios({}, {manual:true})
 
+    const [{data: productsData, loading, error}, getProducts] = useAxios({url: '/api/products'})
     const [{ data: productsById , loading: productsByIdLoading , error: productsByIdError}, getProductsById] = useAxios({},{ manual: true } )
     
     
@@ -33,33 +33,39 @@ export default function ProdutsPage() {
     const [subtitle, setSubtitle] = useState('');
     const [detail, setDetail] = useState('');
 
-   
+    useEffect(() =>{
+        setHeader(headById?.header)
+        setSubheader(headById?.subheader)
+       },[headById])
 
    useEffect(() =>{
-
-    setHeader(productsById?.header)
-    setSubheader(productsById?.subheader)
-
     setTitle(productsById?.title)
     setSubtitle(productsById?.subtitle)
     setDetail(productsById?.detail)
     setImage(productsById?.image)
-    
    },[productsById])
 
+//    Modal
     const [showModalCreate, setShowModalCreate] = useState(false);
-    const [showModalEdit, setShowModalEdit] = useState(false);
+    const [isFirstshowModalEdit, setIsFirstsShowModalEdit] = useState(false);
+    const [isSecondshowModalEdit, setIsSecondShowModalEdit] = useState(false);
 
    const ShowModalCreate = () => setShowModalCreate(true);
-   const ShowModalEdit = async (id) => { 
-    await getProductsById({url: '/api/products/'+id,method:'GET'});
-     setShowModalEdit(true);
+   const ShowModalEditFirst = async (id) => { 
+    await getHeadById({url: '/api/headproduct/'+id,method:'GET'});
+    setIsFirstsShowModalEdit(true);
     }
-   const CloseModal = () => {setShowModalCreate(false) ,setShowModalEdit(false)};
+    
+    const ShowModalEditSecond = async (id) => { 
+        await getProductsById({url: '/api/products/'+id,method:'GET'});
+        setIsSecondShowModalEdit(true);
+        }
+
+   const CloseModal = () => {setShowModalCreate(false) ,setIsFirstsShowModalEdit(false), setIsSecondShowModalEdit(false)};
 
 
-    if (loading || productsByIdLoading || updateProductsLoading || deleteProductsLoading) return <p>Loading...</p>
-    if (error || productsByIdError || updateProductsError || deleteProductsError) return <p>Error!</p>
+    if (loading || headLoading || headByIdLoading || productsByIdLoading || updateProductsLoading || deleteProductsLoading) return <p>Loading...</p>
+    if (error || headError || headByIdError || productsByIdError || updateProductsError || deleteProductsError) return <p>Error!</p>
     return (
         < >
         <Head>
@@ -94,7 +100,7 @@ export default function ProdutsPage() {
                             <td className="text-center">{headproducts.header}</td>
                             <td className="text-center">{headproducts.subheader}</td>
                             <td className="text-center">
-                            <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(headProducts.id)}><FaEdit /></a> <t/>     
+                            <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEditFirst(headproducts.id)}><FaEdit /></a> <t/>     
                        </td>
                         </tr>
                         ))}
@@ -125,7 +131,7 @@ export default function ProdutsPage() {
                             <td className="text-center">{products.subtitle}</td>
                             <td className="text-center">{products.detail}</td>
                             <td className="text-center">
-                            <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(products.id)}><FaEdit /></a> <t/>     
+                            <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEditSecond(products.id)}><FaEdit /></a> <t/>     
                                   <a className="btn btn-outline-danger sm-2" onClick={() => executeProductsDelete({ url: '/api/products/' + products.id, method: 'DELETE'})} ><FaTrash /></a>
                        </td>
                         </tr>
@@ -152,17 +158,17 @@ export default function ProdutsPage() {
                     
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ชื่อสินค้า</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle1(event.target.value)} />
+                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>รายละเอียดสินค้า</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle1(event.target.value)} />
+                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>อธิบายเพิ่มเติม</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail1(event.target.value)} />
+                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
                     </Form.Group>
 
                 </Modal.Body>
@@ -197,10 +203,10 @@ export default function ProdutsPage() {
                 </Modal.Footer>
             </Modal>
 
-          {/* Edit */}
-            <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
+          {/* EditHead */}
+            <Modal show={isFirstshowModalEdit} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
-                    <Modal.Title>รายละเอียดสินค้า</Modal.Title>
+                    <Modal.Title>แก้ไขข้อมูลหน้าสินค้า</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <Form.Group controlId="formFile" className="mb-3">
@@ -213,6 +219,43 @@ export default function ProdutsPage() {
                         <Form.Control as="textarea" rows={3} value={subheader} onChange={event => setSubheader(event.target.value)} />
                     </Form.Group>
 
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={CloseModal}>
+                        ยกเลิก
+                    </Button>
+                    <Button variant="success" onClick={() => {
+
+                        executeProductsPut({
+                            url: '/api/headproduct/' + headById?.id,
+                            method: 'PUT',
+                            data: {
+                                header: header,
+                                subheader: subheader,
+                            }
+                        }).then(() => {
+                            Promise.all([
+                                setHeader(''),
+                                setSubheader(''),
+                                getHeadProducts()
+                              
+                            ]).then(() => {
+                                CloseModal()
+                            })
+                        })
+
+                    }}>
+                        บันทึก
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+               {/* EditProduct */}
+            <Modal show={isSecondshowModalEdit} onHide={CloseModal} centered className="bg-templant">
+                <Modal.Header closeButton >
+                    <Modal.Title>รายละเอียดสินค้า</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label className='d-block'>รูปภาพสินค้า1</Form.Label>
                         <Form.Control type="file" />
@@ -220,17 +263,17 @@ export default function ProdutsPage() {
                     
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ชื่อสินค้า1</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle1(event.target.value)} />
+                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>รายละเอียดสินค้า1</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle1(event.target.value)} />
+                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>อธิบายเพิ่มเติม1</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail1(event.target.value)} />
+                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
                     </Form.Group>
 
                 </Modal.Body>
