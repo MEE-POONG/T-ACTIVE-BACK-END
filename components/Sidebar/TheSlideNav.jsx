@@ -54,7 +54,7 @@ export default function TheSlideNav() {
           <Link href="/">
               <a className={asPath === "/" 
                   ?"nav-item nav-link active"
-                  : "nav-link"
+                  : "nav-item nav-link"
                 }>
                 <i className="me-2">
                   <FaTachometerAlt />
@@ -93,8 +93,11 @@ export default function TheSlideNav() {
             </Dropdown>
 
             <Dropdown bsPrefix="nav-item">
-              <Dropdown.Toggle className={asPath === "/" ? "nav-item nav-link active" : "nav-item nav-link"} id="dropdown-custom-components" >
-              {/* <Dropdown.Toggle className={ asPath === "/products"  ? "nav-link active" : "nav-link"} variant=""> */}
+              <Dropdown.Toggle className={
+                  asPath === "/products" 
+                  ? "nav-item nav-link active" 
+                  : "nav-item nav-link"} 
+                  id="dropdown-custom-components" >
                 <i className="me-2">
                   <BsFillBagFill />
                 </i>
@@ -102,7 +105,7 @@ export default function TheSlideNav() {
               </Dropdown.Toggle>
               <Dropdown.Menu className="bg-transparent border-0" show>
                 <Link  href="/products">
-                <a className={asPath === "/" ? "dropdown-item ps-5 active" : "dropdown-item ps-5"}>
+                <a className="dropdown-item ps-5">
                     สินค้า
                   </a>
                 </Link>
