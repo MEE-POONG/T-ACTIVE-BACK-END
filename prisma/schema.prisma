@@ -77,3 +77,12 @@ model Contact {
   updatedAt  DateTime? @updatedAt
   deleted_at DateTime? @map("deleted_at")
 }
+
+model Headproduct {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  header     String?
+  subheader  String?
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime?
+  deleted_at DateTime?
+}
