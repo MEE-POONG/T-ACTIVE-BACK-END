@@ -78,3 +78,23 @@ model Contact {
   deleted_at DateTime? @map("deleted_at")
 }
 
+model Homedetail {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title      String?
+  subtitle   String?
+  detail     String?
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime?
+  deleted_at DateTime?
+}
+
+model Hometop {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  image      String?
+  name       String?
+  subname    String?
+  link       String?
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime?
+  deleted_at DateTime?
+}
