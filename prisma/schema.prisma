@@ -7,25 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Homee {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title1     String?
-  subtitle1  String?
-  detail1    String?
-  imageh1    String?
-  title2     String?
-  subtitle2  String?
-  detail2    String?
-  imageh2    String?
-  title3     String?
-  subtitle3  String?
-  detail3    String?
-  imageh3    String?
-  createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
-  deleted_at DateTime? @map("deleted_at")
-}
-
 model About {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt  DateTime? @default(now())
@@ -83,6 +64,21 @@ model Homedetail {
   title      String?
   subtitle   String?
   detail     String?
+}
+model Homee {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title1     String?
+  subtitle1  String?
+  detail1    String?
+  imageh1    String?
+  title2     String?
+  subtitle2  String?
+  detail2    String?
+  imageh2    String?
+  title3     String?
+  subtitle3  String?
+  detail3    String?
+  imageh3    String?
   createdAt  DateTime? @default(now())
   updatedAt  DateTime?
   deleted_at DateTime?
@@ -95,6 +91,17 @@ model Hometop {
   subname    String?
   link       String?
   createdAt  DateTime? @default(now())
-  updatedAt  DateTime?
-  deleted_at DateTime?
+  updatedAt  DateTime? @updatedAt
+  deleted_at DateTime? @map("deleted_at")
+}
+
+
+model Homedetail {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title     String?
+  subtitle  String?
+  detail    String?
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime? @updatedAt
+  deleted_at DateTime? @map("deleted_at")
 }
