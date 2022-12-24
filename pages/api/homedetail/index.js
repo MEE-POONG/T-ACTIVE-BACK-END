@@ -7,21 +7,20 @@ export default async function handler(req, res) {
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.headproduct.findMany();
+                const data = await prisma.homedetail.findMany();
                 res.status(200).json(data)
             } catch (error) {
-                console.log(error);
+                console.log(error)
                 // res.status(400).json({ success: false })
             }
             break
             case 'POST':
             try {
-                await prisma.headproduct.create({
+                await prisma.homedetail.create({
                     data: {
-                        image: req.body.image,
-                        name: req.body.name,
-                        subname: req.body.subname,
-                        link: req.body.link,          
+                        title: req.body.title,
+                        subtitle: req.body.subtitle,
+                        detail: req.body.detail,
                     }
                 })
                 res.status(201).json({ success: true })
