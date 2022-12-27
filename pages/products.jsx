@@ -22,8 +22,6 @@ export default function ProdutsPage() {
     const [{ loading: deleteProductsLoading, error: deleteProductsError }, executeProductsDelete] = useAxios({}, { manual: true })
 
     const[{loading: imgLoading, error: imgError}, uploadImage]= useAxios({url: '/api/upload', method: 'POST'},{manual: true});
-    const[{loading: editLoading, error: editError}, updateImage]= useAxios({},{manual: true});
-
   
     const [header, setHeader] = useState('');
     const [subheader, setSubheader] = useState('');
@@ -81,8 +79,8 @@ const onImageProductChange = (e) => {
 
    const CloseModal = () => {setShowModalCreate(false) ,setIsFirstsShowModalEdit(false), setIsSecondShowModalEdit(false)};
 
-    if (loading || headLoading || headByIdLoading || productsByIdLoading || updateProductsLoading || deleteProductsLoading || imgLoading || editLoading) return <p>Loading...</p>
-    if (error || headError || headByIdError || productsByIdError || updateProductsError || deleteProductsError || imgError || editError) return <p>Error!</p>
+    if (loading || headLoading || headByIdLoading || productsByIdLoading || updateProductsLoading || deleteProductsLoading || imgLoading) return <p>Loading...</p>
+    if (error || headError || headByIdError || productsByIdError || updateProductsError || deleteProductsError || imgError) return <p>Error!</p>
     return (
         < >
         <Head>
