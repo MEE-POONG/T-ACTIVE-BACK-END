@@ -86,7 +86,7 @@ export default function ProdutsPage() {
                             <tr key={index}>
                             <td className="text-center">{homeDetail.title}</td>
                             <td className="text-center">{homeDetail.subtitle}</td>
-                            <td className="text-center">{homeDetail.detail}  dangerouslySetInnerHTML={{ __html: homee?.detail1 }}</td>
+                            <td className="text-center"> <div dangerouslySetInnerHTML={{ __html: homeDetail?.detail }} /> </td>
                             <td className="text-center">
                             <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(homeDetail.id)}><FaEdit /></a> <t/>     
                                   <a className="btn btn-outline-danger sm-2" onClick={() => executeHomeDetailDelete({ url: '/api/homedetail/' + homeDetail.id, method: 'DELETE'})} ><FaTrash /></a>
@@ -182,6 +182,7 @@ export default function ProdutsPage() {
                         {detail? 
                         <CKEditor
                         initData={detail}
+                        
                         onChange={event=> setDetail( event.editor.getData())}
                         config={{
                           uiColor: "#ddc173 ",
