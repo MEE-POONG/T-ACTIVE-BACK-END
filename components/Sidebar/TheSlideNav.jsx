@@ -74,9 +74,14 @@ export default function TheSlideNav() {
                   จัดการเว็บไซต์
               </Dropdown.Toggle>
               <Dropdown.Menu className="bg-transparent border-0" show>
-                <Link href="/homee">
+                <Link href="/hometop">
                 <a className="dropdown-item">
                     หน้าหลัก
+                  </a>
+                </Link>
+                <Link href="/homedetail">
+                <a className="dropdown-item">
+                    หน้าหลักเนื้อหา
                   </a>
                 </Link>
               <Link href="/about">

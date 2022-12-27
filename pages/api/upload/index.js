@@ -10,25 +10,25 @@ export const config = {
     },
 }
 
-const storage = multer.diskStorage({ 
+const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, `pages/api/upload/`) /* เรียกใช้จากที่ไหน*/ 
+        cb(null, `pages/api/upload/`)
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + '.' + file.originalname.split('.')[file.originalname.split('.').length - 1])
     }
 })
-const upload = multer({ storage: storage })  /* เรียกใช้....*/ 
+const upload = multer({ storage: storage })
 
 const handler = nc()
-    .use(upload.single('file')) /* single อัปโหลดแค่ไฟล์เดียว */ 
+    .use(upload.single('file'))
     .post(async (req, res) => {
 
         let data = new FormData();
         data.append('file', fs.createReadStream(req.file.path), req.file.filename);
         let config = {
             method: 'POST',
-            url: 'https://api.cloudflare.com/client/v4/accounts/39aa4ea3c7a7d766adc4428933324787/images/v1', /* เก็บไว้ api.cloudflare  */ 
+            url: 'https://api.cloudflare.com/client/v4/accounts/39aa4ea3c7a7d766adc4428933324787/images/v1',
             headers: {
                 ...data.getHeaders(),
                 'Authorization': 'Bearer LpMNSFUw7gmxpn4ZZ7P2ZAcReF6Q-HlbIWqthbO0',
