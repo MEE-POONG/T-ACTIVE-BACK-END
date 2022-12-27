@@ -131,7 +131,6 @@ console.log(detail1);
                         <Form.Label>ชื่อหัวข้อ 2</Form.Label>
                         <Form.Control type="text"style={{ width: "500px" }} value={title2} onChange={event => setTitle2(event.target.value)} />
                     </Form.Group>
-
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>หัวข้อย่อย 2</Form.Label>
                         <Form.Control type="text"style={{ width: "500px" }} value={subtitle2} onChange={event => setSubtitle2(event.target.value)} />
