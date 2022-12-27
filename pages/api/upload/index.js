@@ -28,7 +28,7 @@ const handler = nc()
         data.append('file', fs.createReadStream(req.file.path), req.file.filename);
         let config = {
             method: 'POST',
-            url: 'https://api.cloudflare.com/client/v4/zones/cd7d0123e3012345da9420df9514dad0',
+            url: 'https://api.cloudflare.com/client/v4/accounts/39aa4ea3c7a7d766adc4428933324787/images/v1',
             headers: {
                 ...data.getHeaders(),
                 'Authorization': 'Bearer LpMNSFUw7gmxpn4ZZ7P2ZAcReF6Q-HlbIWqthbO0',

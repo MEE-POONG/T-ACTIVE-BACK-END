@@ -64,7 +64,6 @@ export default function ProdutsPage() {
 
    const CloseModal = () => {setShowModalCreate(false) ,setIsFirstsShowModalEdit(false), setIsSecondShowModalEdit(false)};
 
-
     if (loading || headLoading || headByIdLoading || productsByIdLoading || updateProductsLoading || deleteProductsLoading || imgLoading) return <p>Loading...</p>
     if (error || headError || headByIdError || productsByIdError || updateProductsError || deleteProductsError || imgError) return <p>Error!</p>
     return (
