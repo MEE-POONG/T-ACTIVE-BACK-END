@@ -180,10 +180,10 @@ export default function ProdutsPage() {
                     </Button>
                     <Button variant="success" onClick={async event => {
                        
-                       let data = new FormData()
+                       let data =new FormData()
                        data.append('file', image[0])
-                       const imageData = await uploadImage ({data: data})
-                       const id = imageData.data.result.id
+                       const imageData = await uploadImage({data: data})
+                       const id =imageData.data.result.id
                        
                        await executeProducts({
                             data: {
