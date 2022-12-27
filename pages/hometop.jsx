@@ -31,18 +31,19 @@ export default function hometopPage() {
   const[{loading: imgLoading, error: imgError}, uploadImage]= useAxios({url: '/api/upload', method: 'POST'},{manual: true});
 
 
-
   const [name, setName] = useState("");
   const [subname, setSubName] = useState("");
   const [link, setLink] = useState("");
-  const [image, setImage] = useState("");
-  
-  const [imageURL, setImageURL] = useState([]);
+  const [img, setImg] = useState('');
+
+    const [image, setImage] = useState([])
+    const [imageURL, setImageURL] = useState([])
 
   useEffect(() => {
     setName(homeTopById?.name);
     setSubName(homeTopById?.subname);
     setLink(homeTopById?.link);
+    setImg(homeTopById?.image)
   }, [homeTopById]);
 
   //    Modal
@@ -54,16 +55,16 @@ export default function hometopPage() {
     setIsShowModalEdit(true);
     }
 
-  // useEffect(() => {
-  //   if (img.length < 1) return;
-  //   const newImageUrl = [];
-  //   img.forEach((image1) => newImageUrl.push(URL.createObjectURL(image1)));
-  //   setImageURL(newImageUrl);
-  // }, [img]);
+  useEffect(() => {
+    if (image.length < 1) return
+    const newImageUrl = []
+    image.forEach(image => newImageUrl.push(URL.createObjectURL(image)))
+    setImageURL(newImageUrl)
+    }, [image])
 
-  // const onImageHometopChange = (e) => {
-  //   setImage([...e.target.files]);
-  // };
+  const onImageHometopChange = (e) => {
+    setImage([...e.target.files]);
+  };
 
   const CloseModal = () => {setIsShowModalEdit(false)};
 
@@ -122,6 +123,7 @@ export default function hometopPage() {
 
             </Container>
 
+         {/* Edit */}
       <Modal show={isShowModalEdit} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
                     <Modal.Title>แก้ไขข้อมูลหน้าหลัก</Modal.Title>
@@ -129,10 +131,12 @@ export default function hometopPage() {
                 <Modal.Body>
 
                 <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพสินค้า</Form.Label>
-                            {imageURL.map((imageSrcProduct, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHometop} alt="product_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" />
+                        <Form.Label className='d-block'>รูปภาพสินค้า1</Form.Label>
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={img} alt="Hometop_img" fluid rounded />}
+                        {imageURL?.map((imageSrcHometop, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHometop} alt="Hometop_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageHometopChange} />
                     </Form.Group>
+                    
                 <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ชื่อร้าน</Form.Label>
                         <Form.Control type="text" value={name} onChange={event => setName(event.target.value)} />
@@ -155,31 +159,37 @@ export default function hometopPage() {
                     <Button variant="secondary" onClick={CloseModal}>
                         ยกเลิก
                     </Button>
-                    <Button variant="success" onClick={() => {
+                    <Button variant="success" onClick={async () => {
 
-                            executeHomeTopPut({
+                      let data =new FormData()
+                      data.append('file', image[0])
+                      const imageData = await uploadImage({data: data})
+                      const id =imageData.data.result.id
+
+                      await executeHomeTopPut({
                             url: '/api/hometop/' + homeTopById?.id,
                             method: 'PUT',
                             data: {
-                                image: ` `,
                                 name: name,
                                 subname: subname,
                                 link: link,
-                            }
-                        }).then(() => {
-                            Promise.all([
-                                setImage(''),
-                                setName(''),
-                                setSubName(''),
-                                setLink(''),
-                                getHometop()
-                              
-                            ]).then(() => {
-                                CloseModal()
+                                image: `https://imagedelivery.net/QZ6TuL-3r02W7wQjQrv5DA/${id}/public`,
+                           
+                              }
+                            }).then(() => {
+                                Promise.all([
+                                    setName(''),
+                                    setSubName(''),          
+                                    setLink(''),
+                                    setImage(''),
+                                    getHometop()
+                                  
+                                ]).then(() => {
+                                    CloseModal()
+                                })
                             })
-                        })
-
-                    }}>
+    
+                        }}>
                         บันทึก
                     </Button>
                 </Modal.Footer>
