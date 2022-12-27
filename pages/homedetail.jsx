@@ -14,11 +14,8 @@ export default function ProdutsPage() {
     const [{data: homeDetailData, homeDetailLoading, homeDetailError}, getHomeDetail] = useAxios({url: '/api/homedetail'})
     const [{data: homeDetailById,homeDetailByIdLoading, homeDetailByIdError}, getHomeDetailById] = useAxios({}, {manual:true})
 
-    const [{data: productsData, loading, error}, getProducts] = useAxios({url: '/api/products'})
-    const [{ data: productsById , loading: productsByIdLoading , error: productsByIdError}, getProductsById] = useAxios({},{ manual: true } )
-    
-    
-    const [{ data: postData, error: errorMessage, loading: productsLoading }, executeProducts] = useAxios({ url: '/api/products', method: 'POST' }, { manual: true });
+
+    const [{ data: postData, error: errorMessage, loading: productsLoading }, executeHomeDetail] = useAxios({ url: '/api/homedetail', method: 'POST' }, { manual: true });
     const [{ loading: updateProductsLoading, error: updateProductsError }, executeHomeDetailPut] = useAxios({},{manual: true})
     const [{ loading: deleteProductsLoading, error: deleteProductsError }, executeHomeDetailDelete] = useAxios({}, { manual: true })
 
@@ -26,6 +23,7 @@ export default function ProdutsPage() {
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [detail, setDetail] = useState('');
+    
 
     useEffect(() =>{
       setTitle(homeDetailById?.title)
@@ -44,11 +42,11 @@ export default function ProdutsPage() {
      setIsShowModalEdit(true);
      }
 
-   const CloseModal = () => {setIsShowModalEdit(false)};
+   const CloseModal = () => {setIsShowModalEdit(false),setShowModalCreate(false)};
 
 
-    // if (loading || headLoading || headByIdLoading || productsByIdLoading || updateProductsLoading || deleteProductsLoading) return <p>Loading...</p>
-    // if (error || headError || headByIdError || productsByIdError || updateProductsError || deleteProductsError) return <p>Error!</p>
+    if (homeDetailLoading ) return <p>Loading...</p>
+    if (homeDetailByIdLoading ) return <p>Error!</p>
     return (
         < >
         <Head>
@@ -103,30 +101,48 @@ export default function ProdutsPage() {
       
   
           {/* Create */}
-          {/* <Modal show={showModalCreate} onHide={CloseModal}  centered className="bg-templant">
-                <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มข้อมูลสินค้า</Modal.Title>
+          <Modal show={showModalCreate} onHide={CloseModal}  centered className="bg-templant">
+          <Modal.Header closeButton >
+                    <Modal.Title>แก้ไขข้อมูลหน้าสินค้า</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพสินค้า</Form.Label>
-                        <Form.Control type="file" />
-                    </Form.Group>
-                    
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อสินค้า</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
+                <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                        <Form.Control type="text"  onChange={event => setTitle(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle(event.target.value)} />
+                        <Form.Label>ชื่อหัวข้อย่อย</Form.Label>
+                        <Form.Control type="text" rows={3}  onChange={event => setSubtitle(event.target.value)} />
                     </Form.Group>
-              
+
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
+                    <Form.Label>รายละเอียด</Form.Label>
+                
+                         
+                        <CKEditor
+                        onChange={event=> setDetail( event.editor.getData())}
+                        config={{
+                          uiColor: "#ddc173 ",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />
+                        
+                 
+                         
+                        
                     </Form.Group>
+                         
+                        
+                    
 
                 </Modal.Body>
                 <Modal.Footer>
@@ -135,21 +151,19 @@ export default function ProdutsPage() {
                     </Button>
                     <Button variant="success" onClick={async event => {
                        
-                       await executeProducts({
+                       await executeHomeDetail({
                             data: {
 
-                                title: title,
-                                subtitle: subtitle,
-                                detail: detail,
-                                image:``,  
+                                title:title,
+                                subtitle:subtitle,
+                                detail:detail,
                             } 
                         }).then(() => {
                             Promise.all([
                                 setTitle(''),
-                                setSubtitle(''),          
+                                setSubtitle(''),
                                 setDetail(''),
-                                setImage(''),
-                                getProducts()
+                                getHomeDetail()  
                             ]).then(() => {
                                 CloseModal()
                             })
@@ -158,7 +172,7 @@ export default function ProdutsPage() {
                         เพิ่ม
                     </Button>
                 </Modal.Footer>
-            </Modal> */}
+            </Modal>
 
           {/* EditHead */}
             <Modal show={isShowModalEdit} onHide={CloseModal} centered className="bg-templant">
@@ -182,7 +196,6 @@ export default function ProdutsPage() {
                         {detail? 
                         <CKEditor
                         initData={detail}
-                        
                         onChange={event=> setDetail( event.editor.getData())}
                         config={{
                           uiColor: "#ddc173 ",
