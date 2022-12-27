@@ -2,6 +2,9 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import IndexPage from "components/layouts/IndexPage";
 // import { useRouter } from 'next/router';
+// import useAxios from 'axios-hooks';
+import axios from 'axios'
+import FormData from 'form-data';
 import {
   Container,
   Image,
@@ -19,25 +22,22 @@ import { FaReply, FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 
 export default function hometopPage() {
 
-  const [{ data: hometopData, loading, error }, gethometop] = useAxios({
-    url: "/api/hometop",
-  });
-  const [{data: homeTopById,homeTopByIdLoading, homeTopByIdError}, getHomeTopId] = useAxios({}, {manual:true})
+  const [{ data: hometopData, loading, error }, getHometop] = useAxios({ url: "/api/hometop", });
 
-  const [
-    { loading: updatehometopLoading, error: updatehometopError },
-    executeHomeePut,
-  ] = useAxios({}, { manual: true });
+  const [{data: homeTopById,homeTopByIdLoading, homeTopByIdError}, getHomeTopId] = useAxios({}, {manual:true})
 
   const [{ loading: updateHomeTopLoading, error: updateHomeTopError }, executeHomeTopPut] = useAxios({},{manual: true})
 
-  const [imge, setImge] = useState([]);
-  const [imageURL, setImageURL] = useState([]);
+  const[{loading: imgLoading, error: imgError}, uploadImage]= useAxios({url: '/api/upload', method: 'POST'},{manual: true});
+
+
 
   const [name, setName] = useState("");
   const [subname, setSubName] = useState("");
   const [link, setLink] = useState("");
   const [image, setImage] = useState("");
+  
+  const [imageURL, setImageURL] = useState([]);
 
   useEffect(() => {
     setName(homeTopById?.name);
@@ -45,6 +45,8 @@ export default function hometopPage() {
     setLink(homeTopById?.link);
   }, [homeTopById]);
 
+  //    Modal
+  const [showModalCreate, setShowModalCreate] = useState(false);
   const [isShowModalEdit, setIsShowModalEdit] = useState(false);
 
   const ShowModalEdit = async (id) => { 
@@ -52,21 +54,21 @@ export default function hometopPage() {
     setIsShowModalEdit(true);
     }
 
-  useEffect(() => {
-    if (imge.length < 1) return;
-    const newImageUrl = [];
-    imge.forEach((image1) => newImageUrl.push(URL.createObjectURL(image1)));
-    setImageURL(newImageUrl);
-  }, [imge]);
+  // useEffect(() => {
+  //   if (img.length < 1) return;
+  //   const newImageUrl = [];
+  //   img.forEach((image1) => newImageUrl.push(URL.createObjectURL(image1)));
+  //   setImageURL(newImageUrl);
+  // }, [img]);
 
-  const onImageHomeeChange = (e) => {
-    setImage([...e.target.files]);
-  };
+  // const onImageHometopChange = (e) => {
+  //   setImage([...e.target.files]);
+  // };
 
   const CloseModal = () => {setIsShowModalEdit(false)};
 
-  // if (loading ||  updateHomeeLoading ) return <p>Loading...</p>
-  // if (error ||  updateHomeeError ) return <p>Error!</p>
+  if (loading || homeTopByIdLoading ||  updateHomeTopLoading || imgLoading ) return <p>Loading...</p>
+  if (error  || homeTopByIdError ||  updateHomeTopError || imgError) return <p>Error!</p>
   return (
     <>
       <Head>
@@ -75,54 +77,62 @@ export default function hometopPage() {
         <link rel="icon" href="/images/logo.png" />
       </Head>
 
+           
       <Container fluid className=" pt-4 px-4">
-        <div className="bg-secondary rounded shadow p-4">
-          <div className="d-flex align-items-center justify-content-between mb-4">
-            <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าบ้าน</h5>
-          </div>
+                    <div className="bg-secondary rounded shadow p-4">
+                <div className="d-flex align-items-center justify-content-between mb-4">
+                    <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าหลัก</h5>
+                </div>
 
-          {hometopData?.map((hometopData, index) => (
-            <div key={index}>
-              {detail("รูปภาพของร้าน", imageURL?.length === 0 && (
-                    <Image
-                      className="mb-2"
-                      style={{ height: 200 }}
-                      src={hometopData.image}
-                      alt="hometop_img"
-                      fluid
-                      rounded
-                    />
-                  ))}
-              {detail("ชื่อร้าน", hometopData.name)}
-              {detail("รายละเอียดย่อย", hometopData.subname)}
-              {detail("link", hometopData.link)}
+ 
+                <div className=" w- d-flex align-items-center border-bottom py-2">
+                    <div className="table-responsive w-100">
+                    <table className="table text-start align-middle table-bordered table-hover mb-0">
 
-              
+                        <thead>
+                        <tr className="text-center">
+                            <th >รูปภาพของร้าน</th>
+                            <th >ชื่อร้าน</th>
+                            <th >รายละเอียดย่อย</th>
+                            <th >ลิงค์</th>
+                            <th >จัดการ</th>
+                        </tr>
+                        </thead>
 
-              <Button
-                variant="success"
-                onClick={() =>ShowModalEdit(hometopData.id)}
-              >
-                แก้ไข
-              </Button>
-            </div>
-          ))}
-        </div>
-      </Container>
+                        <tbody>
+                        {hometopData?.map((hometop,index) => (
+                            <tr key={index}>
+                               <td className="text-center"> 
+                                <img className="logo" alt="" style={{ width: "150px" }}src={hometop.image} />
+                            </td>
+                            <td className="text-center">{hometop.name}</td>
+                            <td className="text-center">{hometop.subname}</td>
+                            <td className="text-center"> <div dangerouslySetInnerHTML={{ __html: hometop?.link }} /> </td>
+                            <td className="text-center">
+                            <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(hometop.id)}><FaEdit /></a> <t/>     
+                                  {/* <a className="btn btn-outline-danger sm-2" onClick={() => executeHomeDetailDelete({ url: '/api/homedetail/' + hometop.id, method: 'DELETE'})} ><FaTrash /></a> */}
+                       </td>
+                        </tr>
+                        ))}
+                        </tbody>
+                        </table>
+                        </div>
+                    </div>
+                </div>
+
+            </Container>
 
       <Modal show={isShowModalEdit} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
-                    <Modal.Title>แก้ไขข้อมูลหน้าสินค้า</Modal.Title>
+                    <Modal.Title>แก้ไขข้อมูลหน้าหลัก</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
 
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพของร้าน</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={image} alt="ho_img" fluid rounded />}
-                        {imageURL?.map((imageSrcHomee, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHomee} alt="homee_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageHomeeChange} />
+                <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพสินค้า</Form.Label>
+                            {imageURL.map((imageSrcProduct, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcHometop} alt="product_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" />
                     </Form.Group>
-
                 <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ชื่อร้าน</Form.Label>
                         <Form.Control type="text" value={name} onChange={event => setName(event.target.value)} />
@@ -135,7 +145,7 @@ export default function hometopPage() {
 
                     
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>link</Form.Label>subtitle1
+                        <Form.Label>ลิงค์</Form.Label>
                         <Form.Control type="text"value={link} onChange={event => setLink(event.target.value)} />
                     </Form.Group>
 
@@ -151,7 +161,7 @@ export default function hometopPage() {
                             url: '/api/hometop/' + homeTopById?.id,
                             method: 'PUT',
                             data: {
-                                image: '',
+                                image: ` `,
                                 name: name,
                                 subname: subname,
                                 link: link,
@@ -162,7 +172,7 @@ export default function hometopPage() {
                                 setName(''),
                                 setSubName(''),
                                 setLink(''),
-                                gethometop()
+                                getHometop()
                               
                             ]).then(() => {
                                 CloseModal()
@@ -179,7 +189,6 @@ export default function hometopPage() {
   );
 
   
-
   function detail(label, value) {
     return (
       <div>
