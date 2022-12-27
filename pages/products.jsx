@@ -53,11 +53,11 @@ export default function ProdutsPage() {
     const newImageUrl = []
     image.forEach(image => newImageUrl.push(URL.createObjectURL(image)))
     setImageURL(newImageUrl)
-}, [image])
+    }, [image])
 
-const onImageProductChange = (e) => {
-    setImage([...e.target.files])
-}
+    const onImageProductChange = (e) => {
+        setImage([...e.target.files])
+    }
 
 
 
