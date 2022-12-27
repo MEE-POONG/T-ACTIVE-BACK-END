@@ -59,12 +59,6 @@ model Contact {
   deleted_at DateTime? @map("deleted_at")
 }
 
-model Homedetail {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title      String?
-  subtitle   String?
-  detail     String?
-}
 model Homee {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title1     String?
@@ -95,12 +89,11 @@ model Hometop {
   deleted_at DateTime? @map("deleted_at")
 }
 
-
 model Homedetail {
   id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title     String?
-  subtitle  String?
-  detail    String?
+  title      String?
+  subtitle   String?
+  detail     String?
   createdAt  DateTime? @default(now())
   updatedAt  DateTime? @updatedAt
   deleted_at DateTime? @map("deleted_at")
