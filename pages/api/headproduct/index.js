@@ -18,10 +18,10 @@ export default async function handler(req, res) {
             try {
                 await prisma.headproduct.create({
                     data: {
-                        image: req.body.image,
-                        name: req.body.name,
-                        subname: req.body.subname,
-                        link: req.body.link,          
+                        title: req.body.title,
+                        subtitle: req.body.subtitle,
+                        detail: req.body.detail,
+                                 
                     }
                 })
                 res.status(201).json({ success: true })
