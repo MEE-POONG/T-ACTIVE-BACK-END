@@ -24,20 +24,10 @@ export default async function handler(req, res) {
                         id: req.query.id
                     },
                     data: {
-                        title1 : req.body.title1,
-                        subtitle1 : req.body.subtitle1,
-                        detail1 : req.body.detail1,
-                        imagea1 : req.body.imagea1,
-
-                        title2 : req.body.title2,
-                        subtitle2 : req.body.subtitle2,
-                        detail2 : req.body.detail2,
-                        imagea2 : req.body.imagea2,
-
-                        title3 : req.body.title3,
-                        subtitle3 : req.body.subtitle3,
-                        detail3 : req.body.detail3,
-                        imagea3 : req.body.imagea3,
+                        title : req.body.title,
+                        subtitle : req.body.subtitle,
+                        detail : req.body.detail,
+                        image : req.body.image,
                     }
                 })
                 prisma.$disconnect();

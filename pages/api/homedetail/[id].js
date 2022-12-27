@@ -35,6 +35,19 @@ export default async function handler(req, res) {
                 res.status(400).json({ success: false })
             }
             break
+            case 'DELETE':
+            try {
+                await prisma.homedetail.delete({
+                    where: {
+                        id: req.query.id
+                    }
+                });
+                prisma.$disconnect();
+                res.status(204).json({ success: true })
+            } catch (error) {
+                res.status(400).json({ success: false })
+            }
+            break
         default:
             res.setHeader('Allow', ['GET', 'POST'])
             res.status(405).end(`Method ${method} Not Allowed`)

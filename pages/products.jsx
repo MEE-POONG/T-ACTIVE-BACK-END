@@ -30,8 +30,9 @@ export default function ProdutsPage() {
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [detail, setDetail] = useState('');
-    const [image, setImage] = useState([])
+    const [img, setImg] = useState('');
 
+    const [image, setImage] = useState([])
     const [imageURL, setImageURL] = useState([])
 
     useEffect(() =>{
@@ -43,8 +44,21 @@ export default function ProdutsPage() {
     setTitle(productsById?.title)
     setSubtitle(productsById?.subtitle)
     setDetail(productsById?.detail)
-    setImage(productsById?.image)
+    setImg(productsById?.image)
    },[productsById])
+
+   useEffect(() => {
+
+    if (image.length < 1) return
+    const newImageUrl = []
+    image.forEach(image => newImageUrl.push(URL.createObjectURL(image)))
+    setImageURL(newImageUrl)
+    }, [image])
+
+    const onImageProductChange = (e) => {
+        setImage([...e.target.files])
+    }
+
 
 
 //    Modal
@@ -127,7 +141,7 @@ export default function ProdutsPage() {
                         {productsData?.map((products,index) => (
                             <tr key={index}>
                             <td className="text-center"> 
-                                <img className="logo" alt="" style={{ width: "50px" }}src={products.image} />
+                                <img className="logo" alt="" style={{ width: "50px" }} src={products.image} />
                             </td>
                             <td className="text-center">{products.title}</td>
                             <td className="text-center">{products.subtitle}</td>
@@ -156,7 +170,7 @@ export default function ProdutsPage() {
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label className='d-block'>รูปภาพสินค้า</Form.Label>
                             {imageURL.map((imageSrcProduct, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcProduct} alt="product_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" />
+                        <Form.Control type="file" accept="image/*" onChange={onImageProductChange} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
@@ -266,7 +280,9 @@ export default function ProdutsPage() {
                 <Modal.Body>
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label className='d-block'>รูปภาพสินค้า1</Form.Label>
-                        <Form.Control type="file" />
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={img} alt="product_img" fluid rounded />}
+                        {imageURL?.map((imageSrcProduct, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcProduct} alt="product_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageProductChange} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
@@ -289,16 +305,22 @@ export default function ProdutsPage() {
                     <Button variant="secondary" onClick={CloseModal}>
                         ยกเลิก
                     </Button>
-                    <Button variant="success" onClick={() => {
+                    <Button variant="success" onClick={async () => {
 
-                        executeProductsPut({
+                        let data =new FormData()
+                        data.append('file', image[0])
+                        const imageData = await uploadImage({data: data})
+                        const id =imageData.data.result.id
+                        
+                        await executeProductsPut({
                             url: '/api/products/' + productsById?.id,
                             method: 'PUT',
                             data: {
                                 title: title,
                                 subtitle: subtitle,
                                 detail: detail,
-                                image:``,  
+                                image:`https://imagedelivery.net/QZ6TuL-3r02W7wQjQrv5DA/${id}/public`,  
+ 
                             }
                         }).then(() => {
                             Promise.all([
