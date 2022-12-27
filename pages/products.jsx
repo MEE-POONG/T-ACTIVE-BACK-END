@@ -22,9 +22,6 @@ export default function ProdutsPage() {
     const [{ loading: deleteProductsLoading, error: deleteProductsError }, executeProductsDelete] = useAxios({}, { manual: true })
 
     const[{loading: imgLoading, error: imgError}, uploadImage]= useAxios({url: '/api/upload', method: 'POST'},{manual: true});
-
-    const [image, setImage] = useState([])
-    const [imageURL, setImageURL] = useState([])
   
     const [header, setHeader] = useState('');
     const [subheader, setSubheader] = useState('');
@@ -33,6 +30,9 @@ export default function ProdutsPage() {
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [detail, setDetail] = useState('');
+    const [image, setImage] = useState([])
+
+    const [imageURL, setImageURL] = useState([])
 
     useEffect(() =>{
         setHeader(headById?.header)
@@ -45,6 +45,7 @@ export default function ProdutsPage() {
     setDetail(productsById?.detail)
     setImage(productsById?.image)
    },[productsById])
+
 
 //    Modal
     const [showModalCreate, setShowModalCreate] = useState(false);
