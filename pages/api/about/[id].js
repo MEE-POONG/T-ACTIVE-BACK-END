@@ -24,18 +24,17 @@ export default async function handler(req, res) {
                         id: req.query.id
                     },
                     data: {
-                        title : req.body.title,
-                        subtitle : req.body.subtitle,
-                        detail : req.body.detail,
-                        image : req.body.image,
+                        image: req.body.image,
+                        title: req.body.title,
+                        subtitle: req.body.subtitle,
+                        detail: req.body.detail,    
                     }
+
                 })
                 prisma.$disconnect();
                 res.status(201).json({ success: true })
             } catch (error) {
-                console.log(error);
-                //  res.status(400).json({ success: false })
-
+                res.status(400).json({ success: false })
             }
             break
         case 'DELETE':

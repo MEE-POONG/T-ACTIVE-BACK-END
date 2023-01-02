@@ -1,75 +1,72 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import IndexPage from "components/layouts/IndexPage";
-// import { useRouter } from 'next/router';
 import { Container, Image, Table, Button, Form, OverlayTrigger, Badge, Modal, Row } from 'react-bootstrap';
-import Editor from '@/components/Ckeditor/Editor';
 import useAxios from 'axios-hooks';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
-import { CKEditor } from "ckeditor4-react";
 import axios from 'axios'
+import FormData from 'form-data';
 
 export default function AboutPage() {
-    const [{data: aboutData, loading, error}, getAbout] = useAxios({url: '/api/about/28085e1f-3c40-4d69-b2c9-28e1924cf219' ,method: 'GET'})
+
+  
+    const [{ data: aboutData, loading, error}, getAbout] = useAxios({url: '/api/about'})
+    const [{ data: aboutById , loading: aboutByIdLoading , error: aboutByIdError}, getAboutById] = useAxios({},{ manual: true } )
+    
+    const [{ data: AboutPost, error: AboutPostError, loading: AboutPostLoading }, executeAboutPost] = useAxios({ url: '/api/about', method: 'POST' }, { manual: true });
     const [{ loading: updateAboutLoading, error: updateAboutError }, executeAboutPut] = useAxios({},{manual: true})
+    const [{ loading: deleteAboutLoading, error: deleteAboutError }, executeAboutDelete] = useAxios({}, { manual: true })
 
+    const[{loading: imgLoading, error: imgError}, uploadImage]= useAxios({url: '/api/upload', method: 'POST'},{manual: true});
+  
 
+    
+
+    const [title, setTitle] = useState('');
+    const [subtitle, setSubtitle] = useState('');
+    const [detail, setDetail] = useState('');
+    const [img, setImg] = useState('');
 
     const [image, setImage] = useState([])
     const [imageURL, setImageURL] = useState([])
 
-    const [title1, setTitle1] = useState('');
-    const [subtitle1, setSubtitle1] = useState('');
-    const [detail1, setDetail1] = useState('');
-    const [imagea1, setImagea1] = useState('');
-    
-    const [title2, setTitle2 ] = useState('');
-    const [subtitle2, setSubtitle2] = useState('');
-    const [detail2, setDetail2] = useState('');
-    const [imagea2, setImagea2] = useState('');
-
-    const [title3, setTitle3] = useState('');
-    const [subtitle3, setSubtitle3] = useState('');
-    const [detail3, setDetail3] = useState('');
-    const [imagea3, setImagea3] = useState('');
-
-   
 
    useEffect(() =>{
-    setTitle1(aboutData?.title1)
-    setSubtitle1(aboutData?.subtitle1)
-    setDetail1(aboutData?.detail1)
-    setImagea1(aboutData?.imagea1)
+    setTitle(aboutById?.title)
+    setSubtitle(aboutById?.subtitle)
+    setDetail(aboutById?.detail)
+    setImg(aboutById?.image)
+   },[aboutById])
 
-    setTitle2(aboutData?.title2)
-    setSubtitle2(aboutData?.subtitle2)
-    setDetail2(aboutData?.detail2)
-    setImagea2(aboutData?.imagea2)
+   useEffect(() => {
 
-    setTitle3(aboutData?.title3)
-    setSubtitle3(aboutData?.subtitle3)
-    setDetail3(aboutData?.detail3)
-    setImagea3(aboutData?.imagea3)
-
-   },[aboutData])
-
-    useEffect(() => {
-
-        if (image.length < 1) return
-        const newImageUrl = []
-        image.forEach(image1 => newImageUrl.push(URL.createObjectURL(image1)))
-        setImageURL(newImageUrl)
+    if (image.length < 1) return
+    const newImageUrl = []
+    image.forEach(image => newImageUrl.push(URL.createObjectURL(image)))
+    setImageURL(newImageUrl)
     }, [image])
 
     const onImageAboutChange = (e) => {
-        setImagea1([...e.target.files])
-        setImagea2([...e.target.files])
-        setImagea3([...e.target.files])
+        setImage([...e.target.files])
     }
 
 
-    if (loading || updateAboutLoading ) return <p>Loading...</p>
-    if (error || updateAboutError ) return <p>Error!</p>
+
+//    Modal
+    const [showModalCreate, setShowModalCreate] = useState(false);
+    const [showModalEdit, setShowModalEdit] = useState(false);
+   
+
+   const ShowModalCreate = () => setShowModalCreate(true);
+   const ShowModalEdit = async (id) => { 
+    await getAboutById({url: '/api/about/'+id,method:'GET'});
+    setShowModalEdit(true);
+    }
+    
+   const CloseModal = () => {setShowModalCreate(false) ,setShowModalEdit(false)};
+
+    if (loading || aboutByIdLoading || AboutPostLoading || updateAboutLoading || deleteAboutLoading || imgLoading ) return <p>Loading...</p>
+    if (error || aboutByIdError || AboutPostError || updateAboutError || deleteAboutError || imgError ) return <p>Error!</p>
     return (
         < >
         <Head>
@@ -78,192 +75,188 @@ export default function AboutPage() {
             <link rel="icon" href="/images/logo.png" />
        </Head>
                
+                 
             <Container fluid className=" pt-4 px-4">
-                    <div className="bg-secondary rounded shadow p-4">
-                    <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าเกี่ยวกับ</h5>
+            <div className="bg-secondary rounded shadow p-4">
                     <div className="d-flex align-items-center justify-content-between mb-4">
+                        <h5 className="mb-0 w-m-max me-2">ข้อมูล</h5>
+                        <Button variant="dark" onClick={ShowModalCreate}>
+                                <FaPlus />
+                        </Button>
+                    </div>
+ 
+                <div className=" w- d-flex align-items-center border-bottom py-2">
+                    <div className="table-responsive w-100">
+                    <table className="table text-start align-middle table-bordered table-hover mb-0">
+                        <thead>
+                        <tr className="text-center">
+                            <th >รูปภาพ</th>
+                            <th >ชื่อ</th>
+                            <th >รายละเอียด</th>
+                            <th >ประเภท</th>
+                            <th >จัดการ</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {aboutData?.map((about,index) => (
+                            <tr key={index}>
+                            <td className="text-center"> 
+                                <img className="logo" alt="" style={{ width: "50px" }} src={about.image} />
+                            </td>
+                            <td className="text-center">{about.title}</td>
+                            <td className="text-center">{about.subtitle}</td>
+                            <td className="text-center">{about.detail}</td>
+                            <td className="text-center">
+                            <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a> <t/>     
+                                  <a className="btn btn-outline-danger sm-2" onClick={() => executeAboutDelete({ url: '/api/about/' + about.id, method: 'DELETE'})} ><FaTrash /></a>
+                       </td>
+                        </tr>
+                        ))}
+                        </tbody>
+                        </table>
+                        </div>
+                    </div>
                 </div>
 
-                
-                <div className="d-flex align-items-center border-bottom py-2" >
-                    <div className="table-responsive w-100">
+            </Container>
+      
+  
+          {/* Create */}
+          <Modal show={showModalCreate} onHide={CloseModal}  centered className="bg-templant">
+                <Modal.Header closeButton >
+                    <Modal.Title>เพิ่มข้อมูล</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพ</Form.Label>
+                            {imageURL.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="About_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
+                    </Form.Group>
                     
-                    <Form.Group controlId="formFile" className="mb-3">   { /* 1 */}
-                        <Form.Label>ชื่อหัวข้อ 1</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={title1} onChange={event => setTitle1(event.target.value)} />
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อ</Form.Label>
+                        <Form.Control type="text"  onChange={event => setTitle(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>หัวข้อย่อย 1</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={subtitle1} onChange={event => setSubtitle1(event.target.value)} />
+                        <Form.Label>รายละเอียด</Form.Label>
+                        <Form.Control as="textarea"   onChange={event => setSubtitle(event.target.value)} />
+                    </Form.Group>
+              
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
+                        <Form.Control as="textarea"   onChange={event => setDetail(event.target.value)} />
                     </Form.Group>
 
-                    <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label className='d-block'>รูปภาพของร้าน 1</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea1} alt="about_img" fluid rounded />}
-                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
-                    </Form.Group>
-                        
-                    <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label>รายละเอียด 1</Form.Label>
-                    {detail1? 
-                        <CKEditor
-                        initData={detail1}
-                        onChange={event=> setDetail1( event.editor.getData())}
-                        config={{
-                          uiColor: "#ddc173 ",
-                          language: "th",
-                          // extraPlugins: "uploadimage",
-                          // filebrowserUploadMethod: "form",
-                          // filebrowserUploadUrl: ("/uploader/upload"),
-                          // filebrowserBrowseUrl: '/addgallery',
-                          // toolbar: [
-                          // ],
-                          extraPlugins: "easyimage,autogrow,emoji",
-                          // removePlugins: 'image',
-                        }}
-                        />
-                        :null}
-                 
-                    
-                    </Form.Group>                  
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพของร้าน 2</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea2} alt="about_img" fluid rounded />}
-                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อ 2</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={title2} onChange={event => setTitle2(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">  { /* 2 */}
-                        <Form.Label>หัวข้อย่อย 2</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={subtitle2} onChange={event => setSubtitle2(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">    
-                    <Form.Label>รายละเอียด 2</Form.Label>
-                    {detail2? 
-                        <CKEditor
-                        initData={detail2}
-                        onChange={event=> setDetail2( event.editor.getData())}
-                        config={{
-                          uiColor: "#ddc173 ",
-                          language: "th",
-                          // extraPlugins: "uploadimage",
-                          // filebrowserUploadMethod: "form",
-                          // filebrowserUploadUrl: ("/uploader/upload"),
-                          // filebrowserBrowseUrl: '/addgallery',
-                          // toolbar: [
-                          // ],
-                          extraPlugins: "easyimage,autogrow,emoji",
-                          // removePlugins: 'image',
-                        }}
-                        />
-                        :null}
-                    </Form.Group>
-                  
-               
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อ 3</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={title3} onChange={event => setTitle3(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">   { /* 3 */}
-                        <Form.Label>หัวข้อย่อย 3</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={subtitle3} onChange={event => setSubtitle3(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพของร้าน 3</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={imagea3} alt="about_img" fluid rounded />}
-                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="about_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
-                    </Form.Group>
-                        
-                    <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label>รายละเอียด 3</Form.Label>
-                    {detail3? 
-                        <CKEditor
-                        initData={detail3}
-                        onChange={event=> setDetail3( event.editor.getData())}
-                        config={{
-                          uiColor: "#ddc173 ",
-                          language: "th",
-                          // extraPlugins: "uploadimage",
-                          // filebrowserUploadMethod: "form",
-                          // filebrowserUploadUrl: ("/uploader/upload"),
-                          // filebrowserBrowseUrl: '/addgallery',
-                          // toolbar: [
-                          // ],
-                          extraPlugins: "easyimage,autogrow,emoji",
-                          // removePlugins: 'image',
-                        }}
-                        />
-                        :null}
-                    </Form.Group>
-
-                    <Button variant="danger">
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={CloseModal}>
                         ยกเลิก
-                    </Button> 
-                    <r/>   <Button variant="success" onClick={() => {
+                    </Button>
+                    <Button variant="success" onClick={async event => {
+                       
+                       let data =new FormData()
+                       data.append('file', image[0])
+                       const imageData = await uploadImage({data: data})
+                       const id =imageData.data.result.id
+                       
+                       await executeAboutPost({
+                            data: {
+                                title: title,
+                                subtitle: subtitle,
+                                detail: detail,
+                                image:`https://imagedelivery.net/QZ6TuL-3r02W7wQjQrv5DA/${id}/public`,  
+                            } 
+                        }).then(() => {
+                            Promise.all([
+                                setTitle(''),
+                                setSubtitle(''),          
+                                setDetail(''),
+                                setImage(''),
+                                getAbout()
+                            ]).then(() => {
+                                CloseModal()
+                            })
+                        })
+                    }}>
+                        เพิ่ม
+                    </Button>
+                </Modal.Footer>
+            </Modal>
 
-                        executeAboutPut({
-                            url: '/api/about/' + aboutData?.id,
+        
+
+               {/* Edit */}
+            <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
+                <Modal.Header closeButton >
+                    <Modal.Title>รายละเอียด</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label className='d-block'>รูปภาพ</Form.Label>
+                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={img} alt="About_img" fluid rounded />}
+                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="About_img" fluid rounded />)}
+                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
+                    </Form.Group>
+                    
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อ</Form.Label>
+                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
+                    </Form.Group>
+
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>รายละเอียด</Form.Label>
+                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle(event.target.value)} />
+                    </Form.Group>
+              
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
+                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
+                    </Form.Group>
+
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={CloseModal}>
+                        ยกเลิก
+                    </Button>
+                    <Button variant="success" onClick={async () => {
+
+                        let data =new FormData()
+                        data.append('file', image[0])
+                        const imageData = await uploadImage({data: data})
+                        const id =imageData.data.result.id
+                        
+                        await executeAboutPut({
+                            url: '/api/about/' + aboutById?.id,
                             method: 'PUT',
                             data: {
-                                title1 : title1,
-                                subtitle1 : subtitle1,
-                                detail1 : detail1,
-                                imagea1 : imagea1,
-
-                                title2 : title2,
-                                subtitle2 : subtitle2,
-                                detail2 : detail2,
-                                imagea2 : imagea2,
-
-                                title3 : title3,
-                                subtitle3 : subtitle3,
-                                detail3 : detail3,
-                                imagea3 : imagea3,
+                                title: title,
+                                subtitle: subtitle,
+                                detail: detail,
+                                image:`https://imagedelivery.net/QZ6TuL-3r02W7wQjQrv5DA/${id}/public`,  
+ 
                             }
                         }).then(() => {
                             Promise.all([
-                               setTitle1(''),
-                               setSubtitle1(''),
-                               setDetail1(''),
-                               setImagea1(''),
-
-                               setTitle2(''),
-                               setDetail2(''),
-                               setDetail2(''),
-                               setImagea2(''),
-
-                               setTitle3(''),
-                               setDetail3(''),
-                               setDetail3(''),
-                               setImagea3(''),
-
+                                setTitle(''),
+                                setSubtitle(''),          
+                                setDetail(''),
+                                setImage(''),
                                 getAbout()
                               
-                            ])
+                            ]).then(() => {
+                                CloseModal()
+                            })
                         })
 
                     }}>
                         บันทึก
                     </Button>
-
-                    </div>
-                </div>
-            </div>
-            </Container>
-
+                </Modal.Footer>
+            </Modal>
         </ >
     );
-}
-AboutPage.layout = IndexPage
-// imagedelivery.net
+
+}        
+AboutPage.layout = IndexPage;

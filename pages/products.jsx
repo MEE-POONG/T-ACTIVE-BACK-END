@@ -1,9 +1,7 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import IndexPage from "components/layouts/IndexPage";
-// import { useRouter } from 'next/router';
 import { Container, Image, Table, Button, Form, OverlayTrigger, Badge, Modal, Row } from 'react-bootstrap';
-// import Editor from '@/components/Ckeditor/Editor';
 import useAxios from 'axios-hooks';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import axios from 'axios'
@@ -17,7 +15,7 @@ export default function ProdutsPage() {
     const [{data: productsData, loading, error}, getProducts] = useAxios({url: '/api/products'})
     const [{ data: productsById , loading: productsByIdLoading , error: productsByIdError}, getProductsById] = useAxios({},{ manual: true } )
     
-    const [{ data: postData, error: errorMessage, loading: productsLoading }, executeProducts] = useAxios({ url: '/api/products', method: 'POST' }, { manual: true });
+    const [{ data: postData, error: errorMessage, loading: productsLoading }, executeProductsPost] = useAxios({ url: '/api/products', method: 'POST' }, { manual: true });
     const [{ loading: updateProductsLoading, error: updateProductsError }, executeProductsPut] = useAxios({},{manual: true})
     const [{ loading: deleteProductsLoading, error: deleteProductsError }, executeProductsDelete] = useAxios({}, { manual: true })
 
@@ -175,17 +173,17 @@ export default function ProdutsPage() {
                     
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ชื่อสินค้า</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
+                        <Form.Control type="text"  onChange={event => setTitle(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>รายละเอียดสินค้า</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle(event.target.value)} />
+                        <Form.Control as="textarea"   onChange={event => setSubtitle(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>อธิบายเพิ่มเติม</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
+                        <Form.Control as="textarea"   onChange={event => setDetail(event.target.value)} />
                     </Form.Group>
 
                 </Modal.Body>
@@ -200,9 +198,8 @@ export default function ProdutsPage() {
                        const imageData = await uploadImage({data: data})
                        const id =imageData.data.result.id
                        
-                       await executeProducts({
+                       await executeProductsPost({
                             data: {
-
                                 title: title,
                                 subtitle: subtitle,
                                 detail: detail,
@@ -279,24 +276,24 @@ export default function ProdutsPage() {
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพสินค้า1</Form.Label>
+                        <Form.Label className='d-block'>รูปภาพสินค้า</Form.Label>
                         {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={img} alt="product_img" fluid rounded />}
                         {imageURL?.map((imageSrcProduct, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcProduct} alt="product_img" fluid rounded />)}
                         <Form.Control type="file" accept="image/*" onChange={onImageProductChange} />
                     </Form.Group>
                     
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อสินค้า1</Form.Label>
+                        <Form.Label>ชื่อสินค้า</Form.Label>
                         <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
                     </Form.Group>
 
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียดสินค้า1</Form.Label>
+                        <Form.Label>รายละเอียดสินค้า</Form.Label>
                         <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle(event.target.value)} />
                     </Form.Group>
               
                     <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม1</Form.Label>
+                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
                         <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
                     </Form.Group>
 
