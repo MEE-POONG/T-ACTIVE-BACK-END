@@ -210,7 +210,22 @@ export default function ProdutsPage() {
                           // removePlugins: 'image',
                         }}
                         />
-                        :null}
+                        :
+                        <CKEditor
+                        onChange={event=> setDetail( event.editor.getData())}
+                        config={{
+                          uiColor: "#ddc173 ",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />}
                  
                          
                         
