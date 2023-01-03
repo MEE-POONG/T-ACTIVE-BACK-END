@@ -95,7 +95,7 @@ export default function hometopPage() {
                             <th >รูปภาพของร้าน</th>
                             <th >ชื่อร้าน</th>
                             <th >รายละเอียดย่อย</th>
-                            <th >ลิงค์</th>
+                            {/* <th >ลิงค์</th> */}
                             <th >จัดการ</th>
                         </tr>
                         </thead>
@@ -108,7 +108,7 @@ export default function hometopPage() {
                             </td>
                             <td className="text-center">{hometop.name}</td>
                             <td className="text-center">{hometop.subname}</td>
-                            <td className="text-center"> <div dangerouslySetInnerHTML={{ __html: hometop?.link }} /> </td>
+                            {/* <td className="text-center"> <div dangerouslySetInnerHTML={{ __html: hometop?.link }} /> </td> */}
                             <td className="text-center">
                             <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(hometop.id)}><FaEdit /></a> <t/>     
                                   {/* <a className="btn btn-outline-danger sm-2" onClick={() => executeHomeDetailDelete({ url: '/api/homedetail/' + hometop.id, method: 'DELETE'})} ><FaTrash /></a> */}
@@ -148,10 +148,10 @@ export default function hometopPage() {
                     </Form.Group>
 
                     
-                    <Form.Group controlId="formFile" className="mb-3">
+                    {/* <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>ลิงค์</Form.Label>
                         <Form.Control type="text"value={link} onChange={event => setLink(event.target.value)} />
-                    </Form.Group>
+                    </Form.Group> */}
 
                 </Modal.Body>
                 
@@ -180,7 +180,7 @@ export default function hometopPage() {
                                 Promise.all([
                                     setName(''),
                                     setSubName(''),          
-                                    setLink(''),
+                                    // setLink(''),
                                     setImage(''),
                                     getHometop()
                                   
