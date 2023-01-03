@@ -295,7 +295,6 @@ export default function AboutPage() {
                                 setDetail(''),
                                 setImage(''),
                                 getAbout()
-                              
                             ]).then(() => {
                                 CloseModal()
                             })
