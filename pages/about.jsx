@@ -6,6 +6,7 @@ import useAxios from 'axios-hooks';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import axios from 'axios'
 import FormData from 'form-data';
+import { CKEditor } from "ckeditor4-react";
 
 export default function AboutPage() {
 
@@ -93,7 +94,7 @@ export default function AboutPage() {
                             <th >รูปภาพ</th>
                             <th >ชื่อ</th>
                             <th >รายละเอียด</th>
-                            <th >ประเภท</th>
+                            <th >อธิบายเพิ่มเติม</th>
                             <th >จัดการ</th>
                         </tr>
                         </thead>
@@ -106,7 +107,7 @@ export default function AboutPage() {
                             </td>
                             <td className="text-center">{about.title}</td>
                             <td className="text-center">{about.subtitle}</td>
-                            <td className="text-center">{about.detail}</td>
+                            <td className="text-center"><div dangerouslySetInnerHTML={{ __html: about?.detail }} /> </td>
                             <td className="text-center">
                             <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a> <t/>     
                                   <a className="btn btn-outline-danger sm-2" onClick={() => executeAboutDelete({ url: '/api/about/' + about.id, method: 'DELETE'})} ><FaTrash /></a>
@@ -146,7 +147,23 @@ export default function AboutPage() {
               
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>อธิบายเพิ่มเติม</Form.Label>
-                        <Form.Control as="textarea"   onChange={event => setDetail(event.target.value)} />
+
+                        <CKEditor
+                        onChange={event=> setDetail( event.editor.getData())}
+                        config={{
+                          uiColor: "#ddc173 ",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />
+
                     </Form.Group>
 
                 </Modal.Body>
@@ -212,7 +229,41 @@ export default function AboutPage() {
               
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label>อธิบายเพิ่มเติม</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={detail} onChange={event => setDetail(event.target.value)} />
+
+                        {detail? 
+                        <CKEditor
+                        initData={detail}
+                        onChange={event=> setDetail( event.editor.getData())}
+                        config={{
+                          uiColor: "#ddc173 ",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />
+                        :
+                        <CKEditor
+                        onChange={event=> setDetail( event.editor.getData())}
+                        config={{
+                          uiColor: "#ddc173 ",
+                          language: "th",
+                          // extraPlugins: "uploadimage",
+                          // filebrowserUploadMethod: "form",
+                          // filebrowserUploadUrl: ("/uploader/upload"),
+                          // filebrowserBrowseUrl: '/addgallery',
+                          // toolbar: [
+                          // ],
+                          extraPlugins: "easyimage,autogrow,emoji",
+                          // removePlugins: 'image',
+                        }}
+                        />}
+
                     </Form.Group>
 
                 </Modal.Body>
