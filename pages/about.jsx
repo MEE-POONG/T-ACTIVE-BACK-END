@@ -94,7 +94,7 @@ export default function AboutPage() {
                             <th >รูปภาพ</th>
                             <th >ชื่อ</th>
                             <th >รายละเอียด</th>
-                            <th >ประเภท</th>
+                            <th >อธิบายเพิ่มเติม</th>
                             <th >จัดการ</th>
                         </tr>
                         </thead>
@@ -107,7 +107,7 @@ export default function AboutPage() {
                             </td>
                             <td className="text-center">{about.title}</td>
                             <td className="text-center">{about.subtitle}</td>
-                            <td className="text-center">{about.detail}</td>
+                            <td className="text-center"><div dangerouslySetInnerHTML={{ __html: about?.detail }} /> </td>
                             <td className="text-center">
                             <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a> <t/>     
                                   <a className="btn btn-outline-danger sm-2" onClick={() => executeAboutDelete({ url: '/api/about/' + about.id, method: 'DELETE'})} ><FaTrash /></a>
@@ -163,7 +163,7 @@ export default function AboutPage() {
                           // removePlugins: 'image',
                         }}
                         />
-                        
+
                     </Form.Group>
 
                 </Modal.Body>
