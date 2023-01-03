@@ -28,7 +28,8 @@ export default async function handler(req, res) {
                         tel: req.body.tel,
                         email: req.body.email,
                         facebook: req.body.facebook,
-                        line: req.body.line,     
+                        line: req.body.line,
+                        linkmap:req.body.linkmap,     
                        
                     }
                 })

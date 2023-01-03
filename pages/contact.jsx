@@ -19,6 +19,7 @@ export default function ContactPage() {
     const [email, setEmail] = useState('');
     const [facebook, setFacebook] = useState('');
     const [line, setLine] = useState('');
+    const [linkmap, setLinkmap] = useState('');
     
    useEffect(() =>{
     setTitle(contactData?.title)
@@ -27,6 +28,7 @@ export default function ContactPage() {
     setEmail(contactData?.email)
     setFacebook(contactData?.facebook)
     setLine(contactData?.line)
+    setLinkmap(contactData?.linkmap)
 
    },[contactData])
 
@@ -40,89 +42,95 @@ export default function ContactPage() {
             <meta name="description" content="I2AROBOT 2" />
             <link rel="icon" href="/images/logo.png" />
        </Head>
-               
-
-            <Container fluid className=" pt-4 px-4">
-                    <div className="bg-secondary rounded shadow p-4">
-                    <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าติดต่อ</h5>
-                    <div className="d-flex align-items-center justify-content-between mb-4">
-                </div>
+       
+        <Container fluid className=" pt-4 px-4">
+            <div className="bg-secondary rounded shadow p-4">
+                        <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าติดต่อ</h5>
+                        {/* <div className="d-flex align-items-center justify-content-between mb-4"></div> */}
 
                 <div className="d-flex align-items-center border-bottom py-2" >
                     <div className="table-responsive w-100">
 
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อ</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={title} onChange={event => setTitle(event.target.value)} />
-                    </Form.Group>
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>ชื่อหัวข้อ</Form.Label>
+                            <Form.Control type="text"style={{ width: "500px" }} value={title} onChange={event => setTitle(event.target.value)} />
+                        </Form.Group>
 
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ที่อยู่</Form.Label>
-                        <Form.Control type="text"style={{ width: "800px" }} value={address} onChange={event => setAddress(event.target.value)} />
-                    </Form.Group>
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>ที่อยู่</Form.Label>
+                            <Form.Control type="text"style={{ width: "800px" }} value={address} onChange={event => setAddress(event.target.value)} />
+                        </Form.Group>
 
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เบอร์โทรศัพท์</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={tel} onChange={event => setTel(event.target.value)} />
-                    </Form.Group>
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>เบอร์โทรศัพท์</Form.Label>
+                            <Form.Control type="text"style={{ width: "500px" }} value={tel} onChange={event => setTel(event.target.value)} />
+                        </Form.Group>
 
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อีเมล์</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={email} onChange={event => setEmail(event.target.value)} />
-                    </Form.Group>
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>อีเมล์</Form.Label>
+                            <Form.Control type="text"style={{ width: "500px" }} value={email} onChange={event => setEmail(event.target.value)} />
+                        </Form.Group>
 
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>เฟสบุค</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={facebook} onChange={event => setFacebook(event.target.value)} />
-                    </Form.Group>
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>เฟสบุค</Form.Label>
+                            <Form.Control type="text"style={{ width: "500px" }} value={facebook} onChange={event => setFacebook(event.target.value)} />
+                        </Form.Group>
 
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ไลน์</Form.Label>
-                        <Form.Control type="text"style={{ width: "500px" }} value={line} onChange={event => setLine(event.target.value)} />
-                    </Form.Group>
-                    
-          
-                    <Button variant="danger">
-                        ยกเลิก
-                    </Button> 
-                    <r/>   <Button variant="success" onClick={() => {
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>ไลน์</Form.Label>
+                            <Form.Control type="text"style={{ width: "500px" }} value={line} onChange={event => setLine(event.target.value)} />
+                        </Form.Group>
 
-                        executeContactPut({
-                            url: '/api/contact/' + contactData?.id,
-                            method: 'PUT',
-                            data: {
-                                title: title,
-                                address: address,
-                                tel: tel,
-                                email: email,
-                                facebook: facebook,
-                                line: line,
-                            }
-                        }).then(() => {
-                            Promise.all([
-                                setTitle(''),
-                                setAddress(''),
-                                setTel(''),
-                                setEmail(''),
-                                setFacebook(''),
-                                setLine(''),
-                                getContact()
-                              
-                            ])
+                        <Form.Group controlId="formFile" className="mb-3">
+                            <Form.Label>ลิงค์แผนที่</Form.Label>
+                            <Form.Control type="text" style={{ width: "500px" }} value={linkmap} onChange={event => setLinkmap(event.target.value)} />
+                        </Form.Group>
+                        
+            
+                        <Button variant="danger">
+                            ยกเลิก
+                        </Button> 
+                        <Button variant="success" onClick={() => {
 
-                        })
+                            executeContactPut({
+                                url: '/api/contact/' + contactData?.id,
+                                method: 'PUT',
+                                data: {
+                                    title: title,
+                                    address: address,
+                                    tel: tel,
+                                    email: email,
+                                    facebook: facebook,
+                                    line: line,
+                                    linkmap: linkmap,
 
-                    }}>
-                    บันทึก
-                </Button>
+                                }
+                            }).then(() => {
+                                Promise.all([
+                                    setTitle(''),
+                                    setAddress(''),
+                                    setTel(''),
+                                    setEmail(''),
+                                    setFacebook(''),
+                                    setLine(''),
+                                    setLinkmap(''),
+                                    getContact()
+                                
+                                ])
 
+                            })
+
+                        }}>
+                        บันทึก
+                    </Button>
+
+                    </div>
+
+                </div>
             </div>
-
-            </div>
-        </div>
         </Container>
  
-            </ >
+        </>
   );
 }        
 ContactPage.layout = IndexPage;
