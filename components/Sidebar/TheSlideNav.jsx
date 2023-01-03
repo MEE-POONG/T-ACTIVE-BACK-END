@@ -65,7 +65,7 @@ export default function TheSlideNav() {
 
             <Dropdown bsPrefix="nav-item">
               <Dropdown.Toggle className={
-                  asPath === "/hometop" || asPath === "/homedetail" || asPath === "/about" || asPath === "/contact"
+                  asPath === "/hometop" || asPath === "/homedetail" || asPath === "/about" || asPath === "/contact" || asPath === "/gallery"
                   ? "nav-item nav-link active" 
                   : "nav-item nav-link"} id="dropdown-custom-components" >
                   <i className="me-2">
