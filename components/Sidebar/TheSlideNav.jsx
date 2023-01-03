@@ -94,6 +94,11 @@ export default function TheSlideNav() {
                   ช่องทางติดต่อ
                 </a>
               </Link>
+              <Link href="/gallery">
+              <a className="dropdown-item">
+                  คลังภาพ
+                </a>
+              </Link>
               </Dropdown.Menu>
             </Dropdown>
 
