@@ -58,7 +58,7 @@ export default function AboutPage() {
     const [showModalEdit, setShowModalEdit] = useState(false);
    
 
-   const ShowModalCreate = () => setShowModalCreate(true);
+    const ShowModalCreate = () => setShowModalCreate(true);
    const ShowModalEdit = async (id) => { 
     await getAboutById({url: '/api/about/'+id,method:'GET'});
     setShowModalEdit(true);
@@ -109,8 +109,8 @@ export default function AboutPage() {
                             <td className="text-center">{about.subtitle}</td>
                             <td className="text-center"><div dangerouslySetInnerHTML={{ __html: about?.detail }} /> </td>
                             <td className="text-center">
-                            <r/>  <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a> <t/>     
-                                  <a className="btn btn-outline-danger sm-2" onClick={() => executeAboutDelete({ url: '/api/about/' + about.id, method: 'DELETE'})} ><FaTrash /></a>
+                                <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a> <t/>     
+                                <a className="btn btn-outline-danger sm-2" onClick={() => executeAboutDelete({ url: '/api/about/' + about.id, method: 'DELETE'})} ><FaTrash /></a>
                        </td>
                         </tr>
                         ))}
@@ -131,7 +131,7 @@ export default function AboutPage() {
                 <Modal.Body>
                     <Form.Group controlId="formFile" className="mb-3">
                         <Form.Label className='d-block'>รูปภาพ</Form.Label>
-                            {imageURL.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="About_img" fluid rounded />)}
+                            {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="About_img" fluid rounded />)}
                         <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
                     </Form.Group>
                     
