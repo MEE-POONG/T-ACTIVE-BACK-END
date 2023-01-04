@@ -110,7 +110,7 @@ export default function AboutPage() {
                         {videoData?.map((videopresent,index) => (
                             <tr key={index}>
                             <td className="text-center">{videopresent.titlelink}</td>
-                            <td className="text-center">{videopresent.linkvideo}</td>
+                            <td className="text-center"> <iframe src={videopresent.linkvideo}></iframe> </td>
                             <td className="text-center">
                             <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEditSecond(videopresent.id)}><FaEdit/></a>    
                        </td>
