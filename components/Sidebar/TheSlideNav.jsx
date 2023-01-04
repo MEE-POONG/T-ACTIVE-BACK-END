@@ -96,7 +96,12 @@ export default function TheSlideNav() {
               </Link>
               <Link href="/gallery">
               <a className="dropdown-item">
-                  คลังภาพ
+                  คลังภาพหน้าหลัก
+                </a>
+              </Link>
+              <Link href="/galleryabout">
+              <a className="dropdown-item">
+                  คลังภาพหน้าเกี่ยวกับ
                 </a>
               </Link>
               </Dropdown.Menu>
