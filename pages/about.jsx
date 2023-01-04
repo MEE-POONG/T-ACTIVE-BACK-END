@@ -10,19 +10,30 @@ import { CKEditor } from "ckeditor4-react";
 
 export default function AboutPage() {
 
-  
+    // Video
+    const [{data: videoData, loading: videoLoading, error: videoError}, getVideolink] =  useAxios({url : '/api/videopresent'})
+    const [{data: videoById, loading: videoByIdLoading, error: videoByIdError}, getVideoById] =  useAxios({}, {manual: true})
+    const [{ loading: updateVideoLoading, error: updateVideoError }, executeVideoPut] = useAxios({},{manual: true})
+
+    const [titlelink, setTitlelink] = useState('');
+    const [videolink, setVideolink] = useState('');
+
+    useEffect(() => {
+        setTitlelink(videoById?.titlelink)
+        setVideolink(videoById?.videolink)
+    }, [videoById])
+
+
+
+    // ABOUT
     const [{ data: aboutData, loading, error}, getAbout] = useAxios({url: '/api/about'})
     const [{ data: aboutById , loading: aboutByIdLoading , error: aboutByIdError}, getAboutById] = useAxios({},{ manual: true } )
-    
     const [{ data: AboutPost, error: AboutPostError, loading: AboutPostLoading }, executeAboutPost] = useAxios({ url: '/api/about', method: 'POST' }, { manual: true });
     const [{ loading: updateAboutLoading, error: updateAboutError }, executeAboutPut] = useAxios({},{manual: true})
     const [{ loading: deleteAboutLoading, error: deleteAboutError }, executeAboutDelete] = useAxios({}, { manual: true })
 
     const[{loading: imgLoading, error: imgError}, uploadImage]= useAxios({url: '/api/upload', method: 'POST'},{manual: true});
   
-
-    
-
     const [title, setTitle] = useState('');
     const [subtitle, setSubtitle] = useState('');
     const [detail, setDetail] = useState('');

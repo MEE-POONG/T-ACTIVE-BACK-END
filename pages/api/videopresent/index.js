@@ -2,30 +2,26 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 
 export default async function handler(req, res) {
-    // console.log("",req.body);
     const { method } = req
     switch (method) {
         case 'GET':
             try {
-                const data = await prisma.products.findMany();
+                const data = await prisma.videopresent.findMany();
                 res.status(200).json(data)
             } catch (error) {
                 res.status(400).json({ success: false })
             }
             break
-            case 'POST':
+        case 'POST':
             try {
-                await prisma.products.create({
+                await prisma.videopresent.create({
                     data: {
-                        image: req.body.image,
-                        title: req.body.title,
-                        subtitle: req.body.subtitle,
-                        detail: req.body.detail,             
+                        titlelink: req.body.titlelink,
+                        videolink: req.body.link,             
                     }
                 })
                 res.status(201).json({ success: true })
             } catch (error) {
-                console.log(error);
                 res.status(400).json({ success: false })
             }
             break
