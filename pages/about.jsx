@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import IndexPage from "components/layouts/IndexPage";
-import { Container, Image, Table, Button, Form, OverlayTrigger, Badge, Modal, Row } from 'react-bootstrap';
+import { Container, Image, Table, Button, Form, Modal } from 'react-bootstrap';
 import useAxios from 'axios-hooks';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import axios from 'axios'
@@ -12,16 +12,16 @@ export default function AboutPage() {
 
     // Video
     const [{data: videoData, loading: videoLoading, error: videoError}, getVideolink] =  useAxios({url : '/api/videopresent'})
-    const [{data: videoById, loading: videoByIdLoading, error: videoByIdError}, getVideoById] =  useAxios({}, {manual: true})
+    const [{data: videoLinkById, loading: videoLinkByIdLoading, error: videoLinkByIdError}, getVideoLinkById] =  useAxios({}, {manual: true})
     const [{ loading: updateVideoLoading, error: updateVideoError }, executeVideoPut] = useAxios({},{manual: true})
 
     const [titlelink, setTitlelink] = useState('');
-    const [videolink, setVideolink] = useState('');
+    const [linkvideo, setLinkvideo] = useState('');
 
     useEffect(() => {
-        setTitlelink(videoById?.titlelink)
-        setVideolink(videoById?.videolink)
-    }, [videoById])
+        setTitlelink(videoLinkById?.titlelink)
+        setLinkvideo(videoLinkById?.linkvideo)
+    }, [videoLinkById])
 
 
 
@@ -67,18 +67,24 @@ export default function AboutPage() {
 //    Modal
     const [showModalCreate, setShowModalCreate] = useState(false);
     const [showModalEdit, setShowModalEdit] = useState(false);
+    const [showModalEditSecond, setShowModalEditSecond] = useState(false);
    
 
     const ShowModalCreate = () => setShowModalCreate(true);
-   const ShowModalEdit = async (id) => { 
+    const ShowModalEdit = async (id) => { 
     await getAboutById({url: '/api/about/'+id,method:'GET'});
     setShowModalEdit(true);
     }
-    
-   const CloseModal = () => {setShowModalCreate(false) ,setShowModalEdit(false)};
 
-    if (loading || aboutByIdLoading || AboutPostLoading || updateAboutLoading || deleteAboutLoading || imgLoading ) return <p>Loading...</p>
-    if (error || aboutByIdError || AboutPostError || updateAboutError || deleteAboutError || imgError ) return <p>Error!</p>
+    const ShowModalEditSecond = async (id) => { 
+        await getVideoLinkById({url: '/api/videopresent/'+id,method:'GET'});
+        setShowModalEditSecond(true);
+        }
+    
+   const CloseModal = () => {setShowModalCreate(false) ,setShowModalEdit(false), setShowModalEditSecond(false)};
+
+    if (loading || aboutByIdLoading || AboutPostLoading || updateAboutLoading || deleteAboutLoading || imgLoading || videoLinkByIdLoading || videoLoading || updateVideoLoading) return <p>Loading...</p>
+    if (error || aboutByIdError || AboutPostError || updateAboutError || deleteAboutError || imgError || videoLinkByIdError || videoError || updateVideoError) return <p>Error!</p>
     return (
         < >
         <Head>
@@ -90,6 +96,29 @@ export default function AboutPage() {
                  
             <Container fluid className=" pt-4 px-4">
             <div className="bg-secondary rounded shadow p-4">
+                <h5>วิดีโอนำเสนอ</h5>
+                    <div className="table-responsive w-100">
+                    <Table className="table text-start align-middle table-bordered table-hover mb-0">              
+                    <thead>
+                        <tr className="text-center">
+                            <th >ชื่อหัวข้อ</th>
+                            <th >ลิงค์วิดีโอ</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {videoData?.map((videopresent,index) => (
+                            <tr key={index}>
+                            <td className="text-center">{videopresent.titlelink}</td>
+                            <td className="text-center"> <iframe src={videopresent.linkvideo}></iframe> </td>
+                            <td className="text-center">
+                            <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEditSecond(videopresent.id)}><FaEdit/></a>    
+                       </td>
+                        </tr>
+                        ))}
+                          </tbody>
+                         </Table>
+                        </div> <br />
                     <div className="d-flex align-items-center justify-content-between mb-4">
                         <h5 className="mb-0 w-m-max me-2">ข้อมูล</h5>
                         <Button variant="dark" onClick={ShowModalCreate}>
@@ -114,13 +143,13 @@ export default function AboutPage() {
                         {aboutData?.map((about,index) => (
                             <tr key={index}>
                             <td className="text-center"> 
-                                <img className="logo" alt="" style={{ width: "50px" }} src={about.image} />
+                                <img className="logo" alt="" style={{ width: "150px" }} src={about.image} />
                             </td>
                             <td className="text-center">{about.title}</td>
                             <td className="text-center">{about.subtitle}</td>
                             <td className="text-center"><div dangerouslySetInnerHTML={{ __html: about?.detail }} /> </td>
                             <td className="text-center">
-                                <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a> <t/>     
+                                <a className="btn btn-outline-primary sm-2" onClick={() =>ShowModalEdit(about.id)}><FaEdit /></a>     
                                 <a className="btn btn-outline-danger sm-2" onClick={() => executeAboutDelete({ url: '/api/about/' + about.id, method: 'DELETE'})} ><FaTrash /></a>
                        </td>
                         </tr>
@@ -213,9 +242,55 @@ export default function AboutPage() {
                 </Modal.Footer>
             </Modal>
 
-        
+        {/* Edit Video */}
+        <Modal show={showModalEditSecond} onHide={CloseModal} centered className="bg-templant">
+                <Modal.Header closeButton >
+                    <Modal.Title>แก้ไขข้อมูล</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ชื่อหัวข้อ</Form.Label>
+                        <Form.Control type="text" value={titlelink} onChange={event => setTitlelink(event.target.value)} />
+                    </Form.Group>
 
-               {/* Edit */}
+                    <Form.Group controlId="formFile" className="mb-3">
+                        <Form.Label>ลิงค์:</Form.Label>
+                        <Form.Control type="text" value={linkvideo} onChange={event => setLinkvideo(event.target.value)} />
+                    </Form.Group>
+                        
+
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={CloseModal}>
+                        ยกเลิก
+                    </Button>
+                    <Button variant="success" onClick={() => {
+
+                        executeVideoPut({
+                            url: '/api/videopresent/' + videoLinkById?.id,
+                            method: 'PUT',
+                            data: {
+                                titlelink:titlelink,
+                                linkvideo:linkvideo,
+                            }
+                        }).then(() => {
+                            Promise.all([
+                                setTitlelink(''),
+                                setLinkvideo(''),
+                                getVideolink()
+                              
+                            ]).then(() => {
+                                CloseModal()
+                            })
+                        })
+
+                    }}>
+                        บันทึก
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+
+         {/* Edit About */}
             <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
                     <Modal.Title>รายละเอียด</Modal.Title>

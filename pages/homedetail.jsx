@@ -59,7 +59,7 @@ export default function ProdutsPage() {
             <Container fluid className=" pt-4 px-4">
                     <div className="bg-secondary rounded shadow p-4">
                 <div className="d-flex align-items-center justify-content-between mb-4">
-                    <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าสินค้า</h5>
+                    <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าแรก</h5>
                     <Button variant="dark" onClick={ShowModalCreate}>
                             <FaPlus />
                         </Button>
@@ -103,7 +103,7 @@ export default function ProdutsPage() {
           {/* Create */}
           <Modal show={showModalCreate} onHide={CloseModal}  centered className="bg-templant">
           <Modal.Header closeButton >
-                    <Modal.Title>แก้ไขข้อมูลหน้าสินค้า</Modal.Title>
+                    <Modal.Title>เพิ่มข้อมูลหน้าแรก</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <Form.Group controlId="formFile" className="mb-3">
@@ -177,7 +177,7 @@ export default function ProdutsPage() {
           {/* EditHead */}
             <Modal show={isShowModalEdit} onHide={CloseModal} centered className="bg-templant">
                 <Modal.Header closeButton >
-                    <Modal.Title>แก้ไขข้อมูลหน้าสินค้า</Modal.Title>
+                    <Modal.Title>แก้ไขข้อมูล</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                 <Form.Group controlId="formFile" className="mb-3">

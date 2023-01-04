@@ -17,7 +17,7 @@ export default async function handler(req, res) {
                 await prisma.videopresent.create({
                     data: {
                         titlelink: req.body.titlelink,
-                        videolink: req.body.link,             
+                        linkvideo: req.body.link,             
                     }
                 })
                 res.status(201).json({ success: true })
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
             }
             break
         default:
-            res.setHeader('Allow', ['GET', 'POST'])
+            res.setHeader('Allow', ['GET'])
             res.status(405).end(`Method ${method} Not Allowed`)
     }
 }
