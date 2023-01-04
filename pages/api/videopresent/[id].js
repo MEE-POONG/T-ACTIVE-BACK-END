@@ -24,8 +24,8 @@ export default async function handler(req, res) {
                         id: req.query.id
                     },
                     data: {
-                        title: req.body.title,
-                        videolink: req.body.detail,    
+                        titlelink: req.body.titlelink,
+                        linkvideo: req.body.link,     
                     }
 
                 })
@@ -35,21 +35,8 @@ export default async function handler(req, res) {
                 res.status(400).json({ success: false })
             }
             break
-        case 'DELETE':
-            try {
-                await prisma.about.delete({
-                    where: {
-                        id: req.query.id
-                    }
-                });
-                prisma.$disconnect();
-                res.status(204).json({ success: true })
-            } catch (error) {
-                res.status(400).json({ success: false })
-            }
-            break
         default:
-            res.setHeader('Allow', ['GET', 'POST'])
+            res.setHeader('Allow', ['GET', 'PUT'])
             res.status(405).end(`Method ${method} Not Allowed`)
     }
 }

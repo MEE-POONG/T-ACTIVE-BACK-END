@@ -104,6 +104,6 @@ model Videopresent {
   createdAt  DateTime? @default(now())
   updatedAt  DateTime?
   deleted_at DateTime?
-  videolink  String?
+  linkvideo  String?
   titlelink  String?
 }
