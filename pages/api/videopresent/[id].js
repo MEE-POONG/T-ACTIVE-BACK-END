@@ -25,7 +25,7 @@ export default async function handler(req, res) {
                     },
                     data: {
                         titlelink: req.body.titlelink,
-                        linkvideo: req.body.link,     
+                        linkvideo: req.body.linkvideo,     
                     }
 
                 })
