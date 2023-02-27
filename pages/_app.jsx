@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { SessionProvider, useSession } from "next-auth/react";
 import App from "next/app";
 import Head from "next/head";
 import Router from "next/router";
@@ -9,6 +10,7 @@ import 'assets/scss/index.scss';
 
 import PageChange from "../components/PageChange/PageChange.js";
 import SSRProvider from 'react-bootstrap/SSRProvider';
+import LoginPage from "./login.jsx";
 
 // import "@fortawesome/fontawesome-free/css/all.min.css";
 // import "../styles/tailwind.scss";
@@ -29,6 +31,18 @@ Router.events.on("routeChangeError", () => {
   ReactDOM.unmountComponentAtNode(document.getElementById("page-transition"));
   document.body.classList.remove("body-page-transition");
 });
+
+
+function Auth({ children }) {
+  const { data: session } = useSession();
+
+  if (!session) {
+    return <LoginPage />
+  }
+
+  return children
+}
+
 
 export default class MyApp extends App {
   componentDidMount() {
@@ -63,25 +77,36 @@ export default class MyApp extends App {
     return { pageProps };
   }
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps: { session, ...pageProps } } = this.props;
 
     const Layout = Component.layout || (({ children }) => <>{children}</>);
 
     return (
-      <SSRProvider>
-        <React.Fragment>
-          <Head>
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1, shrink-to-fit=no"
-            />
-            <title>Notus NextJS by Creative Tim</title>
-          </Head>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </React.Fragment>
-      </SSRProvider>
+      <SessionProvider
+        session={session}
+        refetchInterval={1 * 60}
+        refetchOnWindowFocus={true}
+      >
+
+        <SSRProvider>
+          <React.Fragment>
+            <Head>
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1, shrink-to-fit=no"
+              />
+              <title>Notus NextJS by Creative Tim</title>
+            </Head>
+            <Auth>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </Auth>
+          </React.Fragment>
+        </SSRProvider>
+
+      </SessionProvider>
+
     );
   }
 }

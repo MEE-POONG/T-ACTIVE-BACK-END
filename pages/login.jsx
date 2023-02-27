@@ -1,13 +1,15 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
-import { Container, Image, Table, Button, Form, Modal } from 'react-bootstrap';
+import { Container, Image } from 'react-bootstrap';
 import useAxios from 'axios-hooks';
-import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
-import axios from 'axios'
-import FormData from 'form-data';
-import { CKEditor } from "ckeditor4-react";
+
+import { signIn, getCsrfToken, useSession } from "next-auth/react";
+
+import { useRouter } from "next/router";
 
 export default function LoginPage() {
+
+    const router = useRouter();
 
     // Video
     const [{ data: videoData, loading: videoLoading, error: videoError }, getVideolink] = useAxios({ url: '/api/videopresent' })
@@ -98,20 +100,42 @@ export default function LoginPage() {
                     <div className='text-center'>
                         <Image src="https://t-active-stevia.com/images/logo.png" />
                     </div>
-                    <form>
+                    <form
+                        onSubmit={async (e) => {
+                            e.preventDefault();
+                            const username = e.target.username.value;
+                            const password = e.target.password.value;
+
+                            const res = await signIn("credentials", {
+                                redirect: false,
+                                username: username,
+                                password: password,
+                                callbackUrl: `${window.location.origin}`,
+                            });
+                            if (res?.error) {
+                                return alert('username or password is incorrect')
+                            }
+                            router.push('/');
+                        }}
+                    >
+
                         <h3>Sign In</h3>
                         <div className="mb-3">
                             <label>Username</label>
                             <input
-                                type="email"
+                                type="test"
+                                name="username"
+                                id="username"
                                 className="form-control"
-                                placeholder="Enter email"
+                                placeholder="Enter text"
                             />
                         </div>
                         <div className="mb-3">
                             <label>Password</label>
                             <input
                                 type="password"
+                                name='password'
+                                id='password'
                                 className="form-control"
                                 placeholder="Enter password"
                             />
@@ -125,233 +149,6 @@ export default function LoginPage() {
                 </div>
             </Container>
 
-
-            {/* Create */}
-            <Modal show={showModalCreate} onHide={CloseModal} centered className="bg-templant">
-                <Modal.Header closeButton >
-                    <Modal.Title>เพิ่มข้อมูล</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพ</Form.Label>
-                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="About_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อ</Form.Label>
-                        <Form.Control type="text" onChange={event => setTitle(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียด</Form.Label>
-                        <Form.Control as="textarea" onChange={event => setSubtitle(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
-
-                        <CKEditor
-                            onChange={event => setDetail(event.editor.getData())}
-                            config={{
-                                uiColor: "#ddc173 ",
-                                language: "th",
-                                // extraPlugins: "uploadimage",
-                                // filebrowserUploadMethod: "form",
-                                // filebrowserUploadUrl: ("/uploader/upload"),
-                                // filebrowserBrowseUrl: '/addgallery',
-                                // toolbar: [
-                                // ],
-                                extraPlugins: "easyimage,autogrow,emoji",
-                                // removePlugins: 'image',
-                            }}
-                        />
-
-                    </Form.Group>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
-                        ยกเลิก
-                    </Button>
-                    <Button variant="success" onClick={async event => {
-
-                        let data = new FormData()
-                        data.append('file', image[0])
-                        const imageData = await uploadImage({ data: data })
-                        const id = imageData.data.result.id
-
-                        await executeAboutPost({
-                            data: {
-                                title: title,
-                                subtitle: subtitle,
-                                detail: detail,
-                                image: `https://imagedelivery.net/QZ6TuL-3r02W7wQjQrv5DA/${id}/public`,
-                            }
-                        }).then(() => {
-                            Promise.all([
-                                setTitle(''),
-                                setSubtitle(''),
-                                setDetail(''),
-                                setImage(''),
-                                getAbout()
-                            ]).then(() => {
-                                CloseModal()
-                            })
-                        })
-                    }}>
-                        เพิ่ม
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-            {/* Edit Video */}
-            <Modal show={showModalEditSecond} onHide={CloseModal} centered className="bg-templant">
-                <Modal.Header closeButton >
-                    <Modal.Title>แก้ไขข้อมูล</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อหัวข้อ</Form.Label>
-                        <Form.Control type="text" value={titlelink} onChange={event => setTitlelink(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ลิงค์:</Form.Label>
-                        <Form.Control type="text" value={linkvideo} onChange={event => setLinkvideo(event.target.value)} />
-                    </Form.Group>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
-                        ยกเลิก
-                    </Button>
-                    <Button variant="success" onClick={() => {
-
-                        executeVideoPut({
-                            url: '/api/videopresent/' + videoLinkById?.id,
-                            method: 'PUT',
-                            data: {
-                                titlelink: titlelink,
-                                linkvideo: linkvideo,
-                            }
-                        }).then(() => {
-                            Promise.all([
-                                setTitlelink(''),
-                                setLinkvideo(''),
-                                getVideolink()
-
-                            ]).then(() => {
-                                CloseModal()
-                            })
-                        })
-
-                    }}>
-                        บันทึก
-                    </Button>
-                </Modal.Footer>
-            </Modal>
-
-            {/* Edit About */}
-            <Modal show={showModalEdit} onHide={CloseModal} centered className="bg-templant">
-                <Modal.Header closeButton >
-                    <Modal.Title>รายละเอียด</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label className='d-block'>รูปภาพ</Form.Label>
-                        {imageURL?.length === 0 && <Image className="mb-2" style={{ height: 200 }} src={img} alt="About_img" fluid rounded />}
-                        {imageURL?.map((imageSrcAbout, index) => <Image key={index} className="mb-2" style={{ height: 200 }} src={imageSrcAbout} alt="About_img" fluid rounded />)}
-                        <Form.Control type="file" accept="image/*" onChange={onImageAboutChange} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>ชื่อ</Form.Label>
-                        <Form.Control type="text" value={title} onChange={event => setTitle(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>รายละเอียด</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={subtitle} onChange={event => setSubtitle(event.target.value)} />
-                    </Form.Group>
-
-                    <Form.Group controlId="formFile" className="mb-3">
-                        <Form.Label>อธิบายเพิ่มเติม</Form.Label>
-
-                        {detail ?
-                            <CKEditor
-                                initData={detail}
-                                onChange={event => setDetail(event.editor.getData())}
-                                config={{
-                                    uiColor: "#ddc173 ",
-                                    language: "th",
-                                    // extraPlugins: "uploadimage",
-                                    // filebrowserUploadMethod: "form",
-                                    // filebrowserUploadUrl: ("/uploader/upload"),
-                                    // filebrowserBrowseUrl: '/addgallery',
-                                    // toolbar: [
-                                    // ],
-                                    extraPlugins: "easyimage,autogrow,emoji",
-                                    // removePlugins: 'image',
-                                }}
-                            />
-                            :
-                            <CKEditor
-                                onChange={event => setDetail(event.editor.getData())}
-                                config={{
-                                    uiColor: "#ddc173 ",
-                                    language: "th",
-                                    // extraPlugins: "uploadimage",
-                                    // filebrowserUploadMethod: "form",
-                                    // filebrowserUploadUrl: ("/uploader/upload"),
-                                    // filebrowserBrowseUrl: '/addgallery',
-                                    // toolbar: [
-                                    // ],
-                                    extraPlugins: "easyimage,autogrow,emoji",
-                                    // removePlugins: 'image',
-                                }}
-                            />}
-
-                    </Form.Group>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={CloseModal}>
-                        ยกเลิก
-                    </Button>
-                    <Button variant="success" onClick={async () => {
-
-                        let data = new FormData()
-                        data.append('file', image[0])
-                        const imageData = await uploadImage({ data: data })
-                        const id = imageData.data.result.id
-
-                        await executeAboutPut({
-                            url: '/api/about/' + aboutById?.id,
-                            method: 'PUT',
-                            data: {
-                                title: title,
-                                subtitle: subtitle,
-                                detail: detail,
-                                image: `https://imagedelivery.net/QZ6TuL-3r02W7wQjQrv5DA/${id}/public`,
-
-                            }
-                        }).then(() => {
-                            Promise.all([
-                                setTitle(''),
-                                setSubtitle(''),
-                                setDetail(''),
-                                setImage(''),
-                                getAbout()
-                            ]).then(() => {
-                                CloseModal()
-                            })
-                        })
-
-                    }}>
-                        บันทึก
-                    </Button>
-                </Modal.Footer>
-            </Modal>
         </ >
     );
 

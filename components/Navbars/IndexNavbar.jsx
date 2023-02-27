@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import Link from "next/link";
+import React from "react";
 // components
 import { NavDropdown, Image, Navbar, Button } from 'react-bootstrap';
-import { FaBars, FaBell, FaRegEnvelope, FaUserEdit } from "react-icons/fa";
+import { FaBell, FaRegEnvelope, FaUserEdit } from "react-icons/fa";
 import { ButtonSlideNav } from "../Sidebar/TheSlideNav";
+import { signOut, useSession } from "next-auth/react";
+
 
 
 export default function IndexNavbar() {
+  const { data: session } = useSession();
+
 
   return (
     <>
@@ -99,7 +102,9 @@ export default function IndexNavbar() {
             menuVariant="dark"
           >
             <NavDropdown.Item href="/profile">My Profile</NavDropdown.Item>
-            <NavDropdown.Item href="#action/3.4">Log Out</NavDropdown.Item>
+            <NavDropdown.Item
+              onClick={signOut}
+            >Log Out</NavDropdown.Item>
           </NavDropdown>
         </div>
       </Navbar>
