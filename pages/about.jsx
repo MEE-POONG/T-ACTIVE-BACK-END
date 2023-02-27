@@ -162,7 +162,7 @@ export default function AboutPage() {
       
   
           {/* Create */}
-          <Modal show={showModalCreate} onHide={CloseModal}  centered className="bg-templant">
+          <Modal show={showModalCreate} onHide={CloseModal}  centered className="bg-templant ">
                 <Modal.Header closeButton >
                     <Modal.Title>เพิ่มข้อมูล</Modal.Title>
                 </Modal.Header>

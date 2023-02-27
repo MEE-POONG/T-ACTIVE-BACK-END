@@ -17,6 +17,9 @@
         }
     }
 }
+.modal-content{
+    background-color: rgba(var(--bs-secondary-rgb));
+}
 .login {
     max-width: 500px;
     height: 100vh;
