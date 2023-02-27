@@ -12,7 +12,7 @@ export default function Footer() {
               </div>
               <div className="col-12 col-sm-6 text-center text-sm-end">
                 Designed By <a href="https://htmlcodex.com">MPT Group</a>{' '}{' '}
-                Distributed By: <a href="https://themewagon.com" target="_blank">ThemeMPT</a>
+                Distributed By: <a href="https://themewagon.com" target="_blank" rel="noreferrer">ThemeMPT</a>
               </div>
             </div>
           </div>

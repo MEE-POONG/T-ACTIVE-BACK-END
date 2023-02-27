@@ -20,7 +20,7 @@ import useAxios from "axios-hooks";
 import { CKEditor } from "ckeditor4-react";
 import { FaReply, FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 
-export default function hometopPage() {
+export default function HomeTopPage() {
 
   const [{ data: hometopData, loading, error }, getHometop] = useAxios({ url: "/api/hometop", });
 
@@ -208,4 +208,4 @@ export default function hometopPage() {
     );
   }
 }
-hometopPage.layout = IndexPage;
+HomeTopPage.layout = IndexPage;
