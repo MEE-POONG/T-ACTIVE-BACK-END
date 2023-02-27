@@ -3,43 +3,32 @@ generator client {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model About {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
-  deleted_at DateTime? @map("deleted_at")
+  updatedAt  DateTime?
+  deleted_at DateTime?
   detail     String?
   image      String?
   subtitle   String?
   title      String?
 }
 
-model Headproduct {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  header     String?
-  subheader  String?
+model Videopresent {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
-  deleted_at DateTime? @map("deleted_at")
-}
-
-model Products {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
-  deleted_at DateTime? @map("deleted_at")
-  detail     String?
-  image      String?
-  subtitle   String?
-  title      String?
+  updatedAt  DateTime?
+  deleted_at DateTime?
+  titlelink  String?
+  linkvideo  String?
 }
 
 model Contact {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   title      String?
   address    String?
   tel        String?
@@ -47,23 +36,13 @@ model Contact {
   facebook   String?
   line       String?
   createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
-  deleted_at DateTime? @map("deleted_at")
+  updatedAt  DateTime?
+  deleted_at DateTime?
   linkmap    String?
 }
 
-model Homedetail {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title      String?
-  subtitle   String?
-  detail     String?
-  createdAt  DateTime? @default(now())
-  updatedAt  DateTime?
-  deleted_at DateTime?
-}
-
 model Homee {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   title1     String?
   subtitle1  String?
   detail1    String?
@@ -81,36 +60,57 @@ model Homee {
   deleted_at DateTime?
 }
 
+model Products {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime?
+  deleted_at DateTime?
+  detail     String?
+  image      String?
+  subtitle   String?
+  title      String?
+}
+
+model Headproduct {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  header     String?
+  subheader  String?
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime?
+  deleted_at DateTime?
+}
+
+model Homedetail {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  title      String?
+  subtitle   String?
+  detail     String?
+  createdAt  DateTime? @default(now())
+  updatedAt  DateTime?
+  deleted_at DateTime?
+}
+
 model Hometop {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   image      String?
   name       String?
   subname    String?
   link       String?
   createdAt  DateTime? @default(now())
-  updatedAt  DateTime? @updatedAt
-  deleted_at DateTime? @map("deleted_at")
+  updatedAt  DateTime?
+  deleted_at DateTime?
 }
 
 model Gallery {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   image      String?
   createdAt  DateTime? @default(now())
-  deleted_at DateTime? @map("deleted_at")
+  deleted_at DateTime?
 }
 
 model Galleryabout {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
   image      String?
   createdAt  DateTime? @default(now())
-  deleted_at DateTime? @map("deleted_at")
-}
-
-model Videopresent {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt  DateTime? @default(now())
-  updatedAt  DateTime?
   deleted_at DateTime?
-  titlelink  String?
-  linkvideo  String?
 }
