@@ -4,6 +4,7 @@ import ResultNumber from 'container/Dashboard/ResultNumber';
 import PeakGraph from 'container/Dashboard/PeakGraph';
 import RecentSalse from 'container/Dashboard/RecentSalse';
 import NewListing from 'container/Dashboard/NewListing';
+import { Container } from 'react-bootstrap';
 export default function HomePage() {
   return (
     < >
@@ -15,10 +16,9 @@ export default function HomePage() {
         />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <ResultNumber />
-      {/* <PeakGraph /> */}
-      <RecentSalse />
-      {/* <NewListing /> */}
+    <Container>
+      
+    </Container>
     </ >
   );
 }
