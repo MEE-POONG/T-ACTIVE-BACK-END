@@ -68,8 +68,6 @@ export default function HomeTopPage() {
 
   const CloseModal = () => {setIsShowModalEdit(false)};
 
-  if (loading || homeTopByIdLoading ||  updateHomeTopLoading || imgLoading ) return <p>Loading...</p>
-  if (error  || homeTopByIdError ||  updateHomeTopError || imgError) return <p>Error!</p>
   return (
     <>
       <Head>
@@ -208,4 +206,3 @@ export default function HomeTopPage() {
     );
   }
 }
-HomeTopPage.layout = IndexPage;

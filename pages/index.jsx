@@ -1,15 +1,19 @@
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import IndexPage from "components/layouts/IndexPage";
+<<<<<<< HEAD
 import { Container, Image, Table, Button, Form, Modal } from 'react-bootstrap';
 import useAxios from 'axios-hooks';
 import { FaReply, FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
 import axios from 'axios'
 import FormData from 'form-data';
 import { CKEditor } from "ckeditor4-react";
+=======
+import { Container } from 'react-bootstrap';
+>>>>>>> 5d91d031eef8648e87aab4056821be0c24bcc9d6
 export default function HomePage() {
   return (
-    < >
+    <>
       <Head>
         <title>สวัสผู้ดูแลระบบ</title>
         <meta
@@ -41,4 +45,3 @@ export default function HomePage() {
     </ >
   );
 }
-HomePage.layout = IndexPage;

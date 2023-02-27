@@ -2,7 +2,7 @@ FROM node:lts AS dependencies
 
 WORKDIR /app
 COPY package.json ./
-RUN yarn
+RUN pnpm install
 
 FROM node:lts AS build
 
@@ -11,7 +11,7 @@ COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
 RUN npx prisma generate
-RUN yarn build
+RUN pnpm run build
 
 FROM node:lts AS deploy
 

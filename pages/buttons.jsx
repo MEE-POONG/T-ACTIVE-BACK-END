@@ -259,7 +259,6 @@ export default function TypographyPage() {
           </div>
         </Row>
       </Container>
-    </ >
+    </>
   );
 }
-TypographyPage.layout = IndexPage;

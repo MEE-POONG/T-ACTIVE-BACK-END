@@ -83,10 +83,8 @@ export default function AboutPage() {
     
    const CloseModal = () => {setShowModalCreate(false) ,setShowModalEdit(false), setShowModalEditSecond(false)};
 
-    if (loading || aboutByIdLoading || AboutPostLoading || updateAboutLoading || deleteAboutLoading || imgLoading || videoLinkByIdLoading || videoLoading || updateVideoLoading) return <p>Loading...</p>
-    if (error || aboutByIdError || AboutPostError || updateAboutError || deleteAboutError || imgError || videoLinkByIdError || videoError || updateVideoError) return <p>Error!</p>
     return (
-        < >
+        <>
         <Head>
             <title>T-ACTIVE BACKEND</title>
             <meta name="description" content="I2AROBOT 2" />
@@ -391,8 +389,7 @@ export default function AboutPage() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </ >
+        </>
     );
 
 }        
-AboutPage.layout = IndexPage;
