@@ -84,8 +84,6 @@ export default function LoginPage() {
 
     const CloseModal = () => { setShowModalCreate(false), setShowModalEdit(false), setShowModalEditSecond(false) };
 
-    if (loading || aboutByIdLoading || AboutPostLoading || updateAboutLoading || deleteAboutLoading || imgLoading || videoLinkByIdLoading || videoLoading || updateVideoLoading) return <p>Loading...</p>
-    if (error || aboutByIdError || AboutPostError || updateAboutError || deleteAboutError || imgError || videoLinkByIdError || videoError || updateVideoError) return <p>Error!</p>
     return (
         < >
             <Head>

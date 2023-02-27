@@ -47,8 +47,6 @@ export default function GalleryPage() {
     const ShowModalCreate = () => setShowModalCreate(true);
     const CloseModal = () => {setShowModalCreate(false) };
 
-    if (loading || galleryLoading || galleryByIdLoading || deleteGalleryLoading || imgLoading) return <p>Loading...</p>
-    if (error ||  galleryByIdError ||  deleteGalleryError || imgError) return <p>Error!</p>
     return (
         < >
         <Head>
@@ -143,4 +141,3 @@ export default function GalleryPage() {
     );
 
 }        
-GalleryPage.layout = IndexPage;

@@ -47,8 +47,6 @@ export default function GalleryaboutPage() {
     const ShowModalCreate = () => setShowModalCreate(true);
     const CloseModal = () => {setShowModalCreate(false) };
 
-    if (loading || galleryaboutLoading || galleryaboutByIdLoading || deleteGalleryaboutLoading || imgLoading) return <p>Loading...</p>
-    if (error ||  galleryaboutByIdError ||  deleteGalleryaboutError || imgError) return <p>Error!</p>
     return (
         < >
         <Head>
@@ -143,4 +141,3 @@ export default function GalleryaboutPage() {
     );
 
 }        
-GalleryaboutPage.layout = IndexPage;

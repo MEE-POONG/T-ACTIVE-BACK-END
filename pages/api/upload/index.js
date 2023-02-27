@@ -42,7 +42,6 @@ const handler = nc()
                 res.status(200).send(response.data)
             })
             .catch((error) => {
-                console.log(error);
                 res.status(400).send(error.message)
             });
     })

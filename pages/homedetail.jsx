@@ -44,9 +44,6 @@ export default function ProdutsPage() {
 
    const CloseModal = () => {setIsShowModalEdit(false),setShowModalCreate(false)};
 
-
-    if (homeDetailLoading ) return <p>Loading...</p>
-    if (homeDetailByIdLoading ) return <p>Error!</p>
     return (
         < >
         <Head>
@@ -269,8 +266,7 @@ export default function ProdutsPage() {
             </Modal>
 
             
-        </ >
+        </>
     );
 
 }        
-ProdutsPage.layout = IndexPage;

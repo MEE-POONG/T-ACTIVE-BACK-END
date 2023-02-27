@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   output: 'standalone'
 }
 
