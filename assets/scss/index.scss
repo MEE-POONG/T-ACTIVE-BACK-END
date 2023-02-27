@@ -11,9 +11,19 @@
             height: 1.5em;
             overflow: hidden;
         }
-        .card-body{
+        .card-body {
             max-height: 732px;
             overflow-y: scroll;
         }
+    }
+}
+.login {
+    max-width: 500px;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    .bg-secondary.rounded {
+        height: max-content;
+        width: 100%;
     }
 }
