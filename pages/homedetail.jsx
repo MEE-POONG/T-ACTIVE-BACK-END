@@ -56,7 +56,7 @@ export default function ProdutsPage() {
             <Container fluid className=" pt-4 px-4">
                     <div className="bg-secondary rounded shadow p-4">
                 <div className="d-flex align-items-center justify-content-between mb-4">
-                    <h5 className="mb-0 w-m-max me-2">ข้อมูลหน้าแรก</h5>
+                    <h5 className="mb-0 w-m-max me-2">ความสัมคัญ Stevia / Production / Properties</h5>
                     <Button variant="dark" onClick={ShowModalCreate}>
                             <FaPlus />
                         </Button>

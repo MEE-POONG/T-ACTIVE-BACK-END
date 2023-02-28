@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaTable,
   FaRegKeyboard,
@@ -22,6 +22,11 @@ import { useRouter } from "next/router";
 export default function TheSlideNav() {
 
   const { asPath } = useRouter();
+  const [checkClickPath, setCheckClickPath] = useState('/')
+  useEffect(() => {
+    setCheckClickPath(asPath);
+  }, [asPath])
+  const handlePath = (valPath) => { checkClickPath === valPath ? setCheckClickPath('') : setCheckClickPath(valPath) };
 
   return <>
     <div className="sidebar pe-4 pb-3 ">
@@ -30,7 +35,7 @@ export default function TheSlideNav() {
 
           <h3 className="text-primary">
             <FaUserEdit className="fa me-2" />
-            T-Active 
+            T-Active
           </h3>
 
         </Link>
@@ -50,68 +55,60 @@ export default function TheSlideNav() {
           </div>
         </div>
         <div className="navbar-nav w-100">
-        <Link
-          href="/"
-          className={asPath === "/" 
-              ?"nav-item nav-link active"
+          <Link
+            href="/"
+            className={checkClickPath === "/"
+              ? "nav-item nav-link active"
               : "nav-item nav-link"
             }>
 
-          <i className="me-2">
-            <FaTachometerAlt />
-          </i>Home
-        </Link>
+            <i className="me-2">
+              <FaTachometerAlt />
+            </i>Home
+          </Link>
 
-          <Dropdown bsPrefix="nav-item">
-            <Dropdown.Toggle className={
-                asPath === "/hometop" || asPath === "/homedetail" || asPath === "/about" || asPath === "/contact" || asPath === "/gallery"
-                ? "nav-item nav-link active" 
-                : "nav-item nav-link"} id="dropdown-custom-components" >
-                <i className="me-2">
-                  <FaLaptop />
-                </i>
-                จัดการเว็บไซต์
-            </Dropdown.Toggle>
-            <Dropdown.Menu className="bg-transparent border-0" show>
-              <Link href="/hometop" className="dropdown-item">
-              
-                  หน้าหลัก
-                
-              </Link>
-              <Link href="/homedetail" className="dropdown-item">
-              
-                  หน้าหลักเนื้อหา
-                
-              </Link>
-            <Link href="/about" className="dropdown-item">
-            
-                เกี่ยวกับเรา
-              
+          <Dropdown.Toggle onClick={() => handlePath('/hometop')} className={
+            checkClickPath === "/hometop" || checkClickPath === "/homedetail" || checkClickPath === "/about" || checkClickPath === "/contact" || checkClickPath === "/gallery"
+              ? "nav-item nav-link active"
+              : "nav-item nav-link"} id="dropdown-custom-components" >
+            <i className="me-2">
+              <FaLaptop />
+            </i>
+            จัดการเว็บไซต์
+          </Dropdown.Toggle>
+          <Dropdown.Menu 
+          className="bg-transparent border-0" show={checkClickPath === "/hometop" || 
+          checkClickPath === "/homedetail" || checkClickPath === "/about" || checkClickPath === "/contact" || 
+          checkClickPath === "/gallery"|| checkClickPath === "/galleryabout"|| checkClickPath === "/about"|| 
+          checkClickPath === "/contact"|| checkClickPath === "/gallery"}>
+            <Link href="/hometop" className={asPath === "/" ? "nav-item nav-link active" : "nav-item nav-link"}>
+              โปรเตอร์แรก
             </Link>
-            <Link href="/contact" className="dropdown-item">
-            
-                ช่องทางติดต่อ
-              
+            <Link href="/homedetail" className="dropdown-item">
+              ความสัมคัญ
             </Link>
             <Link href="/gallery" className="dropdown-item">
-            
-                คลังภาพหน้าหลัก
-              
+              รูปภาพความสัมคัญ
             </Link>
             <Link href="/galleryabout" className="dropdown-item">
-            
-                คลังภาพหน้าเกี่ยวกับ
-              
+              คลังภาพหน้าเกี่ยวกับ
             </Link>
-            </Dropdown.Menu>
-          </Dropdown>
+            <Link href="/about" className="dropdown-item">
+              เกี่ยวกับเรา
+            </Link>
+            <Link href="/contact" className="dropdown-item">
+              ช่องทางติดต่อ
+            </Link>
+
+
+          </Dropdown.Menu>
 
           <Dropdown bsPrefix="nav-item">
             <Dropdown.Toggle className={
-                asPath === "/products" 
-                ? "nav-item nav-link active" 
-                : "nav-item nav-link"} 
-                id="dropdown-custom-components" >
+              checkClickPath === "/products"
+                ? "nav-item nav-link active"
+                : "nav-item nav-link"}
+              id="dropdown-custom-components" >
               <i className="me-2">
                 <BsFillBagFill />
               </i>
@@ -119,9 +116,9 @@ export default function TheSlideNav() {
             </Dropdown.Toggle>
             <Dropdown.Menu className="bg-transparent border-0" show>
               <Link href="/products" className="dropdown-item ps-5">
-              
-                  สินค้า
-                
+
+                สินค้า
+
               </Link>
             </Dropdown.Menu>
           </Dropdown>
